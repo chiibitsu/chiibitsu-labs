@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Chiibitsu Labs — More human, by design</title>
+<meta name="description" content="Your team is already using AI. Nobody has decided how. Chiibitsu Labs rebuilds one workflow with your team, and leaves when they can run it on their own." />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="assets/chiibitsu-mark.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Libre+Franklin:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ═══════════ TOKENS ═══════════ */
+:root{
+  --paper:#FAF8F4; --ink:#141018; --ink-2:#4A4348; --ink-3:#736A6D;
+  --rule:#CFC9BD; --rule-2:#E4DFD6;
+  --violet:#5B3390; --band:#EFF4F0; --slab:#F1EDE6;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#141018; --ink:#FAF8F4; --ink-2:#D8D2D6; --ink-3:#A79FA4;
+    --rule:#3A343A; --rule-2:#282329;
+    --violet:#C0A8E8; --band:#18261F; --slab:#1D1922;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#141018; --ink:#FAF8F4; --ink-2:#D8D2D6; --ink-3:#A79FA4;
+  --rule:#3A343A; --rule-2:#282329;
+  --violet:#C0A8E8; --band:#18261F; --slab:#1D1922;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--paper); color:var(--ink-2);
+  font-family:'Libre Franklin',system-ui,sans-serif;
+  font-size:16px; font-weight:300; line-height:1.65;
+  overflow-x:hidden;
+}
+
+/* ═══════════ TYPE SCALE — 10 · 13 · 16 · 20 · 31 · 39+ ═══════════ */
+.t-label{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);line-height:1.5}
+.t-data{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;font-weight:400;line-height:1.6}
+.t-judge{font-family:'Newsreader',Georgia,serif;font-style:italic;font-size:21.2px;font-weight:300;line-height:1.5;color:var(--ink)}
+h2{font-family:'Newsreader',Georgia,serif;font-optical-sizing:auto;font-variation-settings:'opsz' 34;font-size:31px;font-weight:400;letter-spacing:-.005em;line-height:1.15;color:var(--ink)}
+h3{font-family:'Newsreader',Georgia,serif;font-variation-settings:'opsz' 24;font-size:20px;font-weight:400;line-height:1.25;color:var(--ink)}
+.display{font-family:'Newsreader',Georgia,serif;font-optical-sizing:auto;font-variation-settings:'opsz' 44;font-size:clamp(31px,5.4vw,52px);font-weight:300;letter-spacing:-.01em;line-height:1.1;color:var(--ink)}
+.display em{font-style:italic;color:var(--violet)}
+p{max-width:66ch}
+a{color:inherit}
+
+/* ═══════════ DOUBLING — the one idea, drawn ═══════════ */
+/* Section rules are two lines: 1.5px ink with a 1px hairline 3px below. */
+.rule2{position:relative;border-top:1.5px solid var(--ink);height:0}
+.rule2::after{content:'';position:absolute;left:0;right:0;top:3px;border-top:1px solid var(--rule)}
+/* The separator is a doubled tick: two vertical strokes, one heavier. */
+.tick{display:inline-flex;align-items:center;gap:3px;vertical-align:middle;margin:0 .7em}
+.tick i{display:block;width:1.5px;height:11px;background:var(--ink)}
+.tick i+i{width:1px;height:11px;background:var(--rule)}
+
+/* ═══════════ LAYOUT ═══════════ */
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+section{padding:0}
+.band{padding:76px 0}
+.band-slab{background:var(--slab)}
+.section-head{margin-bottom:38px}
+.section-head .t-label{margin-bottom:14px}
+
+/* ═══════════ RECORD LAYER — the layout signature ═══════════ */
+/* Narrow mono column beside the text. On narrow screens it collapses ABOVE
+   the block it annotates and is never hidden. Seven keys, closed. */
+.rec-grid{display:grid;grid-template-columns:184px 1fr;gap:0 40px;align-items:start}
+.record{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.02em;line-height:1.6;color:var(--ink-3);border-top:1px solid var(--rule);padding-top:10px}
+.record dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px}
+.record dt{text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);white-space:nowrap}
+.record dd{color:var(--ink-2);word-break:break-word}
+
+/* ═══════════ NAV ═══════════ */
+nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule-2)}
+.nav-in{max-width:1120px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+/* Horizontal lockup — primary. Gap = one third of the mark's width. */
+.lockup{display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink)}
+.lockup svg{width:27px;height:27px;display:block;flex:none}
+.wordmark{font-family:'Newsreader',Georgia,serif;font-variation-settings:'opsz' 24;font-size:13px;font-weight:400;letter-spacing:.3em;text-transform:uppercase;text-indent:.3em;color:var(--ink);white-space:nowrap}
+.nav-links{display:flex;align-items:center;gap:26px}
+.nav-links a{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);text-decoration:none;transition:color .18s}
+.nav-links a:hover{color:var(--ink)}
+.btn{display:inline-block;white-space:nowrap;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:10px 18px;border:1.5px solid var(--violet);color:var(--violet);background:transparent;transition:background .18s,color .18s;cursor:pointer}
+.btn:hover{background:var(--violet);color:var(--paper)}
+.btn-solid{background:var(--violet);color:var(--paper)}
+.btn-solid:hover{background:transparent;color:var(--violet)}
+
+/* ═══════════ FOLD ═══════════ */
+.fold{padding:82px 0 64px}
+.fold-in{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:start}
+.fold-claim .t-label{margin-bottom:20px}
+.fold-offer{margin-top:26px;font-size:16px;color:var(--ink-2);max-width:44ch}
+.fold-cta{margin-top:30px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+/* Where a stock photo would go, a page from a real engagement record. */
+.card{background:var(--paper);border:1px solid var(--rule);padding:22px 22px 18px}
+.card-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:12px}
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--rule-2);margin-top:14px}
+.ba>div{padding:12px 0}
+.ba>div+div{padding-left:16px;border-left:1px solid var(--rule-2)}
+.ba .t-label{margin-bottom:6px}
+.ba p{font-size:13px;line-height:1.55;color:var(--ink-2);max-width:none}
+
+/* ═══════════ METRIC ROW — 1 · 2 · 0, true by rule ═══════════ */
+.metrics{border-top:1px solid var(--rule-2);border-bottom:1px solid var(--rule-2)}
+.metrics-in{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.metric{padding:30px 0}
+.metric+.metric{padding-left:32px;border-left:1px solid var(--rule-2)}
+.metric-fig{font-family:'Newsreader',Georgia,serif;font-variation-settings:'opsz' 44;font-size:52px;font-weight:300;line-height:1;color:var(--ink);letter-spacing:-.01em}
+.metric-claim{margin-top:8px;font-size:16px;color:var(--ink);max-width:26ch}
+.metric-src{margin-top:10px}
+
+/* ═══════════ STEPS ═══════════ */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.step{padding-top:14px;position:relative;border-top:1.5px solid var(--rule)}
+.step::after{content:'';position:absolute;left:0;right:0;top:3px;border-top:1px solid var(--rule-2)}
+.step-n{margin-bottom:10px}
+.step h3{margin-bottom:8px}
+.step p{font-size:16px;max-width:34ch}
+/* the third step weighted violet — it is the decision the page is asking for */
+.step-3{border-top-color:var(--violet)}
+.step-3::after{border-top-color:var(--violet);opacity:.4}
+.step-3 .step-n,.step-3 h3{color:var(--violet)}
+
+/* ═══════════ OFFER MAP ═══════════ */
+.map{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--rule)}
+.map-col{padding:24px 0}
+.map-col+.map-col{padding-left:36px;border-left:1px solid var(--rule-2)}
+.map-col.full{grid-column:1/-1;border-left:0;padding-left:0;border-top:1px solid var(--rule-2)}
+.offer{padding:14px 0;border-bottom:1px solid var(--rule-2)}
+.offer:last-child{border-bottom:0}
+.offer-top{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+.offer h3 a{text-decoration:none;border-bottom:1px solid var(--rule);transition:border-color .18s}
+.offer h3 a:hover{border-color:var(--violet);color:var(--violet)}
+.offer p{font-size:16px;margin-top:6px;color:var(--ink-2)}
+.price{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px;color:var(--violet);white-space:nowrap}
+
+/* ═══════════ PROOF SHEET ═══════════ */
+.sheet{border-top:1.5px solid var(--ink);position:relative}
+.sheet::after{content:'';position:absolute;left:0;right:0;top:3px;border-top:1px solid var(--rule)}
+.row{display:grid;grid-template-columns:150px 1fr 150px;gap:32px;padding:22px 0;border-bottom:1px solid var(--rule-2);align-items:start}
+.row h3{font-size:20px;margin-bottom:6px}
+.row p{font-size:16px;color:var(--ink-2)}
+.fig{text-align:right}
+.fig-n{font-family:'Newsreader',Georgia,serif;font-variation-settings:'opsz' 34;font-size:31px;font-weight:300;line-height:1;color:var(--ink)}
+.fig-n.pending{color:var(--ink-3)}
+.fig .t-label{margin-top:6px}
+
+/* ═══════════ FIELD NOTES ═══════════ */
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--rule)}
+.note{padding:20px 0}
+.note+.note{padding-left:28px;border-left:1px solid var(--rule-2)}
+.note h3{margin:8px 0 6px}
+.note p{font-size:16px;color:var(--ink-2)}
+
+/* ═══════════ CLOSING ═══════════ */
+.close-in{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.close-form{border:1px solid var(--rule);padding:24px;background:var(--paper)}
+.close-form iframe{border:0;width:100%;min-height:460px;display:block}
+
+/* ═══════════ FOOTER ═══════════ */
+footer{border-top:1px solid var(--rule-2);padding:34px 0 44px;margin-top:0}
+.foot-in{display:flex;align-items:flex-start;justify-content:space-between;gap:28px;flex-wrap:wrap}
+.foot-tag{font-family:'Newsreader',Georgia,serif;font-style:italic;font-size:16px;color:var(--ink-3);margin-top:6px}
+.foot-links{display:flex;flex-direction:column;gap:5px}
+.foot-links a{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);text-decoration:none}
+.foot-links a:hover{color:var(--ink)}
+.foot-legal{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.02em;color:var(--ink-3);line-height:1.7}
+
+/* ═══════════ RESPONSIVE — nothing scrolls sideways at 390px ═══════════ */
+@media (max-width:900px){
+  .wrap,.nav-in{padding-left:22px;padding-right:22px}
+  .band{padding:52px 0}
+  .fold{padding:52px 0 44px}
+  .fold-in,.close-in{grid-template-columns:1fr;gap:34px}
+  .steps{grid-template-columns:1fr;gap:0}
+  .step{padding:18px 0 14px}
+  .metrics-in,.notes,.map{grid-template-columns:1fr}
+  .metric+.metric,.note+.note,.map-col+.map-col{padding-left:0;border-left:0;border-top:1px solid var(--rule-2)}
+  .map-col.full{border-top:1px solid var(--rule-2)}
+  .metric{padding:22px 0}
+  .row{grid-template-columns:1fr;gap:10px}
+  .fig{text-align:left}
+  .nav-links{display:none}
+  .nav-in{padding-top:11px;padding-bottom:11px}
+  .wordmark{font-size:12px;letter-spacing:.22em}
+  .btn{padding:9px 13px}
+  /* record layer collapses ABOVE the block it annotates, never hidden */
+  .rec-grid{grid-template-columns:1fr;gap:18px}
+  .record{order:-1}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-in">
+    <a class="lockup" href="/" aria-label="Chiibitsu Labs">
+      <svg viewBox="285 203 1430 1592" role="img" aria-hidden="true" fill="none">
+        <path fill="currentColor" fill-rule="evenodd" d="M870.9 1754.3 C866 1746.7 868.4 1733.6 868.4 1724.9 C868.3 1701.8 868.5 1678.8 868.6 1655.8 C868.9 1567.8 868.2 1479.8 868.2 1391.7 C868.1 1119.6 867.6 847.5 868.1 575.4 C868.2 497.4 868.4 419.3 868.3 341.3 C868.3 317.3 868.2 293.3 868.4 269.3 C868.6 260 866.4 248.2 869.9 239.5 C876.7 232.2 902.2 230.1 912.5 227.1 C945.6 217.8 1016.9 208.7 1051.9 207.3 C1135.5 204 1201.8 203.3 1285.5 213.4 C1328.2 218.5 1370.5 226.9 1412.6 234.9 C1434.1 239.1 1455.3 245.6 1476.9 249.4 C1507.4 254.9 1537.7 261.3 1568.4 265.6 C1578.2 267 1618.6 271.2 1624.6 274 C1630.2 280.5 1630 291.7 1630.8 299.8 C1632.8 321.7 1634.1 343.7 1636 365.6 C1639.2 401.5 1641 437.5 1643.7 473.4 C1646.8 512.9 1651.7 553.5 1653.6 593 C1654.3 608.4 1662.6 662.9 1657.1 673.4 C1650.4 677.1 1607.3 677.2 1601.3 672.8 C1597.6 665.4 1590.3 622.9 1587.8 611.5 C1581.6 583.5 1571.3 555.5 1560.4 529.1 C1511.6 410.2 1432.2 322.2 1308 281.8 C1288 275.3 1268.1 269.1 1247.2 265.9 C1241.3 265 1235.6 263.1 1229.6 262.2 C1199.8 257.6 1170 256 1139.9 255.9 C1130.4 255.9 1109.1 253.4 1101.7 259 C1097.7 267.4 1099.9 279.5 1099.9 288.6 C1099.9 309.6 1099.9 330.6 1099.9 351.7 C1099.9 427.7 1099.9 503.7 1100 579.7 C1100.2 849.8 1099.8 1120 1099.9 1390.1 C1099.9 1475.1 1099.8 1560.1 1099.9 1645.2 C1099.9 1666.2 1099.9 1687.2 1100 1708.2 C1100.1 1716.2 1097.8 1727.9 1103.3 1734.3 C1112.8 1739.3 1128.2 1737.5 1138.9 1738 C1169 1739.4 1198.7 1737.9 1228.8 1735.7 C1329.7 1728.3 1423.7 1700.1 1500.1 1630.6 C1539.4 1594.8 1568.6 1549.2 1592.3 1502.2 C1615.7 1456 1625.7 1415.4 1640.8 1367.1 C1644.4 1355.7 1650.4 1313 1657.2 1307 C1665.4 1304.8 1704 1304.4 1710.5 1308.6 C1715.1 1317.6 1711.3 1331.5 1710 1341.1 C1706.8 1363.9 1706 1386.9 1703.2 1409.7 C1697.6 1454.4 1694.4 1499.3 1690.4 1544.1 C1687.7 1573 1683.8 1601.8 1681.2 1630.6 C1680.3 1640.6 1680.3 1650.6 1679.3 1660.5 C1678.2 1670.5 1676.1 1680.3 1675.4 1690.3 C1674.7 1701.4 1676.4 1715.7 1670.5 1725.6 C1663.6 1731.8 1627 1738.9 1616.2 1741.1 C1568 1750.8 1532 1756.8 1483.2 1763.1 C1437.5 1769.1 1391.9 1774 1346.1 1778.8 C1242.7 1789.6 1138.8 1799.3 1034.9 1787.8 C1027.9 1787 1021.1 1785.2 1014.2 1784.3 C979.7 1779.7 953.6 1774.7 919.7 1768 C905.3 1765.1 883.3 1762 870.9 1754.3 Z"/>
+        <path fill="currentColor" fill-rule="evenodd" d="M784.2 1726.3 C770.5 1724.4 724.4 1701.1 710.5 1693.4 C638.2 1653.4 581.5 1614.2 521.7 1556.5 C434.3 1472.3 356.2 1353.2 324.4 1235.6 C319.7 1218.4 312.6 1201.4 309.2 1183.9 C300.5 1139.3 295.8 1110.8 291.4 1065.4 C283.5 984.2 286.9 900.3 304.2 820.6 C308 803 313.8 786 318.7 768.7 C346 672.5 395.1 583.1 457.7 505.2 C520.3 427.3 599.6 362.8 686.3 313.6 C702.4 304.4 769.1 269.2 783.8 268 C790 272.2 787.7 283.8 787.7 290.5 C787.7 307 790.4 352.2 786.5 365.4 C781.6 372.7 750.3 398.5 740.7 408.5 C711.4 439.2 685.1 475.2 665.5 512.9 C632.1 577.3 607.9 644.3 589.6 714.3 C583.8 736.6 580.8 759.4 576.7 782 C556.7 890.4 555.5 1019.2 568.2 1128.8 C571.5 1157.7 577.4 1186.1 582.5 1214.6 C584.8 1227.3 586.7 1240.2 589.8 1252.8 C613.3 1348.8 646.8 1443 701.8 1525.9 C717.6 1549.9 736.1 1573.2 756.7 1593.2 C765.7 1601.9 777.3 1610.3 784.8 1620.3 C789.4 1626.6 787.8 1636.3 787.9 1643.7 C787.9 1662.7 787.7 1681.7 788 1700.7 C788.1 1707.9 790.7 1721.6 784.2 1726.3 Z"/>
+      </svg>
+      <span class="wordmark">Chiibitsu Labs</span>
+    </a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#work">What we do</a>
+      <a href="#proof">Proof</a>
+      <a href="#notes">Field Notes</a>
+    </div>
+    <a class="btn btn-solid" href="#start">Book the audit</a>
+  </div>
+</nav>
+
+<!-- ══════════ FOLD — claim left, engagement-record card right ══════════ -->
+<section class="fold">
+  <div class="wrap fold-in">
+    <div class="fold-claim">
+      <div class="t-label">Chiibitsu Labs <span class="tick" aria-hidden="true"><i></i><i></i></span> AI @ Work</div>
+      <h1 class="display">Your team is already using&nbsp;AI.<br /><em>Nobody has decided how.</em></h1>
+      <p class="fold-offer">We rebuild one workflow with your team, and leave when they can run it on their own.</p>
+      <div class="fold-cta">
+        <a class="btn btn-solid" href="#start">Book the workflow audit</a>
+        <a class="btn" href="#how">See how it runs</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Engagement record</h3>
+        <span class="t-label">Specimen</span>
+      </div>
+      <p class="t-data" style="color:var(--ink-2)">The shape every AI&nbsp;@&nbsp;Work engagement is written into — one workflow, named owner, handed over.</p>
+      <div class="ba">
+        <div>
+          <div class="t-label">Before</div>
+          <p>Three people, private prompts, no named owner. Nothing written down; nothing repeatable.</p>
+        </div>
+        <div>
+          <div class="t-label">After</div>
+          <p>One owner, one documented workflow, running live without us in the room.</p>
+        </div>
+      </div>
+      <div class="record" style="margin-top:16px">
+        <dl>
+          <dt>Document</dt><dd>Engagement record — specimen</dd>
+          <dt>Version</dt><dd>1.0</dd>
+          <dt>Date</dt><dd>2026-08-25</dd>
+          <dt>Owner</dt><dd>Chiibitsu Labs</dd>
+          <dt>Status</dt><dd>Specimen — structure only, not a client record</dd>
+          <dt>Source</dt><dd>AI @ Work Layer 1 engagement terms</dd>
+          <dt>Open</dt><dd>Replace with a redacted real record once a client releases one</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ METRIC ROW — the fold does not work without it ══════════ -->
+<section class="metrics">
+  <div class="wrap metrics-in">
+    <div class="metric">
+      <div class="metric-fig">1</div>
+      <p class="metric-claim">workflow per engagement.</p>
+      <div class="metric-src t-label">True by rule <span class="tick" aria-hidden="true"><i></i><i></i></span> Engagement terms, 2026-08-25</div>
+    </div>
+    <div class="metric">
+      <div class="metric-fig">2</div>
+      <p class="metric-claim">weeks, kickoff to handover.</p>
+      <div class="metric-src t-label">True by rule <span class="tick" aria-hidden="true"><i></i><i></i></span> Engagement terms, 2026-08-25</div>
+    </div>
+    <div class="metric">
+      <div class="metric-fig">0</div>
+      <p class="metric-claim">retainers sold.</p>
+      <div class="metric-src t-label">True by rule <span class="tick" aria-hidden="true"><i></i><i></i></span> Engagement terms, 2026-08-25</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ HOW IT WORKS ══════════ -->
+<section class="band" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="t-label">How it runs</div>
+      <h2>Two weeks, and then we are not in the room.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-n t-label">Step 01 <span class="tick" aria-hidden="true"><i></i><i></i></span> Week 0</div>
+        <h3>Map, and measure the baseline</h3>
+        <p>We map one department's real work, measure the workflows as they actually run today, and rank what AI fits — and what it does not.</p>
+      </div>
+      <div class="step">
+        <div class="step-n t-label">Step 02 <span class="tick" aria-hidden="true"><i></i><i></i></span> Week 1</div>
+        <h3>The Lab, on your real work</h3>
+        <p>Four hours on site with the people who do the job. Every demo runs on their own workflow — never a sample, never a slide.</p>
+      </div>
+      <div class="step step-3">
+        <div class="step-n t-label">Step 03 <span class="tick" aria-hidden="true"><i></i><i></i></span> Week 2 onward</div>
+        <h3>Practice, repair, hand over</h3>
+        <p>Guided practice with a clinic window while it beds in, a before/after review — and then it is theirs. If the workflow is not running live by the end of that window, the Lab runs again at no charge.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ WHAT WE DO — the architecture, not six flat cards ══════════ -->
+<section class="band band-slab" id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="t-label">What we do</div>
+      <h2>Futureproof is the house.</h2>
+      <p class="t-judge" style="margin-top:14px;max-width:52ch">We reveal consequences, not prescriptions — you keep the decision, and you keep the outcome.</p>
+    </div>
+    <div class="map">
+      <div class="map-col">
+        <div class="t-label" style="margin-bottom:6px">Futureproof Work <span class="tick" aria-hidden="true"><i></i><i></i></span> Founders, teams, organizations</div>
+        <div class="offer">
+          <div class="offer-top">
+            <h3><a href="https://aiatwork.chiibitsu.com">AI @ Work</a></h3>
+            <span class="price">from ₱110,000</span>
+          </div>
+          <p>Workflow incorporation, not tool exposure. One department, up to twelve people, at their site — quoted flat, never per head, never per hour. The goal is not more AI use; the goal is better work.</p>
+        </div>
+        <div class="offer">
+          <div class="offer-top">
+            <h3><a href="https://lighthouse.chiibitsu.com">Lighthouse</a></h3>
+            <span class="price">by conversation</span>
+          </div>
+          <p>The higher-tier engagement. Reveals the real constraint, clarifies the actual decision, exposes the false options, then redesigns the systems around the path you choose. Not generic coaching. Not an AI audit.</p>
+        </div>
+      </div>
+      <div class="map-col">
+        <div class="t-label" style="margin-bottom:6px">Futureproof Self <span class="tick" aria-hidden="true"><i></i><i></i></span> Individuals</div>
+        <div class="offer">
+          <div class="offer-top">
+            <h3><a href="https://futureproof.chiibitsu.com">Private sessions &amp; 1:1 work</a></h3>
+            <span class="price">USD 200 / session</span>
+          </div>
+          <p>One session, up to four hours, on the decision in front of you. Behavioural design and personal-mastery methods are used where an engagement calls for them — as method, never as the product.</p>
+        </div>
+        <div class="offer">
+          <div class="offer-top">
+            <h3>The 10 Week Challenge</h3>
+            <span class="price">1:1, running</span>
+          </div>
+          <p>A ten-week guided container, run one to one. Currently running with an existing participant.</p>
+        </div>
+      </div>
+      <div class="map-col full">
+        <div class="offer">
+          <div class="offer-top">
+            <h3><a href="#notes">Field Notes</a></h3>
+            <span class="price">free</span>
+          </div>
+          <p>The public learning layer — finished, usable material on AI literacy, decision-making, and markets. Never a prototype, never a funnel for a guided container.</p>
+        </div>
+        <div class="offer">
+          <div class="offer-top">
+            <h3>R&amp;D Lab</h3>
+            <span class="price">experiments</span>
+          </div>
+          <p>The experimentation layer, held deliberately apart from what we sell: decision-architecture prototypes, human-advantage tooling, founder-bottleneck mapping. Kept visible so the difference between an experiment and an offer stays obvious.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROOF — a record sheet where a stock photo would go ══════════ -->
+<section class="band" id="proof">
+  <div class="wrap rec-grid">
+    <div class="record">
+      <dl>
+        <dt>Document</dt><dd>Proof sheet — prior engagements</dd>
+        <dt>Version</dt><dd>0.9 draft</dd>
+        <dt>Date</dt><dd>2026-08-25</dd>
+        <dt>Owner</dt><dd>Angeline “Chii” Viray</dd>
+        <dt>Status</dt><dd>Figures pending founder verification</dd>
+        <dt>Source</dt><dd>Founder operating history, 2016–2026</dd>
+        <dt>Open</dt><dd>Each figure needs a measurement date and a releasable source before publication. The cohort figure is in conflict across three records and is withheld until it is settled.</dd>
+      </dl>
+    </div>
+    <div>
+      <div class="section-head">
+        <div class="t-label">Proof</div>
+        <h2>Where a stock photo would go, the record.</h2>
+        <p style="margin-top:12px">Named clients are not published. What is published is the work, the role, and the figure it moved — each one carrying the date it was measured and the source that checks it.</p>
+      </div>
+      <div class="sheet">
+        <div class="row">
+          <div class="t-label">Consulting<br />&amp; operations</div>
+          <div>
+            <h3>Operating ambiguity turned into decision-ready visibility</h3>
+            <p>A regional HRTech services company entered a high-pressure transition with revenue risk and reporting gaps. Restored cadence, protected key accounts, rebuilt the financial and operating dashboard, and turned scattered inputs into decision-ready reporting.</p>
+          </div>
+          <div class="fig">
+            <div class="fig-n">+72%</div>
+            <div class="t-label">MoM revenue<br />recovery <span class="tick" aria-hidden="true"><i></i><i></i></span> pending<br />verification</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t-label">AI &amp; systems</div>
+          <div>
+            <h3>AI-assisted operations, built before the category had a name</h3>
+            <p>A tech-enabled mobility platform coordinating bookings, triage, fleet matching and driver onboarding across fragmented supply. Built the chatbot and operations workflows for intake, triage and tracking — with human judgment kept in the loop.</p>
+          </div>
+          <div class="fig">
+            <div class="fig-n">₱28M</div>
+            <div class="t-label">peak quarterly<br />revenue <span class="tick" aria-hidden="true"><i></i><i></i></span> pending<br />verification</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t-label">Emerging tech</div>
+          <div>
+            <h3>Regional execution for an AI and Web3 consumer platform</h3>
+            <p>Built the local operating structure, coordinated compliance-aware growth, strengthened partner activity and prepared the investor-facing narrative — opening a new market from zero.</p>
+          </div>
+          <div class="fig">
+            <div class="fig-n">0→1</div>
+            <div class="t-label">new market<br />opened <span class="tick" aria-hidden="true"><i></i><i></i></span> pending<br />verification</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t-label">Behaviour<br />design</div>
+          <div>
+            <h3>Behaviour systems for transformation at cohort scale</h3>
+            <p>A personal-development program that needed more than motivation. Designed the behaviour scaffolds, reflection prompts, coach language and identity-based development systems that connected daily action to growth — without turning it into generic self-help.</p>
+          </div>
+          <div class="fig">
+            <div class="fig-n pending">—</div>
+            <div class="t-label">cohort size<br />withheld <span class="tick" aria-hidden="true"><i></i><i></i></span> records<br />in conflict</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FIELD NOTES ══════════ -->
+<section class="band band-slab" id="notes">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="t-label">Field Notes</div>
+      <h2>Finished thinking, given away.</h2>
+    </div>
+    <div class="notes">
+      <div class="note">
+        <div class="t-label">AI literacy <span class="tick" aria-hidden="true"><i></i><i></i></span> —</div>
+        <h3>What your team is already doing with AI</h3>
+        <p>The shadow workflows that exist in every company before anyone approves a tool — and why banning them is the expensive option.</p>
+      </div>
+      <div class="note">
+        <div class="t-label">Decision-making <span class="tick" aria-hidden="true"><i></i><i></i></span> —</div>
+        <h3>Reveal the consequence, return the choice</h3>
+        <p>Why a diagnostic that hands you a verdict is worth less than one that shows you what each path costs.</p>
+      </div>
+      <div class="note">
+        <div class="t-label">Markets <span class="tick" aria-hidden="true"><i></i><i></i></span> —</div>
+        <h3>Market-cycle literacy, without the forecast</h3>
+        <p>Risk, emotion and cycles — the part that is teachable, separated from the part nobody can sell you.</p>
+      </div>
+    </div>
+    <p class="t-label" style="margin-top:24px">Three entries pending publication <span class="tick" aria-hidden="true"><i></i><i></i></span> dates print when they ship</p>
+  </div>
+</section>
+
+<!-- ══════════ CLOSING BAND ══════════ -->
+<section class="band" id="start">
+  <div class="wrap close-in">
+    <div>
+      <div class="t-label">Start here</div>
+      <h2 style="margin-top:12px">Start with the audit, not the&nbsp;proposal.</h2>
+      <p style="margin-top:16px">Two weeks. A workflow map for one department, an honest AI fit / no-fit call on each, and a ranked list of what is worth building — written down and yours to keep.</p>
+      <p style="margin-top:12px"><strong style="font-weight:500;color:var(--ink)">₱50,000</strong>, credited in full against any engagement booked within sixty days.</p>
+      <p class="t-judge" style="margin-top:22px">If we disappeared the day after you saw the real choice — could you still move? That is the only question we are trying to answer for you.</p>
+      <div class="record" style="margin-top:24px;max-width:340px">
+        <dl>
+          <dt>Document</dt><dd>AI Workflow Audit — terms</dd>
+          <dt>Version</dt><dd>1.0</dd>
+          <dt>Date</dt><dd>2026-08-25</dd>
+          <dt>Owner</dt><dd>Chiibitsu Labs</dd>
+          <dt>Status</dt><dd>Live — quotable</dd>
+          <dt>Source</dt><dd>Front-door price list</dd>
+          <dt>Open</dt><dd>—</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="close-form">
+      <div class="t-label" style="margin-bottom:14px">Tell us where you are</div>
+      <iframe src="https://tally.so/embed/7RMK0P?alignLeft=1&amp;hideTitle=1&amp;dynamicHeight=1" loading="lazy" title="Work with Chiibitsu Labs"></iframe>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <div>
+      <a class="lockup" href="/" aria-label="Chiibitsu Labs">
+        <svg viewBox="285 203 1430 1592" role="img" aria-hidden="true" fill="none">
+          <path fill="currentColor" fill-rule="evenodd" d="M870.9 1754.3 C866 1746.7 868.4 1733.6 868.4 1724.9 C868.3 1701.8 868.5 1678.8 868.6 1655.8 C868.9 1567.8 868.2 1479.8 868.2 1391.7 C868.1 1119.6 867.6 847.5 868.1 575.4 C868.2 497.4 868.4 419.3 868.3 341.3 C868.3 317.3 868.2 293.3 868.4 269.3 C868.6 260 866.4 248.2 869.9 239.5 C876.7 232.2 902.2 230.1 912.5 227.1 C945.6 217.8 1016.9 208.7 1051.9 207.3 C1135.5 204 1201.8 203.3 1285.5 213.4 C1328.2 218.5 1370.5 226.9 1412.6 234.9 C1434.1 239.1 1455.3 245.6 1476.9 249.4 C1507.4 254.9 1537.7 261.3 1568.4 265.6 C1578.2 267 1618.6 271.2 1624.6 274 C1630.2 280.5 1630 291.7 1630.8 299.8 C1632.8 321.7 1634.1 343.7 1636 365.6 C1639.2 401.5 1641 437.5 1643.7 473.4 C1646.8 512.9 1651.7 553.5 1653.6 593 C1654.3 608.4 1662.6 662.9 1657.1 673.4 C1650.4 677.1 1607.3 677.2 1601.3 672.8 C1597.6 665.4 1590.3 622.9 1587.8 611.5 C1581.6 583.5 1571.3 555.5 1560.4 529.1 C1511.6 410.2 1432.2 322.2 1308 281.8 C1288 275.3 1268.1 269.1 1247.2 265.9 C1241.3 265 1235.6 263.1 1229.6 262.2 C1199.8 257.6 1170 256 1139.9 255.9 C1130.4 255.9 1109.1 253.4 1101.7 259 C1097.7 267.4 1099.9 279.5 1099.9 288.6 C1099.9 309.6 1099.9 330.6 1099.9 351.7 C1099.9 427.7 1099.9 503.7 1100 579.7 C1100.2 849.8 1099.8 1120 1099.9 1390.1 C1099.9 1475.1 1099.8 1560.1 1099.9 1645.2 C1099.9 1666.2 1099.9 1687.2 1100 1708.2 C1100.1 1716.2 1097.8 1727.9 1103.3 1734.3 C1112.8 1739.3 1128.2 1737.5 1138.9 1738 C1169 1739.4 1198.7 1737.9 1228.8 1735.7 C1329.7 1728.3 1423.7 1700.1 1500.1 1630.6 C1539.4 1594.8 1568.6 1549.2 1592.3 1502.2 C1615.7 1456 1625.7 1415.4 1640.8 1367.1 C1644.4 1355.7 1650.4 1313 1657.2 1307 C1665.4 1304.8 1704 1304.4 1710.5 1308.6 C1715.1 1317.6 1711.3 1331.5 1710 1341.1 C1706.8 1363.9 1706 1386.9 1703.2 1409.7 C1697.6 1454.4 1694.4 1499.3 1690.4 1544.1 C1687.7 1573 1683.8 1601.8 1681.2 1630.6 C1680.3 1640.6 1680.3 1650.6 1679.3 1660.5 C1678.2 1670.5 1676.1 1680.3 1675.4 1690.3 C1674.7 1701.4 1676.4 1715.7 1670.5 1725.6 C1663.6 1731.8 1627 1738.9 1616.2 1741.1 C1568 1750.8 1532 1756.8 1483.2 1763.1 C1437.5 1769.1 1391.9 1774 1346.1 1778.8 C1242.7 1789.6 1138.8 1799.3 1034.9 1787.8 C1027.9 1787 1021.1 1785.2 1014.2 1784.3 C979.7 1779.7 953.6 1774.7 919.7 1768 C905.3 1765.1 883.3 1762 870.9 1754.3 Z"/>
+          <path fill="currentColor" fill-rule="evenodd" d="M784.2 1726.3 C770.5 1724.4 724.4 1701.1 710.5 1693.4 C638.2 1653.4 581.5 1614.2 521.7 1556.5 C434.3 1472.3 356.2 1353.2 324.4 1235.6 C319.7 1218.4 312.6 1201.4 309.2 1183.9 C300.5 1139.3 295.8 1110.8 291.4 1065.4 C283.5 984.2 286.9 900.3 304.2 820.6 C308 803 313.8 786 318.7 768.7 C346 672.5 395.1 583.1 457.7 505.2 C520.3 427.3 599.6 362.8 686.3 313.6 C702.4 304.4 769.1 269.2 783.8 268 C790 272.2 787.7 283.8 787.7 290.5 C787.7 307 790.4 352.2 786.5 365.4 C781.6 372.7 750.3 398.5 740.7 408.5 C711.4 439.2 685.1 475.2 665.5 512.9 C632.1 577.3 607.9 644.3 589.6 714.3 C583.8 736.6 580.8 759.4 576.7 782 C556.7 890.4 555.5 1019.2 568.2 1128.8 C571.5 1157.7 577.4 1186.1 582.5 1214.6 C584.8 1227.3 586.7 1240.2 589.8 1252.8 C613.3 1348.8 646.8 1443 701.8 1525.9 C717.6 1549.9 736.1 1573.2 756.7 1593.2 C765.7 1601.9 777.3 1610.3 784.8 1620.3 C789.4 1626.6 787.8 1636.3 787.9 1643.7 C787.9 1662.7 787.7 1681.7 788 1700.7 C788.1 1707.9 790.7 1721.6 784.2 1726.3 Z"/>
+        </svg>
+        <span class="wordmark">Chiibitsu Labs</span>
+      </a>
+      <div class="foot-tag">More human, by design.</div>
+    </div>
+    <div class="foot-links">
+      <a href="https://aiatwork.chiibitsu.com">AI @ Work</a>
+      <a href="https://lighthouse.chiibitsu.com">Lighthouse</a>
+      <a href="https://futureproof.chiibitsu.com">Futureproof</a>
+      <a href="mailto:labs@chiibitsu.com">labs@chiibitsu.com</a>
+    </div>
+    <div class="foot-legal">
+      Chiibitsu Labs <span class="tick" aria-hidden="true"><i></i><i></i></span> Philippines<br />
+      Founded by Angeline “Chii” Viray<br />
+      © 2026 Chiibitsu Labs
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
