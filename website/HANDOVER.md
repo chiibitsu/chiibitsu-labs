@@ -1,3 +1,11 @@
+> **Status note, 2026-08-26 — under discussion, do not action this file yet.**
+> Chii's direction: this must be a **Chiibitsu Labs company** homepage, not an AI @ Work
+> landing page. `index.html` has been rebuilt against that and is ahead of this document —
+> the sections below still describe the earlier AI @ Work-shaped draft in places. Four
+> questions are open (hero line, whether "conscious choice" leads, whether Work/Self are
+> public labels, and the metric row's middle figure) and the page is not settled until they
+> are. Rewrite this file once they are answered.
+
 # chiibitsu.com homepage — revamp against vibeOS canon
 
 **Status:** draft for Chii's red pen. Not published.

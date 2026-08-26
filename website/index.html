@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Chiibitsu Labs — More human, by design</title>
-<meta name="description" content="Your team is already using AI. Nobody has decided how. Chiibitsu Labs rebuilds one workflow with your team, and leaves when they can run it on their own." />
+<meta name="description" content="Emerging technology changes your choices faster than most people can update their assumptions. Chiibitsu Labs makes the real choices and their consequences visible — then helps build the systems to act on the one you choose." />
 <meta name="color-scheme" content="light dark" />
 <link rel="icon" href="assets/chiibitsu-mark.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -194,6 +194,30 @@ footer{border-top:1px solid var(--rule-2);padding:34px 0 44px;margin-top:0}
   .rec-grid{grid-template-columns:1fr;gap:18px}
   .record{order:-1}
 }
+
+/* ── house grouping: Futureproof is the flagship, not a sibling ── */
+.house{border-top:1.5px solid var(--ink);position:relative;padding-top:22px;margin-top:6px}
+.house::after{content:'';position:absolute;left:0;right:0;top:3px;border-top:1px solid var(--rule)}
+.house-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:6px}
+.house-head h3{font-variation-settings:'opsz' 34;font-size:31px;letter-spacing:-.005em}
+.house-note{font-size:16px;color:var(--ink-2);margin-bottom:16px;max-width:60ch}
+.sub{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--rule-2)}
+.sub-col{padding:16px 0}
+.sub-col+.sub-col{padding-left:36px;border-left:1px solid var(--rule-2)}
+.layers{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:34px;border-top:1.5px solid var(--ink);position:relative;padding-top:22px}
+.layers::after{content:'';position:absolute;left:0;right:0;top:3px;border-top:1px solid var(--rule)}
+.layers>div{padding:0 0 4px}
+.layers>div+div{padding-left:36px;border-left:1px solid var(--rule-2)}
+/* ── closing routes ── */
+.routes{margin-top:22px;border-top:1px solid var(--rule-2)}
+.route{display:flex;align-items:baseline;justify-content:space-between;gap:18px;padding:11px 0;border-bottom:1px solid var(--rule-2);text-decoration:none}
+.route span:first-child{font-size:16px;color:var(--ink)}
+.route:hover span:first-child{color:var(--violet)}
+@media (max-width:900px){
+  .sub,.layers{grid-template-columns:1fr}
+  .sub-col+.sub-col,.layers>div+div{padding-left:0;border-left:0;border-top:1px solid var(--rule-2);padding-top:14px}
+  .house-head h3{font-size:25px}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -209,52 +233,52 @@ footer{border-top:1px solid var(--rule-2);padding:34px 0 44px;margin-top:0}
       <span class="wordmark">Chiibitsu Labs</span>
     </a>
     <div class="nav-links">
-      <a href="#how">How it works</a>
-      <a href="#work">What we do</a>
-      <a href="#proof">Proof</a>
+      <a href="#work">Futureproof</a>
       <a href="#notes">Field Notes</a>
+      <a href="#work">R&amp;D Lab</a>
+      <a href="/about">About</a>
     </div>
-    <a class="btn btn-solid" href="#start">Book the audit</a>
+    <a class="btn btn-solid" href="#start">Work with us</a>
   </div>
 </nav>
 
-<!-- ══════════ FOLD — claim left, engagement-record card right ══════════ -->
+<!-- ══════════ FOLD — claim left, decision-record card right ══════════ -->
 <section class="fold">
   <div class="wrap fold-in">
     <div class="fold-claim">
-      <div class="t-label">Chiibitsu Labs <span class="tick" aria-hidden="true"><i></i><i></i></span> AI @ Work</div>
-      <h1 class="display">Your team is already using&nbsp;AI.<br /><em>Nobody has decided how.</em></h1>
-      <p class="fold-offer">We rebuild one workflow with your team, and leave when they can run it on their own.</p>
+      <div class="t-label">Chiibitsu Labs <span class="tick" aria-hidden="true"><i></i><i></i></span> Philippines</div>
+      <h1 class="display">Make better decisions about emerging technology<br /><em>before the consequences decide for you.</em></h1>
+      <p class="fold-offer">We make the real choices and their consequences visible — then help build the systems to act on the one you choose.</p>
       <div class="fold-cta">
-        <a class="btn btn-solid" href="#start">Book the workflow audit</a>
-        <a class="btn" href="#how">See how it runs</a>
+        <a class="btn btn-solid" href="#start">Work with us</a>
+        <a class="btn" href="#how">How we work</a>
       </div>
     </div>
 
     <div class="card">
       <div class="card-head">
-        <h3>Engagement record</h3>
+        <h3>Decision record</h3>
         <span class="t-label">Specimen</span>
       </div>
-      <p class="t-data" style="color:var(--ink-2)">The shape every AI&nbsp;@&nbsp;Work engagement is written into — one workflow, named owner, handed over.</p>
+      <p class="t-data" style="color:var(--ink-2)">What we actually hand over — the paths, what each one costs, and which one you chose.</p>
       <div class="ba">
         <div>
           <div class="t-label">Before</div>
-          <p>Three people, private prompts, no named owner. Nothing written down; nothing repeatable.</p>
+          <p>Three paths on the table, none of them costed. The loudest option wins, and nobody can say why.</p>
         </div>
         <div>
           <div class="t-label">After</div>
-          <p>One owner, one documented workflow, running live without us in the room.</p>
+          <p>Three paths, each costed — including doing nothing. One chosen, on the record, owned.</p>
         </div>
       </div>
       <div class="record" style="margin-top:16px">
         <dl>
-          <dt>Document</dt><dd>Engagement record — specimen</dd>
+          <dt>Document</dt><dd>Decision record — specimen</dd>
           <dt>Version</dt><dd>1.0</dd>
-          <dt>Date</dt><dd>2026-08-25</dd>
-          <dt>Owner</dt><dd>Chiibitsu Labs</dd>
+          <dt>Date</dt><dd>2026-08-26</dd>
+          <dt>Owner</dt><dd>The client — always</dd>
           <dt>Status</dt><dd>Specimen — structure only, not a client record</dd>
-          <dt>Source</dt><dd>AI @ Work Layer 1 engagement terms</dd>
+          <dt>Source</dt><dd>Reveal consequences, not prescriptions</dd>
           <dt>Open</dt><dd>Replace with a redacted real record once a client releases one</dd>
         </dl>
       </div>
@@ -262,112 +286,122 @@ footer{border-top:1px solid var(--rule-2);padding:34px 0 44px;margin-top:0}
   </div>
 </section>
 
-<!-- ══════════ METRIC ROW — the fold does not work without it ══════════ -->
+<!-- ══════════ METRIC ROW — the fold does not resolve without it ══════════ -->
 <section class="metrics">
   <div class="wrap metrics-in">
     <div class="metric">
-      <div class="metric-fig">1</div>
-      <p class="metric-claim">workflow per engagement.</p>
-      <div class="metric-src t-label">True by rule <span class="tick" aria-hidden="true"><i></i><i></i></span> Engagement terms, 2026-08-25</div>
-    </div>
-    <div class="metric">
-      <div class="metric-fig">2</div>
-      <p class="metric-claim">weeks, kickoff to handover.</p>
-      <div class="metric-src t-label">True by rule <span class="tick" aria-hidden="true"><i></i><i></i></span> Engagement terms, 2026-08-25</div>
-    </div>
-    <div class="metric">
       <div class="metric-fig">0</div>
-      <p class="metric-claim">retainers sold.</p>
-      <div class="metric-src t-label">True by rule <span class="tick" aria-hidden="true"><i></i><i></i></span> Engagement terms, 2026-08-25</div>
+      <p class="metric-claim">decisions we make for you.</p>
+      <div class="metric-src t-label">True by rule <span class="tick" aria-hidden="true"><i></i><i></i></span> Governing principle, 2026-08-26</div>
+    </div>
+    <div class="metric">
+      <div class="metric-fig">1</div>
+      <p class="metric-claim">human company, running on the systems we build.</p>
+      <div class="metric-src t-label">True by rule <span class="tick" aria-hidden="true"><i></i><i></i></span> Operating model, 2026-08-26</div>
+    </div>
+    <div class="metric">
+      <div class="metric-fig">3</div>
+      <p class="metric-claim">layers, kept apart on purpose: what we sell, what we teach, what we are still testing.</p>
+      <div class="metric-src t-label">True by rule <span class="tick" aria-hidden="true"><i></i><i></i></span> Placement rule, 2026-08-26</div>
     </div>
   </div>
 </section>
 
-<!-- ══════════ HOW IT WORKS ══════════ -->
+<!-- ══════════ HOW WE WORK ══════════ -->
 <section class="band" id="how">
   <div class="wrap">
     <div class="section-head">
-      <div class="t-label">How it runs</div>
-      <h2>Two weeks, and then we are not in the room.</h2>
+      <div class="t-label">How we work</div>
+      <h2>We do not tell you what to choose.</h2>
+      <p class="t-judge" style="margin-top:14px;max-width:54ch">Almost everyone else in this market sells prescriptions. We sell sight — and the systems to act on what you see.</p>
     </div>
     <div class="steps">
       <div class="step">
-        <div class="step-n t-label">Step 01 <span class="tick" aria-hidden="true"><i></i><i></i></span> Week 0</div>
-        <h3>Map, and measure the baseline</h3>
-        <p>We map one department's real work, measure the workflows as they actually run today, and rank what AI fits — and what it does not.</p>
+        <div class="step-n t-label">01 <span class="tick" aria-hidden="true"><i></i><i></i></span> See the change</div>
+        <h3>What the technology does to your choices</h3>
+        <p>Not a tour of the tools. What emerging technology has already changed about the decisions in front of you — and which of your assumptions quietly stopped being true.</p>
       </div>
       <div class="step">
-        <div class="step-n t-label">Step 02 <span class="tick" aria-hidden="true"><i></i><i></i></span> Week 1</div>
-        <h3>The Lab, on your real work</h3>
-        <p>Four hours on site with the people who do the job. Every demo runs on their own workflow — never a sample, never a slide.</p>
+        <div class="step-n t-label">02 <span class="tick" aria-hidden="true"><i></i><i></i></span> See the cost</div>
+        <h3>Every path, honestly priced</h3>
+        <p>The real options, each with its benefits, costs, risks and what it asks you to give up — including the ones we would advise against, and the option of doing nothing.</p>
       </div>
       <div class="step step-3">
-        <div class="step-n t-label">Step 03 <span class="tick" aria-hidden="true"><i></i><i></i></span> Week 2 onward</div>
-        <h3>Practice, repair, hand over</h3>
-        <p>Guided practice with a clinic window while it beds in, a before/after review — and then it is theirs. If the workflow is not running live by the end of that window, the Lab runs again at no charge.</p>
+        <div class="step-n t-label">03 <span class="tick" aria-hidden="true"><i></i><i></i></span> Build the system</div>
+        <h3>Then you choose, and we build it</h3>
+        <p>The choice is yours and stays yours. Once it is made, we build the workflows, systems and practice needed to act on it — and then we leave, because the point is that you can move without us.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════ WHAT WE DO — the architecture, not six flat cards ══════════ -->
+<!-- ══════════ WHAT WE DO — Futureproof is the house ══════════ -->
 <section class="band band-slab" id="work">
   <div class="wrap">
     <div class="section-head">
       <div class="t-label">What we do</div>
       <h2>Futureproof is the house.</h2>
-      <p class="t-judge" style="margin-top:14px;max-width:52ch">We reveal consequences, not prescriptions — you keep the decision, and you keep the outcome.</p>
+      <p style="margin-top:12px">Everything we sell sits inside it — for organizations, and for individuals. What we teach and what we are still testing are kept deliberately outside it, so the difference between an offer and an experiment stays obvious.</p>
     </div>
-    <div class="map">
-      <div class="map-col">
-        <div class="t-label" style="margin-bottom:6px">Futureproof Work <span class="tick" aria-hidden="true"><i></i><i></i></span> Founders, teams, organizations</div>
-        <div class="offer">
-          <div class="offer-top">
-            <h3><a href="https://aiatwork.chiibitsu.com">AI @ Work</a></h3>
-            <span class="price">from ₱110,000</span>
+
+    <div class="house">
+      <div class="house-head">
+        <h3>Futureproof</h3>
+        <span class="t-label">The flagship platform</span>
+      </div>
+      <p class="house-note">Becoming more adaptive, clear, capable and human as the ground moves — as an organization, or as a person.</p>
+      <div class="sub">
+        <div class="sub-col">
+          <div class="t-label" style="margin-bottom:4px">Futureproof Work <span class="tick" aria-hidden="true"><i></i><i></i></span> Founders, teams, organizations</div>
+          <div class="offer">
+            <div class="offer-top">
+              <h3><a href="https://aiatwork.chiibitsu.com">AI @ Work</a></h3>
+              <span class="price">from ₱110,000</span>
+            </div>
+            <p>Workflow incorporation, not tool exposure. One department, up to twelve people, at their site — quoted flat, never per head, never per hour. The goal is not more AI use; the goal is better work.</p>
           </div>
-          <p>Workflow incorporation, not tool exposure. One department, up to twelve people, at their site — quoted flat, never per head, never per hour. The goal is not more AI use; the goal is better work.</p>
+          <div class="offer">
+            <div class="offer-top">
+              <h3><a href="https://lighthouse.chiibitsu.com">Lighthouse</a></h3>
+              <span class="price">by conversation</span>
+            </div>
+            <p>The higher-tier engagement. Reveals the real constraint, clarifies the actual decision, exposes the false options, then redesigns the systems around the path you choose. Systems Design sits here. Not generic coaching. Not an AI audit.</p>
+          </div>
         </div>
-        <div class="offer">
-          <div class="offer-top">
-            <h3><a href="https://lighthouse.chiibitsu.com">Lighthouse</a></h3>
-            <span class="price">by conversation</span>
+        <div class="sub-col">
+          <div class="t-label" style="margin-bottom:4px">Futureproof Self <span class="tick" aria-hidden="true"><i></i><i></i></span> Individuals</div>
+          <div class="offer">
+            <div class="offer-top">
+              <h3>Private sessions</h3>
+              <span class="price">USD 200 / session</span>
+            </div>
+            <p>One session, up to four hours, on the decision actually in front of you. Behavioural design and personal-mastery methods are used where an engagement calls for them — as method, never as the product.</p>
           </div>
-          <p>The higher-tier engagement. Reveals the real constraint, clarifies the actual decision, exposes the false options, then redesigns the systems around the path you choose. Not generic coaching. Not an AI audit.</p>
+          <div class="offer">
+            <div class="offer-top">
+              <h3>The 10 Week Challenge</h3>
+              <span class="price">1:1, running</span>
+            </div>
+            <p>A ten-week guided container, run one to one, currently running with an existing participant.</p>
+          </div>
         </div>
       </div>
-      <div class="map-col">
-        <div class="t-label" style="margin-bottom:6px">Futureproof Self <span class="tick" aria-hidden="true"><i></i><i></i></span> Individuals</div>
-        <div class="offer">
-          <div class="offer-top">
-            <h3><a href="https://futureproof.chiibitsu.com">Private sessions &amp; 1:1 work</a></h3>
-            <span class="price">USD 200 / session</span>
-          </div>
-          <p>One session, up to four hours, on the decision in front of you. Behavioural design and personal-mastery methods are used where an engagement calls for them — as method, never as the product.</p>
+    </div>
+
+    <div class="layers">
+      <div>
+        <div class="offer-top">
+          <h3><a href="#notes">Field Notes</a></h3>
+          <span class="price">free</span>
         </div>
-        <div class="offer">
-          <div class="offer-top">
-            <h3>The 10 Week Challenge</h3>
-            <span class="price">1:1, running</span>
-          </div>
-          <p>A ten-week guided container, run one to one. Currently running with an existing participant.</p>
-        </div>
+        <p style="margin-top:6px">The public learning layer — finished, usable material on AI literacy, decision-making, and markets. Given away because the people who most need the choice made visible are rarely the ones who can buy it. Never a prototype, never a funnel for a guided container.</p>
       </div>
-      <div class="map-col full">
-        <div class="offer">
-          <div class="offer-top">
-            <h3><a href="#notes">Field Notes</a></h3>
-            <span class="price">free</span>
-          </div>
-          <p>The public learning layer — finished, usable material on AI literacy, decision-making, and markets. Never a prototype, never a funnel for a guided container.</p>
+      <div>
+        <div class="offer-top">
+          <h3>R&amp;D Lab</h3>
+          <span class="price">experiments</span>
         </div>
-        <div class="offer">
-          <div class="offer-top">
-            <h3>R&amp;D Lab</h3>
-            <span class="price">experiments</span>
-          </div>
-          <p>The experimentation layer, held deliberately apart from what we sell: decision-architecture prototypes, human-advantage tooling, founder-bottleneck mapping. Kept visible so the difference between an experiment and an offer stays obvious.</p>
-        </div>
+        <p style="margin-top:6px">The experimentation layer: decision-architecture prototypes, human-advantage tooling, founder-bottleneck mapping. Held apart from everything we sell, and labelled as unfinished, because an experiment dressed as an offer is a lie with a roadmap.</p>
       </div>
     </div>
   </div>
@@ -380,7 +414,7 @@ footer{border-top:1px solid var(--rule-2);padding:34px 0 44px;margin-top:0}
       <dl>
         <dt>Document</dt><dd>Proof sheet — prior engagements</dd>
         <dt>Version</dt><dd>0.9 draft</dd>
-        <dt>Date</dt><dd>2026-08-25</dd>
+        <dt>Date</dt><dd>2026-08-26</dd>
         <dt>Owner</dt><dd>Angeline “Chii” Viray</dd>
         <dt>Status</dt><dd>Figures pending founder verification</dd>
         <dt>Source</dt><dd>Founder operating history, 2016–2026</dd>
@@ -391,7 +425,7 @@ footer{border-top:1px solid var(--rule-2);padding:34px 0 44px;margin-top:0}
       <div class="section-head">
         <div class="t-label">Proof</div>
         <h2>Where a stock photo would go, the record.</h2>
-        <p style="margin-top:12px">Named clients are not published. What is published is the work, the role, and the figure it moved — each one carrying the date it was measured and the source that checks it.</p>
+        <p style="margin-top:12px">Client names are never published — not here, not anywhere that reaches another client. What is published is the work, the role, and the figure it moved, each carrying the date it was measured and the source that checks it.</p>
       </div>
       <div class="sheet">
         <div class="row">
@@ -425,6 +459,17 @@ footer{border-top:1px solid var(--rule-2);padding:34px 0 44px;margin-top:0}
           <div class="fig">
             <div class="fig-n">0→1</div>
             <div class="t-label">new market<br />opened <span class="tick" aria-hidden="true"><i></i><i></i></span> pending<br />verification</div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="t-label">Product<br />&amp; investor</div>
+          <div>
+            <h3>Product complexity translated into investor-ready direction</h3>
+            <p>An early-stage fintech venture needed a complex product vision turned into a clearer roadmap, user logic and investor narrative. Led product direction, aligned roadmap decisions with development and user feedback, and presented to investors directly.</p>
+          </div>
+          <div class="fig">
+            <div class="fig-n">✓</div>
+            <div class="t-label">funding round<br />closed <span class="tick" aria-hidden="true"><i></i><i></i></span> pending<br />verification</div>
           </div>
         </div>
         <div class="row">
@@ -475,16 +520,21 @@ footer{border-top:1px solid var(--rule-2);padding:34px 0 44px;margin-top:0}
 <section class="band" id="start">
   <div class="wrap close-in">
     <div>
-      <div class="t-label">Start here</div>
-      <h2 style="margin-top:12px">Start with the audit, not the&nbsp;proposal.</h2>
-      <p style="margin-top:16px">Two weeks. A workflow map for one department, an honest AI fit / no-fit call on each, and a ranked list of what is worth building — written down and yours to keep.</p>
-      <p style="margin-top:12px"><strong style="font-weight:500;color:var(--ink)">₱50,000</strong>, credited in full against any engagement booked within sixty days.</p>
-      <p class="t-judge" style="margin-top:22px">If we disappeared the day after you saw the real choice — could you still move? That is the only question we are trying to answer for you.</p>
+      <div class="t-label">Work with us</div>
+      <h2 style="margin-top:12px">One question decides whether we are a fit.</h2>
+      <p class="t-judge" style="margin-top:18px">If we disappeared the day after you saw the real choice — could you still move?</p>
+      <p style="margin-top:16px">If the answer is yes, we are probably a fit. If what you want is for someone else to decide and own it for you, we are honestly not — and there are people who do that well.</p>
+      <div class="routes">
+        <a class="route" href="#start"><span>Work with us</span><span class="t-label">Organization or individual</span></a>
+        <a class="route" href="https://aiatwork.chiibitsu.com"><span>Start with an AI Workflow Audit</span><span class="price">₱50,000</span></a>
+        <a class="route" href="mailto:labs@chiibitsu.com?subject=Invitation"><span>Invite Chii to speak</span><span class="t-label">Talks &amp; workshops</span></a>
+        <a class="route" href="mailto:labs@chiibitsu.com?subject=Collaboration"><span>Collaborate, or join a pilot</span><span class="t-label">R&amp;D Lab</span></a>
+      </div>
       <div class="record" style="margin-top:24px;max-width:340px">
         <dl>
           <dt>Document</dt><dd>AI Workflow Audit — terms</dd>
           <dt>Version</dt><dd>1.0</dd>
-          <dt>Date</dt><dd>2026-08-25</dd>
+          <dt>Date</dt><dd>2026-08-26</dd>
           <dt>Owner</dt><dd>Chiibitsu Labs</dd>
           <dt>Status</dt><dd>Live — quotable</dd>
           <dt>Source</dt><dd>Front-door price list</dd>
@@ -512,9 +562,10 @@ footer{border-top:1px solid var(--rule-2);padding:34px 0 44px;margin-top:0}
       <div class="foot-tag">More human, by design.</div>
     </div>
     <div class="foot-links">
+      <a href="https://futureproof.chiibitsu.com">Futureproof</a>
       <a href="https://aiatwork.chiibitsu.com">AI @ Work</a>
       <a href="https://lighthouse.chiibitsu.com">Lighthouse</a>
-      <a href="https://futureproof.chiibitsu.com">Futureproof</a>
+      <a href="/about">About</a>
       <a href="mailto:labs@chiibitsu.com">labs@chiibitsu.com</a>
     </div>
     <div class="foot-legal">
