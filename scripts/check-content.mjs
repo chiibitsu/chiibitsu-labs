@@ -1,6 +1,7 @@
 // Gate: every placeholder in content/home.json is flagged illustrative (rendered as "Illustrative"),
 // or is a real figure carrying the date it was measured and its source. No prices anywhere.
 import fs from "node:fs";
+import { fileURLToPath } from "node:url";
 
 const load = (f) => JSON.parse(fs.readFileSync(new URL(`../content/${f}.json`, import.meta.url), "utf8"));
 const data = load("home");
@@ -14,7 +15,7 @@ const problems = [];
 {
   const walkDir = (dir) =>
     fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walkDir(`${dir}/${e.name}`) : [`${dir}/${e.name}`]));
-  for (const f of ["app", "components"].flatMap((d) => walkDir(new URL(`../${d}`, import.meta.url).pathname)).filter((f) => /\.tsx?$/.test(f))) {
+  for (const f of ["app", "components"].flatMap((d) => walkDir(fileURLToPath(new URL(`../${d}`, import.meta.url)))).filter((f) => /\.tsx?$/.test(f))) {
     if (/(fill|stroke|stopColor)="var\(--/.test(fs.readFileSync(f, "utf8"))) problems.push(`${f}: SVG colour set as an attribute; use style={{ fill: "var(--x)" }}`);
   }
 }
