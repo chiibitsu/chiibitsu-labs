@@ -14,8 +14,9 @@ type Props = {
 
 // A link that reports a custom Web Analytics event. href null is a placeholder: it renders, hovers and tracks, and goes nowhere.
 export function TrackedLink({ href, className, event, eventProps, children }: Props) {
+  // A placeholder click is tagged so it is never counted as a real conversion.
   const fire = () => {
-    if (event) track(event, eventProps);
+    if (event) track(event, href === null ? { ...eventProps, placeholder: true } : eventProps);
   };
   if (href === null) {
     return (

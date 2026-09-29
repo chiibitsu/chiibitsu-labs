@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   title: c.meta.title,
   description: c.meta.description,
   alternates: { canonical: "https://investor.chiibitsu.com" },
+  // Flip to indexable when investor.chiibitsu.com is attached to this project.
+  robots: { index: false },
 };
 
 const Ill = () => <span className="ill">Illustrative</span>;
