@@ -52,7 +52,7 @@ export default function Investor() {
           {c.hero.h1a} <em>{c.hero.h1b}</em>
         </h1>
         <svg className="underline-draw" viewBox="0 0 420 18" width="420" height="18" aria-hidden="true">
-          <path className="draw" d="M4 12 C80 4 180 16 260 8 S380 6 416 10" fill="none" stroke="var(--accent)" strokeWidth="3" strokeLinecap="round" />
+          <path style={{ stroke: "var(--accent)" }} className="draw" d="M4 12 C80 4 180 16 260 8 S380 6 416 10" fill="none" strokeWidth="3" strokeLinecap="round" />
         </svg>
         <p className="hero-sub">{c.hero.sub}</p>
         <div className="hero-cta">
@@ -129,16 +129,16 @@ export default function Investor() {
         <h2>{c.next.heading}</h2>
         <div className="timeline">
           <svg viewBox="0 0 1104 20" preserveAspectRatio="none" aria-hidden="true">
-            <line className="flow" x1="10" y1="10" x2="1094" y2="10" stroke="var(--ink-3)" strokeWidth="1.2" />
+            <line style={{ stroke: "var(--ink-3)" }} className="flow" x1="10" y1="10" x2="1094" y2="10" strokeWidth="1.2" />
           </svg>
           <div className="timeline-grid">
             {c.next.items.map((it) => (
               <div key={it.title} className="tl-item">
                 <svg className="tl-dot" viewBox="0 0 20 20" aria-hidden="true">
                   {it.active ? (
-                    <circle className="glow" cx="10" cy="10" r="7" fill="var(--accent)" />
+                    <circle style={{ fill: "var(--accent)" }} className="glow" cx="10" cy="10" r="7" />
                   ) : (
-                    <circle cx="10" cy="10" r="7" fill="var(--ground)" stroke="var(--ink)" strokeWidth="1.4" />
+                    <circle style={{ fill: "var(--ground)", stroke: "var(--ink)" }} cx="10" cy="10" r="7" strokeWidth="1.4" />
                   )}
                 </svg>
                 <div className="caption">

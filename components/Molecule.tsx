@@ -80,21 +80,21 @@ export function Molecule({ labels, human }: Props) {
               <stop offset="100%" style={{ stopColor: "var(--accent)" }} />
             </radialGradient>
           </defs>
-          <ellipse cx="380" cy="150" rx="130" ry="50" transform="rotate(-26 380 150)" fill="none" stroke="var(--rule)" strokeWidth="1" strokeDasharray="2 6" />
+          <ellipse style={{ stroke: "var(--rule)" }} cx="380" cy="150" rx="130" ry="50" transform="rotate(-26 380 150)" fill="none" strokeWidth="1" strokeDasharray="2 6" />
           {back.map((n) => (
             <g key={n.label}>
-              <line x1="380" y1="150" x2={n.x.toFixed(1)} y2={n.y.toFixed(1)} stroke="var(--ink-3)" strokeWidth="1.2" />
-              <circle cx={n.x.toFixed(1)} cy={n.y.toFixed(1)} r={n.r.toFixed(1)} fill="url(#sphNode)" stroke="var(--ink-3)" strokeWidth=".8" />
+              <line style={{ stroke: "var(--ink-3)" }} x1="380" y1="150" x2={n.x.toFixed(1)} y2={n.y.toFixed(1)} strokeWidth="1.2" />
+              <circle style={{ stroke: "var(--ink-3)" }} cx={n.x.toFixed(1)} cy={n.y.toFixed(1)} r={n.r.toFixed(1)} fill="url(#sphNode)" strokeWidth=".8" />
             </g>
           ))}
-          <path d="M154 143 L340 143 M166 157 L352 157" stroke="var(--accent)" strokeWidth="2.5" />
-          <polygon points="352,143 338,136 338,150" fill="var(--accent)" />
-          <polygon points="154,157 168,150 168,164" fill="var(--accent)" />
+          <path style={{ stroke: "var(--accent)" }} d="M154 143 L340 143 M166 157 L352 157" strokeWidth="2.5" />
+          <polygon style={{ fill: "var(--accent)" }} points="352,143 338,136 338,150" />
+          <polygon style={{ fill: "var(--accent)" }} points="154,157 168,150 168,164" />
           <circle cx="380" cy="150" r="28" fill="url(#sphInk)" />
           {front.map((n) => (
             <g key={n.label}>
-              <line x1="380" y1="150" x2={n.x.toFixed(1)} y2={n.y.toFixed(1)} stroke="var(--ink)" strokeWidth="1.4" />
-              <circle cx={n.x.toFixed(1)} cy={n.y.toFixed(1)} r={n.r.toFixed(1)} fill="url(#sphNode)" stroke="var(--ink)" strokeWidth="1" />
+              <line style={{ stroke: "var(--ink)" }} x1="380" y1="150" x2={n.x.toFixed(1)} y2={n.y.toFixed(1)} strokeWidth="1.4" />
+              <circle style={{ stroke: "var(--ink)" }} cx={n.x.toFixed(1)} cy={n.y.toFixed(1)} r={n.r.toFixed(1)} fill="url(#sphNode)" strokeWidth="1" />
             </g>
           ))}
           <circle cx="110" cy="150" r="42" fill="url(#sphAcc)" />

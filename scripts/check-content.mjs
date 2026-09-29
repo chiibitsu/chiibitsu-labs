@@ -6,7 +6,18 @@ const load = (f) => JSON.parse(fs.readFileSync(new URL(`../content/${f}.json`, i
 const data = load("home");
 const investor = load("investor");
 const about = load("about");
+const filmContent = load("film");
+const stillAbout = JSON.parse(fs.readFileSync(new URL("../content/still/about.json", import.meta.url), "utf8"));
 const problems = [];
+
+// SVG colours go through style, never fill="var(--x)" attributes: Safari does not resolve those reliably (CLbrand interactive).
+{
+  const walkDir = (dir) =>
+    fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walkDir(`${dir}/${e.name}`) : [`${dir}/${e.name}`]));
+  for (const f of ["app", "components"].flatMap((d) => walkDir(new URL(`../${d}`, import.meta.url).pathname)).filter((f) => /\.tsx?$/.test(f))) {
+    if (/(fill|stroke|stopColor)="var\(--/.test(fs.readFileSync(f, "utf8"))) problems.push(`${f}: SVG colour set as an attribute; use style={{ fill: "var(--x)" }}`);
+  }
+}
 
 const walk = (node, path) => {
   if (Array.isArray(node)) return node.forEach((n, i) => walk(n, `${path}[${i}]`));
@@ -19,7 +30,7 @@ const walk = (node, path) => {
   }
   if (typeof node === "string") {
     // Career figures on /about (revenue, not prices) are the one place a currency amount may appear.
-    const careerFigure = /^about\.proof\.figures\[\d+\]\.value$/.test(path);
+    const careerFigure = /^(film|stillAbout)\.proof\.figures\[\d+\]\.value$/.test(path);
     if (!careerFigure && /[₱$€£]\s?\d|\b(USD|PHP)\b|\bprice\b/i.test(node)) problems.push(`${path}: looks like a price`);
     if (/Book a call/i.test(node)) problems.push(`${path}: "Book a call" was replaced by "Request a workflow audit →"`);
   }
@@ -27,6 +38,8 @@ const walk = (node, path) => {
 walk(data, "home");
 walk(investor, "investor");
 walk(about, "about");
+walk(filmContent, "film");
+walk(stillAbout, "stillAbout");
 
 // Metric figures must be illustrative or dated and sourced.
 for (const [name, d] of [["home", data], ["investor", investor]]) {
@@ -37,18 +50,23 @@ for (const [name, d] of [["home", data], ["investor", investor]]) {
 // /about speaks as one person: no "we", "our" or "us" (the one approved exception is the wave note),
 // and the Aikiri Network is not named there.
 {
-  const text = JSON.stringify(about).replace(about.waves.here, "");
+  const text = JSON.stringify([about, filmContent, stillAbout]).replace(about.waves.here, "").replace(stillAbout.waves.here, "");
   const plural = text.match(/\b(we|our|ours|us)\b/gi);
   if (plural) problems.push(`about: first person plural found: ${[...new Set(plural)].join(", ")}`);
   if (/aikiri/i.test(text)) problems.push("about: the Aikiri Network is not named on /about");
-  for (const f of about.proof.figures) {
-    if (f.illustrative !== true && !(f.illustrative === false && f.measuredOn && f.source)) problems.push(`about.proof: undischarged figure ${f.value}`);
+  for (const f of filmContent.proof.figures) {
+    if (f.illustrative !== true && !(f.illustrative === false && f.measuredOn && f.source)) problems.push(`film.proof: undischarged figure ${f.value}`);
   }
 }
 if (!/securities/i.test(investor.room.disclaimer)) problems.push("investor: the securities disclaimer is missing");
 if (investor.hero.cta.label !== "Request the data room →") problems.push("investor: CTA must be 'Request the data room →'");
 if (data.cta.label !== "Request a workflow audit →") problems.push("cta.label must be 'Request a workflow audit →'");
-if (data.nav.some((n) => n.label === "Field Notes")) problems.push("nav label is 'Publication', not 'Field Notes'");
+// The publication is only "Publication" on the site. Its name stays on Substack (Chii, 2026-09-30).
+{
+  const all = JSON.stringify([data, investor, about, filmContent, stillAbout]);
+  if (/field notes/i.test(all)) problems.push('content: "Field Notes" is not used on the site; the publication is only "Publication"');
+  if (/overlord/i.test(all)) problems.push("content: the publication's name stays on Substack, not on the site");
+}
 if (!data.changes.items.some((i) => i.body === "Every piece of work will leave a receipt on the Aikiri Network.")) problems.push("Trust every result copy changed");
 
 const aikiri = JSON.stringify([data, investor]).match(/Aikiri Network/g)?.length ?? 0;

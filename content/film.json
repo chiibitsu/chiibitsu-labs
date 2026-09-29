@@ -1,0 +1,60 @@
+{
+  "knows": {
+    "eyebrow": "What your company knows",
+    "h": "Everyone has the same AI.",
+    "hEm": "Only you have what your company knows.",
+    "lose": {
+      "left": "the notebook stays empty",
+      "right": "what they knew leaves with them"
+    },
+    "keep": {
+      "left": "kept, used, getting smarter",
+      "right": "people can come and go"
+    },
+    "line": "Every day you keep it, it gets smarter. Every day you don’t, it walks out the door."
+  },
+  "closes": {
+    "eyebrow": "How the gap closes",
+    "h": "Systems. Behavior. Emerging tech.",
+    "hEm": "Designed together.",
+    "body": "A process may exist, but people work around it. Data may exist, but nobody trusts it. New tools arrive, and nobody changes how they work.",
+    "line": "Most firms handle one of these. Changing one without the others rarely holds.",
+    "labels": {
+      "systems": "Systems",
+      "behavior": "Behavior",
+      "tech": "Emerging tech",
+      "center": "Chiibitsu Labs"
+    }
+  },
+  "proof": {
+    "heading": "From insight to operating proof",
+    "note": "From the founder’s operating record",
+    "figures": [
+      {
+        "value": "+72%",
+        "label": "month-on-month revenue recovery in a turnaround",
+        "illustrative": true
+      },
+      {
+        "value": "₱28M",
+        "label": "peak quarterly revenue, on a platform built from zero",
+        "illustrative": true
+      },
+      {
+        "value": "3,900+",
+        "label": "people through behavior-change programs",
+        "illustrative": true
+      }
+    ],
+    "noteFirst": "From my operating record"
+  },
+  "invite": {
+    "h": "Make the choice",
+    "hEm": "before circumstance makes it for you.",
+    "body": "Bring the technology change, the unclear decision, the workflow that breaks, or the knowledge stuck in one head.",
+    "solo": {
+      "label": "Building on your own? Start here →",
+      "href": "/?for=solo"
+    }
+  }
+}
