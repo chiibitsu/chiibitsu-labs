@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "Chiibitsu Labs · Investor relations",
+    "description": "Company updates, in the open. Nothing on this page is an offer to sell securities.",
+    "updated": "Sep 29, 2026"
+  },
+  "tag": "Investor relations",
+  "nav": [
+    { "label": "The bet", "href": "#bet" },
+    { "label": "This week", "href": "#week" },
+    { "label": "Projects", "href": "#projects" },
+    { "label": "Decisions", "href": "#decisions" },
+    { "label": "Papers", "href": "#papers" }
+  ],
+  "navCta": { "label": "Data room →", "href": "#room" },
+  "strip": { "text": "Company updates, in the open · updated every Friday", "illustrative": true },
+  "shift": { "label": "the team is on shift", "illustrative": true },
+  "hero": {
+    "eyebrow": "Investor relations · Chiibitsu Labs",
+    "h1a": "Every company will run on AI. We build the ones",
+    "h1b": "you can trust.",
+    "sub": "We rebuild established businesses to run on AI, run our own company the same way, and record the work on the Aikiri Network. This page is the company, in the open.",
+    "cta": { "label": "Request the data room →", "href": null, "illustrative": true },
+    "secondary": { "label": "Or read the paper first", "href": "#papers" }
+  },
+  "pillars": [
+    { "eyebrow": "01 · What we sell", "title": "AI-run operations for established companies.", "body": "It starts with an Audit. A Chief AI Officer seat keeps it running until the client's team takes over." },
+    { "eyebrow": "02 · How we prove it", "title": "We run on it first.", "body": "One founder and an AI team, with the numbers published every week." },
+    { "eyebrow": "03 · The long bet", "title": "The Aikiri Network.", "body": "Shared infrastructure for AI-run companies: receipts, provenance and learning that outlive any one of them." }
+  ],
+  "week": {
+    "heading": "This week",
+    "note": "Week of [DATE] · change vs last week · illustrative figures",
+    "foot": "Cash, runway and revenue live in the data room.",
+    "metrics": [
+      { "key": "companies", "value": "12", "label": "Companies we work with", "delta": "▲ 2", "pct": "+20.0%", "falling": false, "href": null, "illustrative": true },
+      { "key": "systems", "value": "27", "label": "Systems live", "delta": "▲ 3", "pct": "+12.5%", "falling": false, "href": null, "illustrative": true },
+      { "key": "readers", "value": "1,480", "label": "Readers", "delta": "▲ 140", "pct": "+10.4%", "falling": false, "href": null, "illustrative": true },
+      { "key": "records", "value": "342", "label": "Records on the network", "delta": "▲ 38", "pct": "+12.5%", "falling": false, "href": null, "illustrative": true },
+      { "key": "tasks", "value": "64", "label": "Tasks shipped by the AI team", "delta": "▼ 6", "pct": "−8.6%", "falling": true, "href": null, "illustrative": true }
+    ]
+  },
+  "projects": {
+    "heading": "Everything we're running",
+    "note": "Status as of [DATE]",
+    "columns": [
+      {
+        "label": "Live",
+        "tone": "accent",
+        "items": [
+          { "title": "The Audit", "body": "AI-run operations for established companies, starting with an audit.", "status": "[status line]", "href": null, "illustrative": true },
+          { "title": "Chibie", "body": "AI companion platform. Uno is the first instance, live at uno.chiibitsu.com.", "status": "Changelog → uno.chiibitsu.com/updates", "href": "https://uno.chiibitsu.com/updates", "illustrative": false, "measuredOn": "2026-09-29", "source": "board I" },
+          { "title": "The publication", "body": "Weekly writing on running a company with AI.", "status": "[readers, cadence]", "href": null, "illustrative": true }
+        ]
+      },
+      {
+        "label": "Building",
+        "tone": "ink",
+        "items": [
+          { "title": "The AI team", "body": "Our own company run by one founder and an AI team.", "status": "[next milestone, date]", "href": null, "illustrative": true },
+          { "title": "Aikiri Network", "body": "Ledger live on Base. Client receipts next.", "status": "[next milestone, date]", "href": null, "illustrative": true },
+          { "title": "Your first AI-run company", "body": "Community for solo founders.", "status": "[next milestone, date]", "href": null, "illustrative": true }
+        ]
+      },
+      {
+        "label": "Parked, with reason",
+        "tone": "rule",
+        "items": [
+          { "title": "Futureproof", "body": "Closed to focus on one thing.", "status": "Sep 2026", "href": null, "illustrative": true },
+          { "title": "[Project]", "body": "[Why it is parked]", "status": "[DATE]", "href": null, "illustrative": true }
+        ]
+      }
+    ]
+  },
+  "next": {
+    "heading": "What's next",
+    "items": [
+      { "date": "[DATE]", "title": "Aikiri Network design paper", "body": "The long bet, written down and registered.", "active": true, "illustrative": true },
+      { "date": "[DATE]", "title": "Client receipts live on the network", "body": "Every client result, traceable.", "active": false, "illustrative": true },
+      { "date": "[DATE]", "title": "The ghost team runs the company", "body": "A full week run by the AI team, the founder deciding.", "active": false, "illustrative": true }
+    ]
+  },
+  "decisions": {
+    "heading": "Decision log",
+    "allLabel": "Full log →",
+    "columns": ["Date", "Decision", "Why"],
+    "readLabel": "Read →",
+    "foot": "Draft entries. Every decision is dated and kept, including the ones we reversed.",
+    "rows": [
+      { "date": "[DATE]", "decision": "[Decision, one line]", "why": "[Why, one line]", "href": null, "illustrative": true },
+      { "date": "Sep 2026", "decision": "One focus: AI-run companies", "why": "[Why, in your words]", "href": null, "illustrative": true },
+      { "date": "Sep 2026", "decision": "Futureproof closed", "why": "[Why, in your words]", "href": null, "illustrative": true },
+      { "date": "Aug 2026", "decision": "Uno becomes the first product", "why": "[Why, in your words · imported from Uno investor updates]", "href": null, "illustrative": true }
+    ]
+  },
+  "team": {
+    "heading": "The team",
+    "line": "One human. One ghost team.",
+    "founder": { "name": "Angeline S. Viray", "role": "Founder. Decides, and cross-checks the AI team.", "link": "About the founder →", "href": "https://chiibitsu.com/angeline" },
+    "ghost": { "title": "The ghost team", "body": "A Chief AI Officer and six AI specialists. The Chief AI Officer runs the day and reports to the founder. The specialists do the work. Every piece is checked twice, and the big calls stay human." },
+    "illustrative": true
+  },
+  "papers": {
+    "heading": "Papers",
+    "readLabel": "Read the paper →",
+    "items": [
+      { "title": "The Aikiri Network ~ design paper", "href": null, "illustrative": true },
+      { "title": "gates", "href": null, "illustrative": true },
+      { "title": "Sentences & Keys", "href": null, "illustrative": true }
+    ],
+    "foot": "Angeline S. Viray · each paper registered on the network before it is published · results: see Proof of work on",
+    "footLink": { "label": "chiibitsu.com", "href": "https://chiibitsu.com/#work" }
+  },
+  "room": {
+    "heading": "The data room",
+    "body": "Cash in and out, runway, revenue by stream, cap table and agreements. Shared on request with partners and investors.",
+    "cta": { "label": "Request the data room →", "href": null, "illustrative": true },
+    "disclaimer": "Company updates only. Nothing on this page is an offer to sell securities."
+  },
+  "footer": {
+    "left": "Chiibitsu Labs · Based in Manila, working worldwide",
+    "middle": "More human, by design"
+  }
+}

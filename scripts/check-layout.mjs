@@ -11,12 +11,13 @@ const browser = await chromium.launch({ executablePath: exe });
 const problems = [];
 if (shotsDir) fs.mkdirSync(shotsDir, { recursive: true });
 
+for (const route of ["/", "/investor"]) {
 for (const width of [390, 768, 1280]) {
   for (const theme of ["day", "night"]) {
     for (const aud of ["companies", "solo"]) {
       const ctx = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
       const page = await ctx.newPage();
-      await page.goto(`${base}/?theme=${theme}&for=${aud}`, { waitUntil: "networkidle" });
+      await page.goto(`${base}${route}?theme=${theme}&for=${aud}`, { waitUntil: "networkidle" });
       const r = await page.evaluate(() => {
         const small = [];
         for (const el of document.querySelectorAll("body *")) {
@@ -28,18 +29,19 @@ for (const width of [390, 768, 1280]) {
         }
         return { sw: document.documentElement.scrollWidth, iw: window.innerWidth, small, bg: getComputedStyle(document.body).backgroundColor, theme: document.documentElement.dataset.theme };
       });
-      const tag = `${width}/${theme}/${aud}`;
+      const tag = `${route} ${width}/${theme}/${aud}`;
       if (r.sw > r.iw) problems.push(`${tag}: sideways scroll (${r.sw} > ${r.iw})`);
       if (r.small.length) problems.push(`${tag}: text under 12px: ${r.small.slice(0, 4).join("; ")}`);
       if (r.theme !== theme) problems.push(`${tag}: theme is ${r.theme}`);
-      if (shotsDir && (aud === "companies" || width === 390)) await page.screenshot({ path: path.join(shotsDir, `home-${width}-${theme}-${aud}.png`), fullPage: true });
+      if (shotsDir && (aud === "companies" || width === 390)) await page.screenshot({ path: path.join(shotsDir, `${route === "/" ? "home" : "investor"}-${width}-${theme}-${aud}.png`), fullPage: true });
       await ctx.close();
     }
   }
+}
 }
 await browser.close();
 if (problems.length) {
   console.error(problems.join("\n"));
   process.exit(1);
 }
-console.log("layout ok: 390/768/1280 x day/night x companies/solo");
+console.log("layout ok: / and /investor at 390/768/1280 x day/night x companies/solo");
