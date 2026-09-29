@@ -5,6 +5,7 @@ import fs from "node:fs";
 const load = (f) => JSON.parse(fs.readFileSync(new URL(`../content/${f}.json`, import.meta.url), "utf8"));
 const data = load("home");
 const investor = load("investor");
+const about = load("about");
 const problems = [];
 
 const walk = (node, path) => {
@@ -17,17 +18,31 @@ const walk = (node, path) => {
     return;
   }
   if (typeof node === "string") {
-    if (/[₱$€£]\s?\d|\b(USD|PHP)\b|\bprice\b/i.test(node)) problems.push(`${path}: looks like a price`);
+    // Career figures on /about (revenue, not prices) are the one place a currency amount may appear.
+    const careerFigure = /^about\.proof\.figures\[\d+\]\.value$/.test(path);
+    if (!careerFigure && /[₱$€£]\s?\d|\b(USD|PHP)\b|\bprice\b/i.test(node)) problems.push(`${path}: looks like a price`);
     if (/Book a call/i.test(node)) problems.push(`${path}: "Book a call" was replaced by "Request a workflow audit →"`);
   }
 };
 walk(data, "home");
 walk(investor, "investor");
+walk(about, "about");
 
 // Metric figures must be illustrative or dated and sourced.
 for (const [name, d] of [["home", data], ["investor", investor]]) {
   for (const m of d.week.metrics) {
     if (m.illustrative !== true && !(m.illustrative === false && m.measuredOn && m.source)) problems.push(`${name}.week.metrics.${m.key}: undischarged figure`);
+  }
+}
+// /about speaks as one person: no "we", "our" or "us" (the one approved exception is the wave note),
+// and the Aikiri Network is not named there.
+{
+  const text = JSON.stringify(about).replace(about.waves.here, "");
+  const plural = text.match(/\b(we|our|ours|us)\b/gi);
+  if (plural) problems.push(`about: first person plural found: ${[...new Set(plural)].join(", ")}`);
+  if (/aikiri/i.test(text)) problems.push("about: the Aikiri Network is not named on /about");
+  for (const f of about.proof.figures) {
+    if (f.illustrative !== true && !(f.illustrative === false && f.measuredOn && f.source)) problems.push(`about.proof: undischarged figure ${f.value}`);
   }
 }
 if (!/securities/i.test(investor.room.disclaimer)) problems.push("investor: the securities disclaimer is missing");
