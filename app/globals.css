@@ -874,9 +874,12 @@ h2.w400 {
     width: 100%;
     text-align: center;
   }
+  /* Drawing captions scale below 12px with the viewBox; the drawings carry aria-labels. */
+  .art text {
+    display: none;
+  }
   .mol-label,
-  .mol-ai,
-  .mol-hide {
+  .mol-ai {
     display: none;
   }
   .mol-legend {
