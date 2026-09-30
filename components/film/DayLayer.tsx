@@ -6,11 +6,14 @@ import { clamp01, ease, subscribe, useReducedMotion } from "./scroll";
 // "A day with the ghost team": one illustrated day behind the six home scenes, driven by the whole film's progress.
 // She lives her day, the ghost team works, and she rules twice: at the start and at the end. Violet means a human ruling.
 // Line drawing, one stroke weight, ink at low contrast. Only transform and opacity change, set straight on the
-// elements from the film's single scroll loop (no re-render per frame). No faces, no likeness.
+// elements from the film's single scroll loop (no re-render per frame). No faces, no likeness of her; the ghosts have two eyes, as on the ghost-team page.
 
-const VB = { x: 0, y: 110, w: 1280, h: 220 };
+const VB = { x: 0, y: 110, w: 1280, h: 240 };
 const FLOOR = 316;
-const GHOSTS = [760, 940, 1120];
+const GHOSTS = [780, 920, 1060, 1200];
+// The ghost team, as on the ghost-team page: a round-topped ghost with two eyes and a scalloped hem.
+// Operations drafts, Quality checks, Finance stamps receipts, the Chief AI Officer reports to her.
+const NAMES = ["Operations", "Quality", "Finance", "CAIO"];
 // [start, end] of the clock in each of the six stages, in minutes.
 const CLOCK: [number, number][] = [
   [6 * 60, 6 * 60 + 10],
@@ -27,12 +30,31 @@ const clock = (m: number) => `${pad(Math.floor(m / 60))}:${pad(Math.floor(m % 60
 // A trapezoid: 0 before a, rises to 1 at b, holds to c, falls to 0 at d.
 const bell = (q: number, a: number, b: number, c: number, d: number) => clamp01((q - a) / (b - a)) * clamp01((d - q) / (d - c));
 
+// A ghost with a chat bubble above it. The bubble shows what it is doing: typing dots (working), an eye (reviewing),
+// a cross (sent back), a check (done). Only one variant shows at a time.
 function Ghost({ x, k }: { x: number; k: number }) {
   return (
     <g transform={`translate(${x} ${FLOOR})`}>
       <g data-k={`gb${k}`}>
-        <path d="M-18 0 L-18 -38 C-18 -64 18 -64 18 -38 L18 0 L11 -8 L4 0 L-4 -8 L-11 0 Z" strokeDasharray="4 3" />
+        <path d="M-20 0 V-26 C-20 -50 20 -50 20 -26 V0 Q-13.3 9 -6.7 0 Q0 9 6.7 0 Q13.3 9 20 0 Z" style={{ fill: "var(--ground)" }} />
+        <circle cx={-7} cy={-24} r={2.6} style={{ fill: "var(--ink)" }} />
+        <circle cx={7} cy={-24} r={2.6} style={{ fill: "var(--ink)" }} />
+        <g transform="translate(0 -70)">
+          <path d="M-22 -12 H22 Q26 -12 26 -8 V8 Q26 12 22 12 H6 L0 20 L-6 12 H-22 Q-26 12 -26 8 V-8 Q-26 -12 -22 -12 Z" style={{ fill: "var(--ground)" }} />
+          <g data-k={`bd${k}`}>
+            {[-10, 0, 10].map((dx) => (
+              <circle key={dx} cx={dx} cy={0} r={2.4} style={{ fill: "var(--ink)" }} />
+            ))}
+          </g>
+          <path data-k={`bc${k}`} d="M-9 1 L-3 7 L9 -6" strokeWidth={2.4} />
+          <path data-k={`bx${k}`} d="M-7 -6 L7 6 M7 -6 L-7 6" strokeWidth={2.4} />
+          <g data-k={`be${k}`}>
+            <path d="M-11 0 Q0 -9 11 0 Q0 9 -11 0 Z" />
+            <circle cx={0} cy={0} r={3} style={{ fill: "var(--ink)" }} />
+          </g>
+        </g>
       </g>
+      <text className="day-lbl" x={0} y={16} textAnchor="middle" fontSize={13.5} strokeWidth={0} style={{ fill: "var(--ink)", stroke: "none", fontFamily: "var(--mono)" }}>{NAMES[k]}</text>
     </g>
   );
 }
@@ -90,18 +112,39 @@ export function DayLayer() {
         const x = 1200 - ((P * 9 + i * 0.25) % 1) * 560;
         set(`tc${i}`, Math.max(o[2], o[3]), `translate(${x.toFixed(1)}px, ${FLOOR - 22}px)`);
       }
-      // Stage 4: one ghost drafts, a second checks
+      // What each ghost is doing, by stage: dots (working), eye (reviewing), cross (sent back), check (done)
+      const q4 = q(4);
+      const q5b = q(5);
       const draftO = o[3] * bell(q3, 0.05, 0.12, 0.95, 1);
       set("draft", draftO);
       for (let i = 0; i < 3; i++) set(`dl${i}`, clamp01((q3 - 0.12 - i * 0.14) / 0.1));
-      set("chk4", o[3] * clamp01((q3 - 0.62) / 0.12));
-      // Stage 5: stamps and receipts
-      const q4 = q(4);
+      const state = (g: number): "dots" | "eye" | "x" | "check" | "none" => {
+        if (still || o[5] > 0.5) return "check";
+        if (o[4] > 0.5) return g === 2 ? (q4 > 0.7 ? "check" : "dots") : "check";
+        if (o[3] > 0.5) {
+          if (g === 0) return q3 < 0.8 ? "dots" : "check";
+          if (g === 1) return q3 < 0.3 ? "none" : q3 < 0.5 ? "eye" : q3 < 0.6 ? "x" : q3 < 0.72 ? "eye" : "check";
+          if (g === 2) return "dots";
+          return "none";
+        }
+        if (o[2] > 0.5) return g < 3 ? "dots" : "none";
+        return "none";
+      };
+      GHOSTS.forEach((_, g) => {
+        const st = state(g);
+        const beat = live ? 0.55 + 0.45 * Math.sin(t * 4 + g) : 1;
+        set(`bd${g}`, st === "dots" ? beat : 0);
+        set(`bc${g}`, st === "check" ? 1 : 0);
+        set(`bx${g}`, st === "x" ? 1 : 0);
+        set(`be${g}`, st === "eye" ? 1 : 0);
+      });
+      void q5b;
+      // Stage 5: receipts stamped by Finance
       set("parked", o[4]);
-      for (let i = 0; i < 3; i++) {
-        const dy = live ? 12 * Math.abs(Math.sin(q4 * Math.PI * 5 + i * 1.1)) : 0;
-        set(`stamp${i}`, o[4], `translate(${GHOSTS[i] + 26}px, ${FLOOR - 70 + dy}px)`);
-        set(`rc${i}`, clamp01((q4 - 0.15 - i * 0.22) / 0.1));
+      {
+        const dy = live ? 14 * Math.abs(Math.sin(q4 * Math.PI * 5)) : 0;
+        set("stamp2", o[4], `translate(${GHOSTS[2] + 30}px, ${FLOOR - 82 + dy}px)`);
+        for (let i = 0; i < 3; i++) set(`rc${i}`, clamp01((q4 - 0.15 - i * 0.22) / 0.1));
       }
 
       // Her two rulings: the hand touches the strip only here
@@ -181,7 +224,9 @@ export function DayLayer() {
       const P = span > 0 ? clamp01(-r.top / span) : 0;
       // Visible from the first frame; fades out as the still sections take over below the film.
       const fade = clamp01((r.bottom - window.innerHeight * 0.15) / (window.innerHeight * 0.85));
-      render(P, fade, false);
+      // Invisible until the reader starts scrolling: it fades in over the first stretch of scroll, not on load.
+      const started = clamp01((window.scrollY - 24) / 220);
+      render(P, fade * started, false);
     };
     const tick = () => {
       // Gentle ambient motion (bobbing ghosts, steam) between scrolls, only while the layer is on screen.
@@ -263,7 +308,7 @@ export function DayLayer() {
               <ellipse cx={430} cy={286} rx={40} ry={7} />
             </g>
 
-            {/* Ghosts: dashed outlines on the strip */}
+            {/* Ghosts: the team, standing on the strip */}
             <g data-k="ghosts">
               {GHOSTS.map((x, i) => (
                 <Ghost key={x} x={x} k={i} />
@@ -273,26 +318,23 @@ export function DayLayer() {
               <rect key={i} data-k={`tc${i}`} x={0} y={0} width={32} height={22} rx={3} strokeDasharray="4 3" />
             ))}
             <g data-k="draft">
-              <rect x={730} y={210} width={40} height={50} rx={3} strokeDasharray="4 3" />
+              <rect x={GHOSTS[0] + 30} y={FLOOR - 58} width={34} height={44} rx={3} strokeDasharray="4 3" />
               {[0, 1, 2].map((i) => (
-                <path key={i} data-k={`dl${i}`} d={`M737 ${222 + i * 12} L763 ${222 + i * 12}`} />
+                <path key={i} data-k={`dl${i}`} d={`M${GHOSTS[0] + 37} ${FLOOR - 46 + i * 11} L${GHOSTS[0] + 57} ${FLOOR - 46 + i * 11}`} />
               ))}
             </g>
-            <path data-k="chk4" d="M918 232 L928 242 L948 218" />
             <g data-k="parked">
-              {GHOSTS.map((x, i) => (
+              {GHOSTS.slice(0, 3).map((x, i) => (
                 <g key={x}>
                   <rect x={x - 16} y={FLOOR - 24} width={32} height={22} rx={3} />
                   <path data-k={`rc${i}`} d={`M${x - 8} ${FLOOR - 16} L${x + 8} ${FLOOR - 16} M${x - 8} ${FLOOR - 9} L${x + 4} ${FLOOR - 9}`} />
                 </g>
               ))}
             </g>
-            {GHOSTS.map((x, i) => (
-              <g key={x} data-k={`stamp${i}`}>
-                <rect x={0} y={0} width={18} height={12} rx={2} />
-                <path d="M9 12 L9 22" />
-              </g>
-            ))}
+            <g data-k="stamp2">
+              <rect x={0} y={0} width={18} height={12} rx={2} />
+              <path d="M9 12 L9 22" />
+            </g>
 
             {/* Her hand: it reaches the strip only at the two approvals */}
             <g data-k="hand">

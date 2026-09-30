@@ -3055,7 +3055,7 @@ html:not([data-js]) .path-line i {
   opacity: 0;
 }
 .day-ink {
-  opacity: 0.34;
+  opacity: 0.5;
 }
 .day-fly {
   position: absolute;
@@ -3101,4 +3101,10 @@ html:not([data-js]) .day {
 .figs-film .more {
   white-space: normal;
   overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .day-lbl {
+    display: none;
+  }
 }

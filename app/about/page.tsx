@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 // /about in scroll-film mode, ten scenes: A1 mission, A2 the waves, A3 How I work 01 (the spheres), A4 How I work 02 (the fork),
-// A5 How I work 03 (the path), A6 what changes (the cards flip as you scroll), A7 the moat (the door, with the compare toggle at the end),
+// A5 How I work 03 (the path), A6 what changes (the cards flip as you scroll), A7 the moat (the door),
 // A8 the long bet, A9 who is behind it, A10 the invitation. No background layer on this page.
 export default function About() {
   return (
@@ -61,7 +61,6 @@ export default function About() {
           lose={film.knows.lose}
           keep={film.knows.keep}
           line={film.knows.line}
-          compare={c.knows}
         />
 
         <LongBetScene label={c.longBet.eyebrow} parts={[{ t: c.longBet.h }, { t: c.longBet.hEm, em: true }]} body={c.longBet.body} link={c.longBet.link} />

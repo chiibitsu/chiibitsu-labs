@@ -194,30 +194,3 @@ export function FlipScene({
     </SceneFrame>
   );
 }
-
-// The compare toggle for the door scene: appears at the end of the scene and stays clickable.
-export function CompareToggle({
-  show,
-  without,
-  withLabel,
-  hint,
-  mode,
-  onPick,
-}: {
-  show: boolean;
-  without: string;
-  withLabel: string;
-  hint: string;
-  mode: "lose" | "keep" | null;
-  onPick: (m: "lose" | "keep") => void;
-}) {
-  return (
-    <div className={`compare-bar compare-film ${dim(show)}`}>
-      <div className="seg" role="group" aria-label="Compare">
-        <button type="button" aria-pressed={mode === "lose"} onClick={() => onPick("lose")}>{without}</button>
-        <button type="button" aria-pressed={mode === "keep"} onClick={() => onPick("keep")}>{withLabel}</button>
-      </div>
-      <span className="hand-note">{hint}</span>
-    </div>
-  );
-}
