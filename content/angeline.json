@@ -1,0 +1,199 @@
+{
+  "meta": {
+    "title": "Chii, founder of Chiibitsu Labs",
+    "description": "Angeline S. Viray (Chii): founder of Chiibitsu Labs. I find what a business actually runs on, and leave it running without me.",
+    "updated": "Sep 30, 2026"
+  },
+  "nav": [
+    {
+      "label": "Work",
+      "href": "/#work"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    },
+    {
+      "label": "Founder",
+      "href": "/angeline"
+    },
+    {
+      "label": "Papers",
+      "href": "/#papers"
+    },
+    {
+      "label": "Investors",
+      "href": "/investor"
+    }
+  ],
+  "cta": {
+    "label": "Request a workflow audit →",
+    "href": "/audit"
+  },
+  "strip": "Chii · founder, Chiibitsu Labs",
+  "shift": {
+    "label": "the team is on shift",
+    "illustrative": true
+  },
+  "hero": {
+    "eyebrow": "The founder",
+    "name": "Chii",
+    "legalName": "Angeline S. Viray",
+    "line": "I find what a business actually runs on, and leave it running without me.",
+    "facts": [
+      "Founder, Chiibitsu Labs",
+      "12+ years leading teams",
+      "Manila, working worldwide"
+    ],
+    "photoAlt": "Chii, founder of Chiibitsu Labs"
+  },
+  "now": {
+    "heading": "What I do now",
+    "items": [
+      {
+        "n": "01",
+        "title": "I rebuild companies to run on AI.",
+        "body": "Established businesses. It starts with an audit, then a Chief AI Officer seat until your team takes over."
+      },
+      {
+        "n": "02",
+        "title": "I run my own company that way.",
+        "body": "One founder and a ghost team of AI specialists. The numbers go public every week."
+      },
+      {
+        "n": "03",
+        "title": "I’m building the Aikiri Network.",
+        "body": "Shared infrastructure so every AI result can be traced and trusted."
+      }
+    ]
+  },
+  "outcomes": {
+    "heading": "Selected outcomes",
+    "note": "From the roles below",
+    "figures": [
+      {
+        "value": "₱28M",
+        "label": "peak quarterly revenue, on a mobility platform built from zero",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, from her own ventures (stated 2026-09-30)"
+      },
+      {
+        "value": "4,000+",
+        "label": "vehicles on that platform",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, from her own ventures (stated 2026-09-30)"
+      },
+      {
+        "value": "76,000",
+        "label": "members in a crypto community built into the country’s go-to group",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, from her own ventures (stated 2026-09-30)"
+      }
+    ]
+  },
+  "road": {
+    "heading": "The road here",
+    "note": "Systems, people, turnarounds",
+    "items": [
+      {
+        "dates": "2013 to 2017",
+        "title": "Enterprise support to UX Designer",
+        "org": "HP Enterprise / DXC Technology",
+        "body": "Escalations for a large UK enterprise account, then UX architecture for enterprise and mixed-reality work."
+      },
+      {
+        "dates": "2015 to 2019",
+        "title": "Founder and CEO",
+        "org": "Beep a Ride",
+        "body": "Mobility platform. ₱28M peak quarterly revenue, 4,000+ vehicles across Metro Manila, Cebu and Palawan."
+      },
+      {
+        "dates": "2018 to 2019",
+        "title": "Product Head, crypto wallet",
+        "org": "SCI Ventures",
+        "body": "Took the wallet from founder vision to MVP. It was later acquired by a major Philippine financial institution."
+      },
+      {
+        "dates": "2022 to 2023",
+        "title": "Co-CEO, turnaround",
+        "org": "TalentHero (pre-merger)",
+        "body": "Co-led the company through a turnaround."
+      },
+      {
+        "dates": "2023 to 2024",
+        "title": "Country Manager, then Global IR Lead",
+        "org": "Suzuverse (AI + Web3)",
+        "body": "Built the Philippines from zero, then investor relations across SEA and LATAM."
+      },
+      {
+        "dates": "2024 to 2025",
+        "title": "Head of Personal Development",
+        "org": "The Lazy Lifter (Kaizen)",
+        "body": "Behavior systems across three 100-day seasons."
+      },
+      {
+        "dates": "2020 to now",
+        "title": "Founder",
+        "org": "Chiibitsu Labs",
+        "body": "Consulting since 2020. Now rebuilding established businesses to run on AI.",
+        "current": true
+      }
+    ],
+    "illustrative": true
+  },
+  "background": {
+    "items": [
+      {
+        "label": "Trained as",
+        "title": "A chemist. Self-taught in product, design and AI.",
+        "body": "BS Chemistry, University of Santo Tomas · Licensed chemist (R.Ch) · ITIL v3 · HP Certified Technical Mentor"
+      },
+      {
+        "label": "Roles held",
+        "title": "Founder-CEO, Co-CEO, Country Manager, Global IR Lead, Product Head"
+      },
+      {
+        "label": "Industries",
+        "title": "Fintech, crypto and Web3, AI platforms, mobility, employer of record, enterprise services, behavior change"
+      }
+    ],
+    "reach": "Operated across the Philippines, SEA, APAC, LATAM, the US and Europe"
+  },
+  "verify": {
+    "heading": "Read and verify",
+    "items": [
+      {
+        "title": "The work",
+        "body": "Companies we have built with",
+        "href": "/#work"
+      },
+      {
+        "title": "Papers",
+        "body": "Registered on the Aikiri Network",
+        "href": "/#papers"
+      },
+      {
+        "title": "Investor relations",
+        "body": "Company numbers, every Friday",
+        "href": "/investor"
+      },
+      {
+        "title": "LinkedIn",
+        "body": "linkedin.com/in/angelinev",
+        "href": "https://linkedin.com/in/angelinev"
+      }
+    ]
+  },
+  "engage": {
+    "h": "If your business still needs you for everything, let’s look at why.",
+    "press": "Press, speaking and partners",
+    "email": "labs@chiibitsu.com"
+  },
+  "footer": {
+    "left": "Chiibitsu Labs · Based in Manila, working worldwide",
+    "middle": "More human, by design"
+  }
+}

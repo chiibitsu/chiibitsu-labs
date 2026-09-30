@@ -1,0 +1,331 @@
+{
+  "meta": {
+    "title": "Chiibitsu Labs",
+    "description": "More human, by design. We put AI to work in your business, and every piece of work is checked twice.",
+    "updated": "Sep 29, 2026"
+  },
+  "nav": [
+    {
+      "label": "Work",
+      "href": "#work"
+    },
+    {
+      "label": "How it runs",
+      "href": "#run"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    },
+    {
+      "label": "Publication",
+      "href": "#publication"
+    },
+    {
+      "label": "Papers",
+      "href": "#papers"
+    },
+    {
+      "label": "Investors",
+      "href": "#investors"
+    }
+  ],
+  "cta": {
+    "label": "Request a workflow audit →",
+    "href": "/audit"
+  },
+  "shift": {
+    "label": "the team is on shift",
+    "illustrative": true
+  },
+  "audiences": {
+    "companies": {
+      "switchLabel": "For companies",
+      "h1a": "The business needs you for everything.",
+      "h1b": "That was never the plan.",
+      "sub": "See the whole business at a glance, decide faster, and stop being the only one who knows how it all works.",
+      "secondary": {
+        "label": "Or see the work first",
+        "href": "#work"
+      },
+      "letter": "We find the jobs only you know how to do, and set up AI to do them too.",
+      "run": "You see everything and make the big calls. Your people handle the rest. AI does the work.",
+      "proof": "A Chief AI Officer runs the AI team and checks every piece of work twice. That seat can be filled for you, until your team is ready to take it.",
+      "humanName": "Owner",
+      "humanNote": "in control"
+    },
+    "solo": {
+      "switchLabel": "For solo founders",
+      "h1a": "Everything works, as long as",
+      "h1b": "you're in the room.",
+      "sub": "Take a month off. What breaks? We find those places and put AI to work in them, so the business keeps running when you're not there.",
+      "secondary": {
+        "label": "Your first AI-run company →",
+        "href": "#publication"
+      },
+      "letter": "We find the work that eats your day, and teach AI to do it.",
+      "run": "One human is enough. Two is recommended.",
+      "proof": "A Chief AI Officer beside you runs the AI team and checks the work. That seat can be filled for you.",
+      "humanName": "Founder",
+      "humanNote": "you · decide"
+    }
+  },
+  "letter": {
+    "label": "A note from the founder",
+    "open": "To whoever is looking us up,",
+    "close": "We run our own company the same way. It's all on this page.",
+    "signature": "Chii",
+    "byline": "Angeline S. Viray · Founder"
+  },
+  "changes": {
+    "heading": "What changes for you.",
+    "items": [
+      {
+        "art": "see",
+        "title": "See everything.",
+        "body": "Your whole business. One screen. Every morning."
+      },
+      {
+        "art": "decide",
+        "title": "Decide less.",
+        "body": "The small calls get made. The big ones come to you."
+      },
+      {
+        "art": "trust",
+        "title": "Trust every result.",
+        "body": "Every piece of work will leave a receipt on the Aikiri Network."
+      }
+    ],
+    "seasoning": "And every month, you get further ahead."
+  },
+  "work": {
+    "heading": "Who we've built with",
+    "logos": [
+      {
+        "label": "[Logo]",
+        "illustrative": true
+      },
+      {
+        "label": "[Logo]",
+        "illustrative": true
+      },
+      {
+        "label": "[Logo]",
+        "illustrative": true
+      },
+      {
+        "label": "[Logo]",
+        "illustrative": true
+      },
+      {
+        "label": "[Logo]",
+        "illustrative": true
+      },
+      {
+        "label": "[Logo]",
+        "illustrative": true
+      }
+    ],
+    "cards": [
+      {
+        "client": "Car rental group",
+        "built": "A daily cash view across every branch",
+        "changed": "Owner checks cash in 5 minutes, not half a day",
+        "date": "Aug 2026",
+        "href": null,
+        "illustrative": true
+      },
+      {
+        "client": "Home and décor retailer",
+        "built": "Content and packing run by an AI assistant",
+        "changed": "Posts out daily without the owner writing them",
+        "date": "Jul 2026",
+        "href": null,
+        "illustrative": true
+      },
+      {
+        "client": "Real estate brokerage",
+        "built": "Lead follow-ups that never go cold",
+        "changed": "Every enquiry answered within the hour",
+        "date": "Jun 2026",
+        "href": null,
+        "illustrative": true
+      }
+    ]
+  },
+  "run": {
+    "heading": "How it runs",
+    "moleculeLabels": [
+      "Operations",
+      "Finance",
+      "Customer care",
+      "Quality",
+      "Sales",
+      "Marketing"
+    ],
+    "illustrative": true
+  },
+  "week": {
+    "heading": "This week",
+    "note": "Illustrative figures · updated every Friday",
+    "metrics": [
+      {
+        "value": "12",
+        "label": "Companies we work with",
+        "key": "companies",
+        "href": null,
+        "illustrative": true
+      },
+      {
+        "value": "27",
+        "label": "Systems live",
+        "key": "systems",
+        "href": null,
+        "illustrative": true
+      },
+      {
+        "value": "1,480",
+        "label": "Readers",
+        "key": "readers",
+        "href": null,
+        "illustrative": true
+      },
+      {
+        "value": "342",
+        "label": "Records on the network",
+        "key": "records",
+        "href": null,
+        "illustrative": true
+      }
+    ]
+  },
+  "proofOfWork": {
+    "heading": "Proof of work",
+    "note": "Misses included · illustrative rows",
+    "columns": [
+      "Client",
+      "Built",
+      "Changed",
+      "Date"
+    ],
+    "rows": [
+      {
+        "client": "Car rental group",
+        "built": "Branch cash dashboard",
+        "changed": "Cash review down to 5 minutes",
+        "miss": false,
+        "date": "Aug 2026",
+        "href": null,
+        "illustrative": true
+      },
+      {
+        "client": "Home and décor retailer",
+        "built": "AI content and packing assistant",
+        "changed": "Daily posts without the owner",
+        "miss": false,
+        "date": "Jul 2026",
+        "href": null,
+        "illustrative": true
+      },
+      {
+        "client": "Wellness clinic",
+        "built": "Booking reminders by chat",
+        "changed": "Didn't take: patients preferred calls",
+        "miss": true,
+        "date": "May 2026",
+        "href": null,
+        "illustrative": true
+      },
+      {
+        "client": "Chiibitsu Labs",
+        "built": "Our own company, run on AI",
+        "changed": "See \"This week\"",
+        "miss": false,
+        "date": "Weekly",
+        "href": null,
+        "illustrative": true
+      }
+    ],
+    "linkLabel": "Receipt →"
+  },
+  "publication": {
+    "heading": "Publication",
+    "allLabel": "Read on Substack →",
+    "readLabel": "Read the note →",
+    "posts": [
+      {
+        "date": "Sep 24",
+        "title": "What your business actually runs on",
+        "summary": "Most owners guess. Here is how we find out, in one afternoon.",
+        "href": null,
+        "illustrative": true
+      },
+      {
+        "date": "Sep 17",
+        "title": "The owner who stopped being the bottleneck",
+        "summary": "He used to approve everything. Now he approves what matters.",
+        "href": null,
+        "illustrative": true
+      },
+      {
+        "date": "Sep 10",
+        "title": "Why we check AI work twice",
+        "summary": "Why every piece of AI work gets a second pair of eyes.",
+        "href": null,
+        "illustrative": true
+      }
+    ],
+    "tagPrefixes": [
+      "FOMO Report"
+    ]
+  },
+  "engage": {
+    "heading": "Working with us",
+    "steps": [
+      {
+        "title": "Look",
+        "body": "We map how the work really gets done."
+      },
+      {
+        "title": "Build",
+        "body": "We put AI in the seats, with you."
+      },
+      {
+        "title": "Hand over",
+        "body": "Your team runs it. We step back."
+      }
+    ]
+  },
+  "papers": {
+    "title": "Read our papers",
+    "meta": "3 published · each registered on the Aikiri Network",
+    "linkLabel": "Papers →",
+    "href": null,
+    "illustrative": true
+  },
+  "investors": {
+    "heading": "For investors",
+    "line": "The long bet: the Aikiri Network, shared infrastructure for AI-run companies.",
+    "sub": "Thesis, decisions and numbers in the open. Financials by request.",
+    "decisionLog": {
+      "label": "Decision log →",
+      "href": null,
+      "illustrative": true
+    },
+    "dataRoom": {
+      "label": "Request the data room →",
+      "href": null,
+      "illustrative": true
+    }
+  },
+  "footer": {
+    "left": "Chiibitsu Labs · Based in Manila, working worldwide",
+    "middle": "More human, by design"
+  },
+  "audit": {
+    "heading": "Request a workflow audit",
+    "body": "This page is a placeholder. The audit request form is not built yet.",
+    "contact": "Until then, write to labs@chiibitsu.com.",
+    "back": "← Back to the home page"
+  }
+}

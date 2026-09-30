@@ -1,0 +1,176 @@
+{
+  "meta": {
+    "title": "Chiibitsu Labs · About",
+    "description": "A one-person company that helps businesses and people run on AI, so the future reaches them too.",
+    "updated": "Sep 29, 2026"
+  },
+  "nav": [
+    {
+      "label": "Work",
+      "href": "/#work"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    },
+    {
+      "label": "Founder",
+      "href": "/angeline"
+    },
+    {
+      "label": "Papers",
+      "href": "/#papers"
+    },
+    {
+      "label": "Investors",
+      "href": "/investor"
+    }
+  ],
+  "cta": {
+    "label": "Request a workflow audit →",
+    "href": "/audit"
+  },
+  "strip": "About Chiibitsu Labs · why it exists",
+  "shift": {
+    "label": "the team is on shift",
+    "illustrative": true
+  },
+  "hero": {
+    "eyebrow": "Why Chiibitsu Labs exists",
+    "h1a": "New technology always arrives unevenly.",
+    "h1b": "Chiibitsu Labs exists to close that gap.",
+    "sub": "A one-person company that helps businesses and people run on AI, so the future reaches them too."
+  },
+  "waves": {
+    "here": "we are here ↑",
+    "items": [
+      {
+        "title": "Startup Weekend",
+        "body": "A first taste of entrepreneurship as a path open to anyone, not a title earned after years on a ladder."
+      },
+      {
+        "title": "Mobility",
+        "body": "Beep a Ride became an extra income path for drivers when platform economics were easy to misread."
+      },
+      {
+        "title": "Blockchain",
+        "body": "What I learned early became community education and mentorship, never a private advantage."
+      },
+      {
+        "title": "AI",
+        "body": "Now: helping businesses use AI to strengthen judgment and the way work gets done, not to create busywork or tool dependence."
+      }
+    ],
+    "h": "I have watched the gap open many times",
+    "caption": "These four shaped this company"
+  },
+  "changes": {
+    "heading": "What changes inside a business",
+    "hintHover": "Hover each card",
+    "hintTap": "Tap each card",
+    "today": "Today",
+    "after": "After",
+    "seeHover": "Hover to see after →",
+    "seeTap": "Tap to see after →",
+    "cards": [
+      {
+        "today": "Every decision still ends up on your desk.",
+        "after": "Decisions your team can make without you, and the standards that make them safe to make.",
+        "note": "Founder bottlenecks reduce."
+      },
+      {
+        "today": "Everyone uses AI their own way, and nothing sticks.",
+        "after": "Two or three workflows your team can run on Monday.",
+        "note": "AI becomes repeatable work."
+      },
+      {
+        "today": "The things only you know, stuck in your head.",
+        "after": "Written down where the team can actually find them. The moat that stays when people leave.",
+        "note": "Knowledge becomes transferable."
+      },
+      {
+        "today": "Every vendor says yes. Nobody decides.",
+        "after": "A decision you can defend, and the reasoning behind it on paper.",
+        "note": "Technology choices become clearer."
+      }
+    ]
+  },
+  "longBet": {
+    "h": "Science moves because labs share what they learn.",
+    "hEm": "A future-forward business helps move humanity forward.",
+    "body": "What your company knows stays yours. What it learns can lift everyone who comes after. That is the long bet.",
+    "link": {
+      "label": "Read the paper →",
+      "href": "/#papers"
+    },
+    "eyebrow": "Where this is going"
+  },
+  "work": {
+    "heading": "How I work",
+    "steps": [
+      {
+        "title": "Understand the choice",
+        "body": "What is really being decided, and what it costs."
+      },
+      {
+        "title": "Map the real workflow",
+        "body": "How work actually gets done, not how the chart says."
+      },
+      {
+        "title": "Incorporate the disruption",
+        "body": "Put AI where it gives real leverage."
+      },
+      {
+        "title": "Leave capability behind",
+        "body": "Your team runs it and adapts it without me."
+      }
+    ],
+    "eyebrow": "03 · The path"
+  },
+  "choice": {
+    "eyebrow": "02 · Who decides",
+    "h": "There is no one right answer to technological change.",
+    "hEm": "I show you the paths. You choose.",
+    "body": "Every path has costs, risks and trade-offs. I make them visible, then build the workflows, knowledge and systems for the choice you make.",
+    "alt": "A path splitting into three, each with its own cost",
+    "labels": {
+      "top": "faster · costs control",
+      "mid": "your call",
+      "bottom": "safer · costs time"
+    }
+  },
+  "founder": {
+    "eyebrow": "Who is behind it",
+    "name": "Chii",
+    "role": "Angeline S. Viray · Principal Systems Architect and Behavioral Strategist",
+    "line": "A one-person company, on purpose.",
+    "lineEm": "Proof that one person with AI can run what used to take a team.",
+    "body": "Mobility operations, behavior design, emerging-tech education, product and investor narratives, AI and Web3 market execution, and practical AI for teams.",
+    "photoAlt": "Chii, founder of Chiibitsu Labs",
+    "link": {
+      "label": "See her track record →",
+      "href": "/angeline"
+    }
+  },
+  "legal": {
+    "text": "Chiibitsu Labs is the trade name of Angeline S. Viray, a professional business consultant registered in the Philippines",
+    "email": "labs@chiibitsu.com"
+  },
+  "footer": {
+    "left": "Chiibitsu Labs · Based in Manila, working worldwide",
+    "middle": "More human, by design"
+  },
+  "premise": {
+    "h": "Both win by being early.",
+    "sub": "Businesses reach more people than any one person can, so they are best placed to move humanity forward. People are best placed to move their own families forward."
+  },
+  "parked": [],
+  "venn": {
+    "eyebrow": "01 · What I bring together",
+    "hand": "where real change happens",
+    "proof": {
+      "label": "Proof of work here →",
+      "href": "/angeline"
+    }
+  }
+}

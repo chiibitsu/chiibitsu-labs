@@ -1,0 +1,66 @@
+{
+  "knows": {
+    "eyebrow": "What your company knows",
+    "h": "Everyone has the same AI.",
+    "hEm": "Only you have what your company knows.",
+    "lose": {
+      "left": "the notebook stays empty",
+      "right": "what they knew leaves with them"
+    },
+    "keep": {
+      "left": "kept, used, getting smarter",
+      "right": "people can come and go"
+    },
+    "line": "Every day you keep it, it gets smarter. Every day you don’t, it walks out the door."
+  },
+  "closes": {
+    "eyebrow": "How the gap closes",
+    "h": "Systems. Behavior. Emerging tech.",
+    "hEm": "Designed together.",
+    "body": "A process may exist, but people work around it. Data may exist, but nobody trusts it. New tools arrive, and nobody changes how they work.",
+    "line": "Most AI help stops at the tools. Changing one without the others rarely holds.",
+    "labels": {
+      "systems": "Systems",
+      "behavior": "Behavior",
+      "tech": "Emerging tech",
+      "center": "Chiibitsu Labs"
+    }
+  },
+  "proof": {
+    "heading": "From insight to operating proof",
+    "note": "From the founder’s operating record",
+    "figures": [
+      {
+        "value": "₱28M",
+        "label": "peak quarterly revenue, on a mobility platform built from zero",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, from her own ventures (stated 2026-09-30)"
+      },
+      {
+        "value": "4,000+",
+        "label": "vehicles on that platform",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, from her own ventures (stated 2026-09-30)"
+      },
+      {
+        "value": "76,000",
+        "label": "members in a crypto community built into the country’s go-to group",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, from her own ventures (stated 2026-09-30)"
+      }
+    ],
+    "noteFirst": "From the founder’s operating record"
+  },
+  "invite": {
+    "h": "Make the choice",
+    "hEm": "before circumstance makes it for you.",
+    "body": "Bring the technology change, the unclear decision, the workflow that breaks, or the knowledge stuck in one head.",
+    "solo": {
+      "label": "Building on your own? Start here →",
+      "href": "/?for=solo"
+    }
+  }
+}
