@@ -181,9 +181,11 @@ export default function StillAbout() {
             {c.longBet.h} <em>{c.longBet.hEm}</em>
           </div>
           <div className="body" style={{ maxWidth: 820 }}>{c.longBet.body}</div>
-          <TrackedLink href={c.longBet.link.href} className="more" event="papers_click" eventProps={{ location: "about" }}>
-            <span style={{ color: "var(--accent)" }}>{c.longBet.link.label}</span>
-          </TrackedLink>
+          {"link" in c.longBet && (
+            <TrackedLink href={(c.longBet.link as { href: string }).href} className="more" event="papers_click" eventProps={{ location: "about" }}>
+              <span style={{ color: "var(--accent)" }}>{(c.longBet.link as { label: string }).label}</span>
+            </TrackedLink>
+          )}
         </div>
       </section>
 

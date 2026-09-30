@@ -7,7 +7,7 @@
   "nav": [
     {
       "label": "Work",
-      "href": "/#work"
+      "href": "/#proof"
     },
     {
       "label": "About",
@@ -16,14 +16,6 @@
     {
       "label": "Founder",
       "href": "/angeline"
-    },
-    {
-      "label": "Papers",
-      "href": "/#papers"
-    },
-    {
-      "label": "Investors",
-      "href": "/investor"
     }
   ],
   "cta": {
@@ -87,7 +79,7 @@
       },
       {
         "value": "76,000",
-        "label": "members in a crypto community built into the country’s go-to group",
+        "label": "members in an emerging-tech education community built from zero",
         "illustrative": false,
         "measuredOn": "2026-09-30",
         "source": "Chii, from her own ventures (stated 2026-09-30)"
@@ -112,7 +104,7 @@
       },
       {
         "dates": "2018 to 2019",
-        "title": "Product Head, crypto wallet",
+        "title": "Product Head, blockchain wallet",
         "org": "SCI Ventures",
         "body": "Took the wallet from founder vision to MVP. It was later acquired by a major Philippine financial institution."
       },
@@ -157,7 +149,7 @@
       },
       {
         "label": "Industries",
-        "title": "Fintech, crypto and Web3, AI platforms, mobility, employer of record, enterprise services, behavior change"
+        "title": "Fintech, blockchain and Web3, AI platforms, mobility, employer of record, enterprise services, behavior change"
       }
     ],
     "reach": "Operated across the Philippines, SEA, APAC, LATAM, the US and Europe"
@@ -168,17 +160,7 @@
       {
         "title": "The work",
         "body": "Companies we have built with",
-        "href": "/#work"
-      },
-      {
-        "title": "Papers",
-        "body": "Registered on the Aikiri Network",
-        "href": "/#papers"
-      },
-      {
-        "title": "Investor relations",
-        "body": "Company numbers, every Friday",
-        "href": "/investor"
+        "href": "/#proof"
       },
       {
         "title": "LinkedIn",

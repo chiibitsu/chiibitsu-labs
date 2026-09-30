@@ -9,6 +9,7 @@ const investor = load("investor");
 const about = load("about");
 const filmContent = load("film");
 const angeline = load("angeline");
+const proofContent = load("proof");
 const stillAbout = JSON.parse(fs.readFileSync(new URL("../content/still/about.json", import.meta.url), "utf8"));
 const problems = [];
 
@@ -41,6 +42,7 @@ walk(data, "home");
 walk(investor, "investor");
 walk(about, "about");
 walk(angeline, "angeline");
+walk(proofContent, "proof");
 walk(filmContent, "film");
 walk(stillAbout, "stillAbout");
 
@@ -68,6 +70,23 @@ for (const [name, d] of [["home", data], ["investor", investor]]) {
   for (const banned of [/\+72/, /\b72%/, /18×/, /3,900/, /churn/i]) {
     if (banned.test(all)) problems.push(`privacy: ${banned} is a number from a company Chii worked for and must not be on the site`);
   }
+}
+// Client names and logos appear only with the client's OK on record (Chii's verbal word, 2026-09-30; countersign on the Aikiri Network later).
+{
+  if (!proofContent.consent?.by || !proofContent.consent?.on || !proofContent.consent?.how) problems.push("proof: the consent record (by, how, on) is missing");
+  for (const [aud, list] of Object.entries(proofContent.cards)) {
+    for (const c of list) {
+      if (c.named === true && c.consent !== true) problems.push(`proof.cards.${aud}: ${c.industry} is named without a consent line`);
+      if (/crypto/i.test(JSON.stringify(c))) problems.push(`proof.cards.${aud}: say "blockchain", not "crypto", on the client-facing site`);
+    }
+  }
+}
+// Clients stay anonymous on the site until each countersigns on the Aikiri Network (Chii, 2026-09-30): no client names anywhere in the content.
+{
+  const all = JSON.stringify([data, about, filmContent, stillAbout, angeline, proofContent]);
+  const clients = /\b(Amplifi|Merg|Oasis Home|Paris Brocante|Rapide|Lica Group|Hertz|Decoworks|Canadian Kitchen|ABC Design|Marivic|Lhiza|Bunny|Mells|Danielle|Jason Ramirez|Pam Ramirez|Melissa Menes|David Lee|HAIVE)\b/i;
+  const hit = all.match(clients);
+  if (hit) problems.push(`clients: "${hit[0]}" is a client name; clients stay anonymous until they countersign`);
 }
 if (!/securities/i.test(investor.room.disclaimer)) problems.push("investor: the securities disclaimer is missing");
 if (investor.hero.cta.label !== "Request the data room →") problems.push("investor: CTA must be 'Request the data room →'");

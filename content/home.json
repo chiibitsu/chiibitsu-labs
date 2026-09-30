@@ -7,27 +7,19 @@
   "nav": [
     {
       "label": "Work",
-      "href": "#work"
+      "href": "#proof"
     },
     {
       "label": "How it runs",
-      "href": "#run"
+      "href": "#how-it-runs"
     },
     {
       "label": "About",
       "href": "/about"
     },
     {
-      "label": "Publication",
-      "href": "#publication"
-    },
-    {
-      "label": "Papers",
-      "href": "#papers"
-    },
-    {
-      "label": "Investors",
-      "href": "#investors"
+      "label": "Founder",
+      "href": "/angeline"
     }
   ],
   "cta": {
@@ -201,7 +193,7 @@
   },
   "proofOfWork": {
     "heading": "Proof of work",
-    "note": "Misses included · illustrative rows",
+    "note": "Misses included · counted 30 Sep 2026",
     "columns": [
       "Client",
       "Built",
@@ -210,40 +202,74 @@
     ],
     "rows": [
       {
-        "client": "Car rental group",
-        "built": "Branch cash dashboard",
-        "changed": "Cash review down to 5 minutes",
-        "miss": false,
-        "date": "Aug 2026",
-        "href": null,
-        "illustrative": true
-      },
-      {
-        "client": "Home and décor retailer",
-        "built": "AI content and packing assistant",
-        "changed": "Daily posts without the owner",
+        "client": "A social media analytics firm",
+        "built": "Capacity checker, AI skills, quality bar",
+        "changed": "Still in use; they run it themselves",
         "miss": false,
         "date": "Jul 2026",
-        "href": null,
-        "illustrative": true
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
       },
       {
-        "client": "Wellness clinic",
-        "built": "Booking reminders by chat",
-        "changed": "Didn't take: patients preferred calls",
+        "client": "A real estate firm",
+        "built": "21-person class; a daily-brief assistant for the CEO",
+        "changed": "Daily brief and meeting tasks run themselves",
+        "miss": false,
+        "date": "Jun 2026",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "client": "A home-goods company",
+        "built": "Workshop for two owners and six staff",
+        "changed": "The owner still uses AI daily",
+        "miss": false,
+        "date": "Jun 2026",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "client": "A retail shop",
+        "built": "Second brain, inventory, travel workflow",
+        "changed": "Still in sessions, building more",
+        "miss": false,
+        "date": "2026",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "client": "A cabinetry maker",
+        "built": "Private sessions",
+        "changed": "Didn't take: the classes didn't fit how they work; we're fixing the format",
         "miss": true,
-        "date": "May 2026",
-        "href": null,
-        "illustrative": true
+        "date": "2026",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "client": "A design studio",
+        "built": "One private session",
+        "changed": "Didn't take: it covered too much at once; lessons are now paced to the person",
+        "miss": true,
+        "date": "2026",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
       },
       {
         "client": "Chiibitsu Labs",
         "built": "Our own company, run on AI",
-        "changed": "See \"This week\"",
+        "changed": "22 workflows running",
         "miss": false,
-        "date": "Weekly",
-        "href": null,
-        "illustrative": true
+        "date": "Now",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
       }
     ],
     "linkLabel": "Receipt →"
@@ -324,8 +350,8 @@
   },
   "audit": {
     "heading": "Request a workflow audit",
-    "body": "This page is a placeholder. The audit request form is not built yet.",
-    "contact": "Until then, write to labs@chiibitsu.com.",
+    "body": "Send a short note to labs@chiibitsu.com about the workflow you want looked at.",
+    "contact": "Say what breaks when you are away, and who else is involved.",
     "back": "← Back to the home page"
   }
 }

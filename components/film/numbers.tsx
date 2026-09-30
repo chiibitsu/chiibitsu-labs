@@ -20,9 +20,9 @@ export function countUp(value: string, f: number): string {
 export type Figure = { value: string; label: string; illustrative?: boolean };
 
 // The figures row. Numbers are green (Chii override); a figure that is not real (dated and sourced) still carries the Illustrative label.
-export function Figures({ figures, p, from = 0.1 }: { figures: Figure[]; p: number; from?: number }) {
+export function Figures({ figures, p, from = 0.1, four }: { figures: Figure[]; p: number; from?: number; four?: boolean }) {
   return (
-    <div className="figs-film">
+    <div className={`figs-film${four ? " four" : ""}`}>
       {figures.map((f, i) => (
         <div key={f.value} className="fig-film">
           <div className={`figure${f.illustrative === false ? " real" : ""}`}>{countUp(f.value, ease(seg(p, from + i * 0.12, from + 0.5 + i * 0.12)))}</div>

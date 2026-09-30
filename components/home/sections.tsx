@@ -1,4 +1,3 @@
-import { Molecule } from "@/components/Molecule";
 import { SiteFooter } from "@/components/SiteFooter";
 import { TrackedLink } from "@/components/TrackedLink";
 import { content as c } from "@/lib/content";
@@ -9,58 +8,6 @@ import { seriesTag } from "@/lib/publication";
 const a = c.audiences;
 const both = ["companies", "solo"] as const;
 const Ill = () => <span className="ill">Illustrative</span>;
-
-export function Work() {
-  return (
-      <section id="work" className="section" style={{ gap: 24 }}>
-        <h2 className="w400">{c.work.heading}</h2>
-        <div className="logos">
-          {c.work.logos.map((l, i) => (
-            <div key={i} className="logo">
-              <span>{l.label}</span>
-              {l.illustrative && <Ill />}
-            </div>
-          ))}
-        </div>
-        <div className="cards3">
-          {c.work.cards.map((card) => (
-            <TrackedLink key={card.client} href={card.href} className="work-card note">
-              <div className="card-title nt">{card.client}</div>
-              <div className="body">{card.built}</div>
-              <div className="body" style={{ color: "var(--ink)" }}>{card.changed}</div>
-              <div className="caption">
-                {card.illustrative && <>Illustrative · </>}
-                {card.date} →
-              </div>
-            </TrackedLink>
-          ))}
-        </div>
-      </section>
-  );
-}
-
-export function Run() {
-  return (
-      <section id="how-it-runs" className="run">
-        <div className="run-copy">
-          {both.map((k) => (
-            <h2 key={k} className="w400" data-aud={k}>{a[k].run}</h2>
-          ))}
-          {both.map((k) => (
-            <p key={k} className="caption" data-aud={k} style={{ fontSize: 16 }}>{a[k].proof}</p>
-          ))}
-          {c.run.illustrative && <Ill />}
-        </div>
-        <Molecule
-          labels={c.run.moleculeLabels}
-          human={{
-            companies: { name: a.companies.humanName, note: a.companies.humanNote },
-            solo: { name: a.solo.humanName, note: a.solo.humanNote },
-          }}
-        />
-      </section>
-  );
-}
 
 export function ProofOfWork() {
   return (
@@ -76,18 +23,31 @@ export function ProofOfWork() {
             ))}
             <div />
           </div>
-          {c.proofOfWork.rows.map((r) => (
-            <TrackedLink key={r.client} href={r.href} className="pow-cols pow-row note">
-              <div>{r.client}</div>
-              <div>{r.built}</div>
-              <div className={r.miss ? "ink3" : undefined}>{r.changed}</div>
-              <div className="ink3">
-                <div>{r.date}</div>
-                {r.illustrative && <Ill />}
+          {c.proofOfWork.rows.map((r) => {
+            const href = "href" in r ? (r.href as string | null) : undefined;
+            const cells = (
+              <>
+                <div>{r.client}</div>
+                <div>{r.built}</div>
+                <div className={r.miss ? "ink3" : undefined}>{r.changed}</div>
+                <div className="ink3">
+                  <div>{r.date}</div>
+                  {r.illustrative && <Ill />}
+                </div>
+                <div className="go">{href !== undefined ? c.proofOfWork.linkLabel : null}</div>
+              </>
+            );
+            // A row links to its receipt only when there is one; until then it is a plain row.
+            return href !== undefined ? (
+              <TrackedLink key={r.client} href={href} className="pow-cols pow-row note">
+                {cells}
+              </TrackedLink>
+            ) : (
+              <div key={r.client} className="pow-cols pow-row">
+                {cells}
               </div>
-              <div className="go">{c.proofOfWork.linkLabel}</div>
-            </TrackedLink>
-          ))}
+            );
+          })}
         </div>
       </section>
   );

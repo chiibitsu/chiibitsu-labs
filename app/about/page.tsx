@@ -63,7 +63,7 @@ export default function About() {
           line={film.knows.line}
         />
 
-        <LongBetScene label={c.longBet.eyebrow} parts={[{ t: c.longBet.h }, { t: c.longBet.hEm, em: true }]} body={c.longBet.body} link={c.longBet.link} />
+        <LongBetScene label={c.longBet.eyebrow} parts={[{ t: c.longBet.h }, { t: c.longBet.hEm, em: true }]} body={c.longBet.body} link={"link" in c.longBet ? (c.longBet.link as { label: string; href: string }) : undefined} />
 
         <FounderScene
           eyebrow={c.founder.eyebrow}

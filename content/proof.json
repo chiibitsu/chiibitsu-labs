@@ -1,0 +1,131 @@
+{
+  "consent": {
+    "by": "Chii",
+    "how": "verbal",
+    "on": "2026-09-30",
+    "countersign": "pending, on the Aikiri Network"
+  },
+  "scene": {
+    "label": "Who we've built with",
+    "heading": "Who we've built with",
+    "marks": {
+      "companies": [
+        "Media analytics",
+        "Real estate",
+        "Home goods"
+      ],
+      "solo": [
+        "Retail and e-commerce",
+        "Mentoring",
+        "Private sessions"
+      ]
+    },
+    "note": "Anonymised for now. Each client will countersign on the Aikiri Network, and then we name them."
+  },
+  "cards": {
+    "companies": [
+      {
+        "industry": "A social media analytics firm",
+        "need": "Every report ran through a chaotic analyst workflow.",
+        "solution": "We mapped the workflow, built AI skills on a shared knowledge base, and set a quality bar against AI slop.",
+        "result": "Still in use on every report. They run it themselves.",
+        "date": "Jul 2026",
+        "named": false,
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "industry": "A real estate firm",
+        "need": "A team of 21 that wanted AI on their real work.",
+        "solution": "An AI at Work class on their files, then private sessions with the CEO, who built her own assistant.",
+        "result": "Her assistant still runs her daily brief and her weekly meeting tasks.",
+        "date": "Jun 2026",
+        "named": false,
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "industry": "A home-goods company",
+        "need": "A sales and marketing team new to AI.",
+        "solution": "A four-hour workshop in their office, for two owners and six employees.",
+        "result": "The owner still uses AI daily and keeps advancing. An ongoing relationship.",
+        "date": "Jun 2026",
+        "named": false,
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      }
+    ],
+    "solo": [
+      {
+        "industry": "A shop owner in retail and e-commerce",
+        "need": "An owner who wanted AI to carry the routine work of a small shop.",
+        "solution": "Private sessions: a second brain, an inventory intake, a travel workflow.",
+        "result": "Still in sessions, with a lot of projects going.",
+        "date": "2026",
+        "named": false,
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "industry": "A business owner, mentored since 2024",
+        "need": "Wanted AI to become a daily habit.",
+        "solution": "One-to-one mentoring, then a daily practice she keeps herself.",
+        "result": "Still practises daily.",
+        "date": "Oct 2024 →",
+        "named": false,
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "industry": "A private-session client",
+        "need": "Wanted one place to keep and use what she learns.",
+        "solution": "Private sessions: a second brain and an art study partner.",
+        "result": "Still using both after the sessions ended.",
+        "date": "2026",
+        "named": false,
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      }
+    ]
+  },
+  "record": {
+    "heading": "The record",
+    "note": "Counted by written rules, as of 30 Sep 2026. The counts change when the work does.",
+    "figures": [
+      {
+        "value": "7 of 9",
+        "label": "clients still use what we built, a month or more on",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "value": "58",
+        "label": "people trained in AI at Work in 2026: 52 in Use Case Labs and online workshops, 6 in private sessions",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "value": "5 of 8",
+        "label": "went from AI beginner to running AI on their own work, in private sessions formal and informal",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "value": "22 + 9",
+        "label": "workflows running on AI: ours, and our clients'",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      }
+    ]
+  }
+}

@@ -3108,3 +3108,143 @@ html:not([data-js]) .day {
     display: none;
   }
 }
+
+/* Who we've built with (home film) */
+.proof-aud {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: 100%;
+  align-items: center;
+}
+.proof-marks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 14px;
+}
+.proof-mark {
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  padding: 8px 16px;
+  border: 1px solid var(--rule);
+  background: var(--card);
+  color: var(--ink);
+}
+.proof-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1040px;
+}
+.proof-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 18px 16px;
+  border: 1px solid var(--rule);
+  border-top: 1px solid var(--ink);
+  background: var(--card);
+  opacity: 0.2;
+  transition: opacity 0.4s;
+}
+.proof-card.on {
+  opacity: 1;
+}
+.proof-name {
+  font-family: var(--serif);
+  font-size: 24px;
+  line-height: 1.2;
+}
+.proof-now {
+  color: var(--ink);
+}
+.run-film {
+  width: 100%;
+  max-width: 580px;
+}
+@media (max-width: 640px) {
+  .proof-cards {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 420px;
+  }
+  .proof-card.off {
+    display: none;
+  }
+  .proof-name {
+    font-size: 22px;
+  }
+  .proof-aud {
+    gap: 14px;
+  }
+  .proof-mark {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .proof-card {
+    opacity: 1;
+  }
+  .proof-card.off {
+    display: flex;
+  }
+}
+html:not([data-js]) .proof-card {
+  opacity: 1;
+}
+
+/* Scene lengths: story scenes with little to animate run shorter. */
+#note,
+#how-it-runs,
+#working,
+#record {
+  height: 200vh;
+}
+#proof {
+  height: 230vh;
+}
+.proof-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 10px;
+  align-items: baseline;
+}
+.proof-k {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.day-hud {
+  transform: translateY(30px);
+}
+@media (max-width: 640px) {
+  .day-hud {
+    transform: translateY(6px);
+  }
+  .proof-row {
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #note,
+  #how-it-runs,
+  #working,
+  #record,
+  #proof {
+    height: auto;
+  }
+  .day-hud {
+    transform: none;
+  }
+}
+html:not([data-js]) #note,
+html:not([data-js]) #how-it-runs,
+html:not([data-js]) #working,
+html:not([data-js]) #record,
+html:not([data-js]) #proof {
+  height: auto;
+}
