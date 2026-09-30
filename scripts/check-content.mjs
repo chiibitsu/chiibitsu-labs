@@ -76,9 +76,17 @@ for (const [name, d] of [["home", data], ["investor", investor]]) {
   if (!proofContent.consent?.by || !proofContent.consent?.on || !proofContent.consent?.how) problems.push("proof: the consent record (by, how, on) is missing");
   for (const [aud, list] of Object.entries(proofContent.cards)) {
     for (const c of list) {
-      if (c.illustrative === false && c.consent !== true) problems.push(`proof.cards.${aud}: ${c.name} is named without a consent line`);
+      if (c.named === true && c.consent !== true) problems.push(`proof.cards.${aud}: ${c.industry} is named without a consent line`);
+      if (/crypto/i.test(JSON.stringify(c))) problems.push(`proof.cards.${aud}: say "blockchain", not "crypto", on the client-facing site`);
     }
   }
+}
+// Clients stay anonymous on the site until each countersigns on the Aikiri Network (Chii, 2026-09-30): no client names anywhere in the content.
+{
+  const all = JSON.stringify([data, about, filmContent, stillAbout, angeline, proofContent]);
+  const clients = /\b(Amplifi|Merg|Oasis Home|Paris Brocante|Rapide|Lica Group|Hertz|Decoworks|Canadian Kitchen|ABC Design|Marivic|Lhiza|Bunny|Mells|Danielle|Jason Ramirez|Pam Ramirez|Melissa Menes|David Lee|HAIVE)\b/i;
+  const hit = all.match(clients);
+  if (hit) problems.push(`clients: "${hit[0]}" is a client name; clients stay anonymous until they countersign`);
 }
 if (!/securities/i.test(investor.room.disclaimer)) problems.push("investor: the securities disclaimer is missing");
 if (investor.hero.cta.label !== "Request the data room →") problems.push("investor: CTA must be 'Request the data room →'");

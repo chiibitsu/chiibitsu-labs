@@ -18,16 +18,8 @@
       "href": "/about"
     },
     {
-      "label": "Publication",
-      "href": "#publication"
-    },
-    {
-      "label": "Papers",
-      "href": "#papers"
-    },
-    {
-      "label": "Investors",
-      "href": "#investors"
+      "label": "Founder",
+      "href": "/angeline"
     }
   ],
   "cta": {
@@ -210,8 +202,8 @@
     ],
     "rows": [
       {
-        "client": "Amplifi",
-        "built": "Capacity checker and onboarding skill",
+        "client": "A social media analytics firm",
+        "built": "Capacity checker, AI skills, quality bar",
         "changed": "Still in use; they run it themselves",
         "miss": false,
         "date": "Jul 2026",
@@ -220,9 +212,9 @@
         "source": "Chii, stated 2026-09-30"
       },
       {
-        "client": "Merg Realty",
-        "built": "21-person workshop; Noti for the CEO",
-        "changed": "Daily brief, L10 tasks and Rocks now run themselves",
+        "client": "A real estate firm",
+        "built": "21-person class; a daily-brief assistant for the CEO",
+        "changed": "Daily brief and meeting tasks run themselves",
         "miss": false,
         "date": "Jun 2026",
         "illustrative": false,
@@ -230,9 +222,9 @@
         "source": "Chii, stated 2026-09-30"
       },
       {
-        "client": "Oasis Home",
+        "client": "A home-goods company",
         "built": "Workshop for two owners and six staff",
-        "changed": "An ongoing relationship",
+        "changed": "The owner still uses AI daily",
         "miss": false,
         "date": "Jun 2026",
         "illustrative": false,
@@ -240,7 +232,7 @@
         "source": "Chii, stated 2026-09-30"
       },
       {
-        "client": "Paris Brocante",
+        "client": "A retail shop",
         "built": "Second brain, inventory, travel workflow",
         "changed": "Still in sessions, building more",
         "miss": false,
@@ -358,8 +350,8 @@
   },
   "audit": {
     "heading": "Request a workflow audit",
-    "body": "This page is a placeholder. The audit request form is not built yet.",
-    "contact": "Until then, write to labs@chiibitsu.com.",
+    "body": "Send a short note to labs@chiibitsu.com about the workflow you want looked at.",
+    "contact": "Say what breaks when you are away, and who else is involved.",
     "back": "← Back to the home page"
   }
 }

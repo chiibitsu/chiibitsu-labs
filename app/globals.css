@@ -3194,3 +3194,57 @@ html:not([data-js]) .day {
 html:not([data-js]) .proof-card {
   opacity: 1;
 }
+
+/* Scene lengths: story scenes with little to animate run shorter. */
+#note,
+#how-it-runs,
+#working,
+#record {
+  height: 200vh;
+}
+#proof {
+  height: 230vh;
+}
+.proof-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 10px;
+  align-items: baseline;
+}
+.proof-k {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.day-hud {
+  transform: translateY(30px);
+}
+@media (max-width: 640px) {
+  .day-hud {
+    transform: translateY(6px);
+  }
+  .proof-row {
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #note,
+  #how-it-runs,
+  #working,
+  #record,
+  #proof {
+    height: auto;
+  }
+  .day-hud {
+    transform: none;
+  }
+}
+html:not([data-js]) #note,
+html:not([data-js]) #how-it-runs,
+html:not([data-js]) #working,
+html:not([data-js]) #record,
+html:not([data-js]) #proof {
+  height: auto;
+}

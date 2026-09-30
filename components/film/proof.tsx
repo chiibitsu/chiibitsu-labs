@@ -9,7 +9,7 @@ import { seg, useNarrow } from "./scroll";
 const dim = (on: boolean) => `dim${on ? " on" : ""}`;
 const both = ["companies", "solo"] as const;
 type Aud = (typeof both)[number];
-type Card = { name: string; built: string; now: string; date: string };
+type Card = { industry: string; need: string; solution: string; result: string; date: string };
 
 // "Who we've built with": the names first, then one case card per scroll step. On a phone one card shows at a time.
 // Names appear only with the client's OK on record (content/proof.json, consent).
@@ -48,10 +48,11 @@ export function ProofScene({
                   {cards[k].map((c, i) => {
                     const on = p > 0.16 + i * 0.22;
                     return (
-                      <div key={c.name} className={`proof-card${on ? " on" : ""}${narrow && i !== stage ? " off" : ""}`}>
-                        <div className="proof-name">{c.name}</div>
-                        <div className="body">{c.built}</div>
-                        <div className="body proof-now">{c.now}</div>
+                      <div key={c.industry} className={`proof-card${on ? " on" : ""}${narrow && i !== stage ? " off" : ""}`}>
+                        <div className="proof-name">{c.industry}</div>
+                        <div className="proof-row"><span className="proof-k">Need</span><span className="body">{c.need}</span></div>
+                        <div className="proof-row"><span className="proof-k">Built</span><span className="body">{c.solution}</span></div>
+                        <div className="proof-row"><span className="proof-k">Result</span><span className="body proof-now">{c.result}</span></div>
                         <div className="caption">{c.date}</div>
                       </div>
                     );

@@ -311,7 +311,7 @@ export function LongBetScene({
   label?: string;
   parts: Part[];
   body: string;
-  link: Link;
+  link?: Link;
 }) {
   return (
     <SceneFrame id={id}>
@@ -343,11 +343,13 @@ export function LongBetScene({
               <LitWords parts={parts} f={0.2 + p * 1.6} />
             </h2>
             <p className={`film-sub ${dim(p > 0.6)}`}>{body}</p>
-            <div className={dim(p > 0.85)}>
-              <TrackedLink href={link.href} className="more film-link" event="papers_click" eventProps={{ location: "about" }}>
-                {link.label}
-              </TrackedLink>
-            </div>
+            {link && (
+              <div className={dim(p > 0.85)}>
+                <TrackedLink href={link.href} className="more film-link" event="papers_click" eventProps={{ location: "about" }}>
+                  {link.label}
+                </TrackedLink>
+              </div>
+            )}
           </>
         );
       }}

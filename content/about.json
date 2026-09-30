@@ -7,7 +7,7 @@
   "nav": [
     {
       "label": "Work",
-      "href": "/#work"
+      "href": "/#proof"
     },
     {
       "label": "About",
@@ -16,14 +16,6 @@
     {
       "label": "Founder",
       "href": "/angeline"
-    },
-    {
-      "label": "Papers",
-      "href": "/#papers"
-    },
-    {
-      "label": "Investors",
-      "href": "/investor"
     }
   ],
   "cta": {
@@ -99,10 +91,6 @@
     "h": "Science moves because labs share what they learn.",
     "hEm": "A future-forward business helps move humanity forward.",
     "body": "What your company knows stays yours. What it learns can lift everyone who comes after. That is the long bet.",
-    "link": {
-      "label": "Read the paper →",
-      "href": "/#papers"
-    },
     "eyebrow": "Where this is going"
   },
   "work": {

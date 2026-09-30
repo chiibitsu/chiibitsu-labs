@@ -7,17 +7,17 @@ import { InviteScene } from "@/components/film/invite";
 import { ProofScene, RecordScene, RunScene } from "@/components/film/proof";
 import { LetterScene, PathScene } from "@/components/film/scenes2";
 import { TriptychScene } from "@/components/film/triptych";
-import { HomeFooter, Investors, Papers, ProofOfWork, Publication } from "@/components/home/sections";
+import { HomeFooter, ProofOfWork } from "@/components/home/sections";
 import { content as c } from "@/lib/content";
 import { film } from "@/lib/film";
 import { proof } from "@/lib/proof";
 
 const both = ["companies", "solo"] as const;
 
-// Home in scroll-film mode, eight scenes: the owner hook, the founder's note, what changes, who we've built with,
-// working with us (the path), how it runs (the diagram), the record (four counts), the invitation.
-// Behind them runs "A day with the ghost team". What a visitor scans, compares or clicks through stays a still
-// section after the film: proof of work, Publication, Papers, investors.
+// Home in scroll-film mode, eight scenes: the owner hook, the founder's note, what changes, how it runs (the diagram),
+// working with us (the path), who we've built with, the record (four counts), the invitation.
+// Behind them runs "A day with the ghost team". After the film: the proof-of-work table and the footer.
+// Publication, Papers and For investors are built (components/home/sections.tsx) but hidden until they hold real content.
 export default function Home() {
   const a = c.audiences;
   return (
@@ -39,6 +39,7 @@ export default function Home() {
           ))}
 
           <LetterScene
+            id="note"
             label={c.letter.label}
             open={c.letter.open}
             letters={{ companies: a.companies.letter, solo: a.solo.letter }}
@@ -48,15 +49,6 @@ export default function Home() {
           />
 
           <TriptychScene label={c.changes.heading} items={c.changes.items} line={c.changes.seasoning} />
-
-          <ProofScene id="proof" heading={proof.scene.heading} marks={proof.scene.marks} cards={proof.cards} note={proof.scene.note} />
-
-          <PathScene
-            id="working"
-            parts={[{ t: c.engage.heading }]}
-            steps={c.engage.steps}
-            cta={{ label: c.cta.label, href: c.cta.href, location: "run" }}
-          />
 
           <RunScene
             id="how-it-runs"
@@ -69,7 +61,16 @@ export default function Home() {
             }}
           />
 
-          <RecordScene heading={proof.record.heading} note={proof.record.note} figures={proof.record.figures} />
+          <PathScene
+            id="working"
+            parts={[{ t: c.engage.heading }]}
+            steps={c.engage.steps}
+            cta={{ label: c.cta.label, href: c.cta.href, location: "run" }}
+          />
+
+          <ProofScene id="proof" heading={proof.scene.heading} marks={proof.scene.marks} cards={proof.cards} note={proof.scene.note} />
+
+          <RecordScene id="record" heading={proof.record.heading} note={proof.record.note} figures={proof.record.figures} />
 
           <InviteScene
             id="engage"
@@ -83,9 +84,6 @@ export default function Home() {
 
         <div className="page still">
           <ProofOfWork />
-          <Publication />
-          <Papers />
-          <Investors />
           <HomeFooter />
         </div>
       </main>
