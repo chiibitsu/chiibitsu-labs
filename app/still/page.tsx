@@ -183,7 +183,7 @@ export default function StillHome() {
             <div />
           </div>
           {c.proofOfWork.rows.map((r) => (
-            <TrackedLink key={r.client} href={r.href} className="pow-cols pow-row note">
+            <div key={r.client} className="pow-cols pow-row">
               <div>{r.client}</div>
               <div>{r.built}</div>
               <div className={r.miss ? "ink3" : undefined}>{r.changed}</div>
@@ -191,8 +191,8 @@ export default function StillHome() {
                 <div>{r.date}</div>
                 {r.illustrative && <Ill />}
               </div>
-              <div className="go">{c.proofOfWork.linkLabel}</div>
-            </TrackedLink>
+              <div />
+            </div>
           ))}
         </div>
       </section>

@@ -1,0 +1,132 @@
+{
+  "consent": {
+    "by": "Chii",
+    "how": "verbal",
+    "on": "2026-09-30",
+    "countersign": "pending, on the Aikiri Network"
+  },
+  "scene": {
+    "label": "Who we've built with",
+    "heading": "Who we've built with",
+    "marks": {
+      "companies": [
+        "Amplifi",
+        "Merg Realty",
+        "Oasis Home"
+      ],
+      "solo": [
+        "Paris Brocante",
+        "Marivic",
+        "Lhiza",
+        "Bunny"
+      ]
+    },
+    "note": "Named with their OK. Each will countersign on the Aikiri Network."
+  },
+  "cards": {
+    "companies": [
+      {
+        "name": "Amplifi",
+        "slug": "amplifi",
+        "built": "A capacity checker and an onboarding skill, built with the team.",
+        "now": "Still in use. They run it themselves.",
+        "date": "Jul 2026",
+        "consent": true,
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "name": "Merg Realty",
+        "slug": "merg-realty",
+        "built": "A 21-person AI workshop, then private sessions with the CEO.",
+        "now": "Her Telegram assistant, Noti, runs her daily brief, L10 tasks and Rocks reminders.",
+        "date": "Jun 2026",
+        "consent": true,
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "name": "Oasis Home",
+        "slug": "oasis-home",
+        "built": "A workshop for two owners and six employees, in their office. The first one.",
+        "now": "An ongoing relationship.",
+        "date": "Jun 2026",
+        "consent": true,
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      }
+    ],
+    "solo": [
+      {
+        "name": "Marivic · Paris Brocante",
+        "slug": "paris-brocante",
+        "built": "A second brain, an inventory intake and a travel workflow for her shop.",
+        "now": "Still in private sessions, with a lot of projects going.",
+        "date": "2026",
+        "consent": true,
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "name": "Lhiza",
+        "slug": "lhiza",
+        "built": "Mentoring since 2024, then daily AI habits.",
+        "now": "Still does her daily reps.",
+        "date": "Oct 2024 →",
+        "consent": true,
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "name": "Bunny",
+        "slug": "bunny",
+        "built": "Private sessions: a second brain and an art study partner.",
+        "now": "Still using both after the sessions ended.",
+        "date": "2026",
+        "consent": true,
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      }
+    ]
+  },
+  "record": {
+    "heading": "The record",
+    "note": "Counted by written rules, as of 30 Sep 2026. The counts change when the work does.",
+    "figures": [
+      {
+        "value": "52",
+        "label": "people taught in workshops and classes: 23 online, 8 at Oasis Home, 21 at Merg, Amplifi and Rapide",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "value": "5 of 8",
+        "label": "went from newbie to AI boss in private sessions",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "value": "22 + 9",
+        "label": "workflows AI-fied: mine, and my clients'",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "value": "7 of 9",
+        "label": "clients still use what we built, a month or more on",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      }
+    ]
+  }
+}
