@@ -5,7 +5,8 @@ import { FilmProgress } from "@/components/film/FilmProgress";
 import { ForkScene } from "@/components/film/fork";
 import { FounderScene } from "@/components/film/founder";
 import { InviteScene } from "@/components/film/invite";
-import { ChainScene, LongBetScene, SpheresScene, ThesisScene } from "@/components/film/scenes";
+import { ChainScene, DoorScene, LongBetScene, SpheresScene, ThesisScene } from "@/components/film/scenes";
+import { FlipScene, PathScene } from "@/components/film/scenes2";
 import { about as c } from "@/lib/about";
 import { film } from "@/lib/film";
 
@@ -14,15 +15,21 @@ export const metadata: Metadata = {
   description: c.meta.description,
 };
 
-// /about in scroll-film mode. Scenes, in order: the mission, the four waves, the spheres, "You choose",
-// the long bet, Chii with the photo and the numbers, the invitation.
+// /about in scroll-film mode, ten scenes: A1 mission, A2 the waves, A3 How I work 01 (the spheres), A4 How I work 02 (the fork),
+// A5 How I work 03 (the path), A6 what changes (the cards flip as you scroll), A7 the moat (the door, with the compare toggle at the end),
+// A8 the long bet, A9 who is behind it, A10 the invitation. No background layer on this page.
 export default function About() {
   return (
     <>
       <FilmProgress />
       <FilmBar nav={c.nav} cta={c.cta} location="about_nav" shift={c.shift.label} />
       <main>
-        <ThesisScene label={c.hero.eyebrow} parts={[{ t: c.hero.h1a }, { t: c.hero.h1b, em: true }]} sub={c.hero.sub} />
+        <ThesisScene
+          label={c.hero.eyebrow}
+          parts={[{ t: c.hero.h1a }, { t: c.hero.h1b, em: true }]}
+          sub={c.hero.sub}
+          sub2={`${c.premise.sub} ${c.premise.h}`}
+        />
 
         <ChainScene parts={[{ t: c.waves.h }]} caption={c.waves.caption} nodes={c.waves.items} hand={c.waves.here} />
 
@@ -42,6 +49,19 @@ export default function About() {
           body={c.choice.body}
           alt={c.choice.alt}
           labels={c.choice.labels}
+        />
+
+        <PathScene label={c.work.eyebrow} parts={[{ t: c.work.heading }]} steps={c.work.steps} />
+
+        <FlipScene heading={c.changes.heading} cards={c.changes.cards} labels={c.changes} />
+
+        <DoorScene
+          label={film.knows.eyebrow}
+          parts={[{ t: film.knows.h }, { t: film.knows.hEm, em: true }]}
+          lose={film.knows.lose}
+          keep={film.knows.keep}
+          line={film.knows.line}
+          compare={c.knows}
         />
 
         <LongBetScene label={c.longBet.eyebrow} parts={[{ t: c.longBet.h }, { t: c.longBet.hEm, em: true }]} body={c.longBet.body} link={c.longBet.link} />
@@ -68,7 +88,7 @@ export default function About() {
         />
 
         <div className="page still">
-          <SiteFooter left={c.footer.left} middle={c.footer.middle} updated={c.meta.updated} />
+          <SiteFooter left={c.footer.left} middle={c.footer.middle} />
         </div>
       </main>
     </>

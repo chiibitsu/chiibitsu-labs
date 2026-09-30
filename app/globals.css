@@ -2513,8 +2513,18 @@ html:not([data-js]) .tri-item .chain-b {
 
 .foot-legal {
   flex: 1 0 100%;
-  padding-bottom: 6px;
-  text-align: right;
+  padding-top: 14px;
+  text-align: center;
+}
+.founder-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+}
+.founder-link:hover,
+.founder-link:focus-visible {
+  color: var(--accent);
 }
 
 /* /angeline: the founder page (still lab-notebook) */
@@ -2752,4 +2762,343 @@ html:not([data-js]) .tri-item .chain-b {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink);
+}
+
+/* Letter scene (home H2) */
+.letter-film {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+  text-align: center;
+  max-width: 820px;
+}
+.letter-line {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(20px, 2.4vw, 28px);
+  line-height: 1.4;
+  color: var(--ink);
+}
+.letter-sign-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.letter-sign {
+  font-size: clamp(44px, 6vw, 72px);
+  line-height: 1;
+}
+.letter-sign .founder-link,
+.letter-sign a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.letter-sign-wrap .pen {
+  width: min(200px, 60%);
+  height: auto;
+}
+
+/* Path scene (home H4, about A5): the line fills as the scene plays */
+.path {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  gap: 28px;
+  width: 100%;
+  max-width: 1040px;
+}
+.path-line {
+  position: absolute;
+  top: 20px;
+  left: calc(50% / var(--n));
+  right: calc(50% / var(--n));
+  height: 2px;
+  background: var(--rule);
+}
+.path-line i {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(var(--f));
+}
+.path-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  opacity: 0.25;
+  transition: opacity 0.4s;
+}
+.path-step.on {
+  opacity: 1;
+}
+.path-dot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.6px solid var(--ink);
+  background: var(--ground);
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  z-index: 1;
+}
+.path-step.last.on .path-dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+.path-t {
+  font-family: var(--serif);
+  font-size: clamp(22px, 2.4vw, 28px);
+  line-height: 1.2;
+}
+.path-b {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 24em;
+}
+
+/* Week scene (home H5) */
+.week-shift {
+  font-size: 14px;
+  color: var(--ink-3);
+}
+.week-shift .dot {
+  color: var(--accent);
+}
+.pulse-dot {
+  display: inline-block;
+  animation: dotpulse 2s ease-in-out infinite;
+}
+@keyframes dotpulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+}
+.figs-film.four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.figs-film.four .fig-film:nth-child(3) {
+  border-right: 1px solid var(--rule);
+}
+.figs-film.four .fig-film:last-child {
+  border-right: none;
+}
+
+/* Flip scene (about A6) */
+.flips-film {
+  width: 100%;
+  max-width: 1040px;
+}
+.flips-film .flip-slot {
+  min-width: 0;
+}
+
+/* Door compare toggle (about A7) */
+.compare-film {
+  justify-content: center;
+}
+.compare-film button {
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .figs-film.four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .figs-film.four .fig-film:nth-child(2) {
+    border-right: none;
+  }
+  .figs-film.four .fig-film:nth-child(3) {
+    border-right: 1px solid var(--rule);
+  }
+  .flips-film {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .letter-film {
+    gap: 12px;
+  }
+  .path {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    max-width: 420px;
+  }
+  .path-line {
+    top: 20px;
+    bottom: 20px;
+    left: 19px;
+    right: auto;
+    width: 2px;
+    height: auto;
+  }
+  .path-line i {
+    transform-origin: top;
+    transform: scaleY(var(--f));
+    width: 100%;
+    height: 100%;
+  }
+  .path-step {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    column-gap: 16px;
+    row-gap: 2px;
+    text-align: left;
+    align-items: center;
+  }
+  .path-dot {
+    grid-row: 1 / span 2;
+  }
+  .figs-film.four {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .figs-film.four .fig-film,
+  .figs-film.four .fig-film:nth-child(2),
+  .figs-film.four .fig-film:nth-child(3) {
+    border-right: none;
+    padding: 4px 0;
+  }
+  .flips-film {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 420px;
+  }
+  .flips-film .flip-slot.off {
+    display: none;
+  }
+  .flips-film .flip {
+    height: 300px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .path-step,
+  .pulse-dot {
+    opacity: 1;
+    animation: none;
+  }
+  .path-line i {
+    transform: none;
+  }
+  .flips-film .flip-slot.off {
+    display: block;
+  }
+}
+html:not([data-js]) .path-step {
+  opacity: 1;
+}
+html:not([data-js]) .path-line i {
+  transform: none;
+}
+
+/* A day with the ghost team: the layer behind the home film */
+.film {
+  position: relative;
+}
+.fscene .pin {
+  z-index: 1;
+}
+.day {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  pointer-events: none;
+}
+.day-inner {
+  width: 100%;
+  max-width: 1180px;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.day-hud {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-size: 13px;
+  line-height: 1.3;
+  color: var(--ink-3);
+  min-height: 20px;
+}
+.day-clock {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+.day-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.day-art * {
+  vector-effect: non-scaling-stroke;
+}
+.day-art [data-k] {
+  opacity: 0;
+}
+.day-ink {
+  opacity: 0.34;
+}
+.day-fly {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 64px;
+  height: 40px;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.day-fly svg {
+  display: block;
+}
+@media (max-width: 640px) {
+  .day-inner {
+    padding: 0 10px 4px;
+  }
+  .fscene .pin {
+    padding-bottom: 104px;
+  }
+}
+/* Reduced motion and no scripts: the final frame, in the flow at the end of the film. */
+@media (prefers-reduced-motion: reduce) {
+  .day {
+    position: relative;
+    inset: auto;
+    height: auto;
+    padding-top: 40px;
+    z-index: auto;
+  }
+  .day-fly {
+    position: relative;
+    display: none;
+  }
+  .fscene .pin {
+    padding-bottom: 96px;
+  }
+}
+html:not([data-js]) .day {
+  display: none;
+}
+
+.figs-film .more {
+  white-space: normal;
+  overflow-wrap: anywhere;
 }

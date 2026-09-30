@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { FounderLink } from "@/components/FounderLink";
 import { TrackedLink } from "@/components/TrackedLink";
 import { Figures, type Figure } from "./numbers";
 import { SceneFrame } from "./SceneFrame";
@@ -41,8 +42,8 @@ export function FounderScene({
             </div>
             <div className="founder-copy">
               <div className="eyebrow">{eyebrow}</div>
-              <div className="founder-name">{name}</div>
-              <div className="caption">{role}</div>
+              <div className="founder-name"><FounderLink>{name}</FounderLink></div>
+              <div className="caption"><FounderLink>{role}</FounderLink></div>
               <div className="mid-line">
                 {line} <em>{lineEm}</em>
               </div>

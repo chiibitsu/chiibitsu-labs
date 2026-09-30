@@ -10,25 +10,6 @@ const a = c.audiences;
 const both = ["companies", "solo"] as const;
 const Ill = () => <span className="ill">Illustrative</span>;
 
-export function Letter() {
-  return (
-      <section className="letter">
-        <div className="eyebrow">A note<br />from the founder</div>
-        <div className="letter-body">
-          <p>{c.letter.open}</p>
-          {both.map((k) => (
-            <p key={k} data-aud={k}>{a[k].letter}</p>
-          ))}
-          <p>{c.letter.close}</p>
-          <div>
-            <div className="signature">{c.letter.signature}</div>
-            <div className="byline">{c.letter.byline}</div>
-          </div>
-        </div>
-      </section>
-  );
-}
-
 export function Work() {
   return (
       <section id="work" className="section" style={{ gap: 24 }}>
@@ -60,7 +41,7 @@ export function Work() {
 
 export function Run() {
   return (
-      <section id="run" className="run">
+      <section id="how-it-runs" className="run">
         <div className="run-copy">
           {both.map((k) => (
             <h2 key={k} className="w400" data-aud={k}>{a[k].run}</h2>
@@ -77,31 +58,6 @@ export function Run() {
             solo: { name: a.solo.humanName, note: a.solo.humanNote },
           }}
         />
-      </section>
-  );
-}
-
-export function Week() {
-  return (
-      <section className="section" style={{ gap: 20 }}>
-        <div className="week-head">
-          <h2>{c.week.heading}</h2>
-          <div className="ill" style={{ fontSize: 14 }}>{c.week.note}</div>
-        </div>
-        <div className="metrics">
-          {c.week.metrics.map((m) => {
-            const real = !m.illustrative;
-            return (
-              <div key={m.key} className="metric">
-                <div className={real ? "figure real" : "figure"}>{m.value}</div>
-                <TrackedLink href={m.href} className="more" event="metric_click" eventProps={{ metric: m.key }}>
-                  {m.label} →
-                </TrackedLink>
-                {m.illustrative && <Ill />}
-              </div>
-            );
-          })}
-        </div>
       </section>
   );
 }
@@ -162,26 +118,6 @@ export function Publication() {
   );
 }
 
-export function Working() {
-  return (
-      <section id="working" className="section" style={{ gap: 32 }}>
-        <h2>{c.engage.heading}</h2>
-        <ol className="steps" style={{ listStyle: "none", margin: 0, padding: 0 }}>
-          {c.engage.steps.map((s, i) => (
-            <li key={s.title} className="step">
-              <span className="step-dot" aria-hidden="true">{i + 1}</span>
-              <div className="card-title">{s.title}</div>
-              <div className="body">{s.body}</div>
-            </li>
-          ))}
-        </ol>
-        <TrackedLink href={c.cta.href} className="btn big engage-cta" event="cta_click" eventProps={{ location: "working" }}>
-          {c.cta.label}
-        </TrackedLink>
-      </section>
-  );
-}
-
 export function Papers() {
   return (
       <section id="papers">
@@ -217,7 +153,7 @@ export function Investors() {
 
 export function HomeFooter() {
   return (
-      <SiteFooter left={c.footer.left} middle={c.footer.middle} updated={c.meta.updated} />
+      <SiteFooter left={c.footer.left} middle={c.footer.middle} />
     
   );
 }

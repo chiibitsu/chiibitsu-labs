@@ -124,7 +124,8 @@
         "title": "Leave capability behind",
         "body": "Your team runs it and adapts it without me."
       }
-    ]
+    ],
+    "eyebrow": "03 · The path"
   },
   "choice": {
     "eyebrow": "02 · Who decides",
@@ -147,9 +148,8 @@
     "body": "Mobility operations, behavior design, emerging-tech education, product and investor narratives, AI and Web3 market execution, and practical AI for teams.",
     "photoAlt": "Chii, founder of Chiibitsu Labs",
     "link": {
-      "label": "See my track record →",
-      "href": null,
-      "illustrative": true
+      "label": "See her track record →",
+      "href": "/angeline"
     }
   },
   "legal": {
@@ -164,11 +164,7 @@
     "h": "Both win by being early.",
     "sub": "Businesses reach more people than any one person can, so they are best placed to move humanity forward. People are best placed to move their own families forward."
   },
-  "parked": [
-    "premise",
-    "changes",
-    "work"
-  ],
+  "parked": [],
   "venn": {
     "eyebrow": "01 · What I bring together",
     "hand": "where real change happens",
@@ -176,5 +172,10 @@
       "label": "Proof of work here →",
       "href": "/angeline"
     }
+  },
+  "knows": {
+    "without": "Without a system",
+    "with": "With Chiibitsu Labs",
+    "hint": "← click to compare"
   }
 }

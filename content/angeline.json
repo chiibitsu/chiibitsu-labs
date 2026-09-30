@@ -74,17 +74,23 @@
       {
         "value": "₱28M",
         "label": "peak quarterly revenue, on a mobility platform built from zero",
-        "illustrative": true
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, from her own ventures (stated 2026-09-30)"
       },
       {
         "value": "4,000+",
         "label": "vehicles on that platform",
-        "illustrative": true
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, from her own ventures (stated 2026-09-30)"
       },
       {
         "value": "76,000",
         "label": "members in a crypto community built into the country’s go-to group",
-        "illustrative": true
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, from her own ventures (stated 2026-09-30)"
       }
     ]
   },

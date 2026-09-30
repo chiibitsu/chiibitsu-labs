@@ -1,9 +1,10 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { TrackedLink } from "@/components/TrackedLink";
 import { Chain, type ChainNode } from "./Chain";
 import { LitWords, Pen, type Part } from "./parts";
+import { CompareToggle } from "./scenes2";
 import { SceneFrame } from "./SceneFrame";
 import { clamp01, ease, seg, useNarrow } from "./scroll";
 
@@ -43,6 +44,7 @@ export function ThesisScene({
   label,
   parts,
   sub,
+  sub2,
   pen = true,
   top,
   cta,
@@ -57,6 +59,7 @@ export function ThesisScene({
   label?: string;
   parts: Part[];
   sub: string;
+  sub2?: string;
   pen?: boolean;
   top?: ReactNode;
   cta?: Cta;
@@ -74,6 +77,7 @@ export function ThesisScene({
             {level === 1 ? <h1 className="film-h">{words}</h1> : <h2 className="film-h film-h2">{words}</h2>}
             {pen && <Pen f={seg(p, 0.45, 0.75)} />}
             <p className={`film-sub ${dim(p > 0.7)}`}>{sub}</p>
+            {sub2 && <p className={`film-sub ${dim(p > 0.85)}`}>{sub2}</p>}
             <CtaRow p={p} at={0.75} cta={cta} secondary={secondary} />
             {initial === 0 && <Hint p={p} />}
           </>
@@ -219,6 +223,7 @@ export function DoorScene({
   lose,
   keep,
   line,
+  compare,
 }: {
   id?: string;
   label?: string;
@@ -226,10 +231,14 @@ export function DoorScene({
   lose: { left: string; right: string };
   keep: { left: string; right: string };
   line: string;
+  compare?: { without: string; with: string; hint: string };
 }) {
+  // Once the toggle shows, a click decides which story is on screen; until then the scroll does.
+  const [mode, setMode] = useState<"lose" | "keep" | null>(null);
   return (
     <SceneFrame id={id}>
-      {(p) => {
+      {(scroll) => {
+        const p = mode === "keep" ? 0.98 : mode === "lose" ? 0.46 : scroll;
         const kept = p >= 0.5;
         const dot = (i: number, q: number, from: number, dir: 1 | -1) => {
           const t = clamp01(q * 1.5 - i * 0.18);
@@ -272,6 +281,7 @@ export function DoorScene({
               </div>
             </div>
             <p className={`film-line centered ${dim(p > 0.85)}`}>{line}</p>
+            {compare && <CompareToggle show={scroll > 0.88 || mode !== null} without={compare.without} withLabel={compare.with} hint={compare.hint} mode={mode ?? (kept ? "keep" : "lose")} onPick={setMode} />}
           </>
         );
       }}

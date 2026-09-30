@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FounderLink } from "@/components/FounderLink";
 import { SiteFooter } from "@/components/SiteFooter";
 import { DataRoom } from "@/components/art/ir-art";
 import { Mark } from "@/components/Mark";
@@ -191,7 +192,7 @@ export default function Investor() {
           </TrackedLink>
           <div className="team-item">
             <span className="card-title" style={{ fontSize: 22 }}>{c.team.ghost.title}</span>
-            <span className="body">{c.team.ghost.body}</span>
+            <span className="body"><FounderLink>{c.team.ghost.body}</FounderLink></span>
             {c.team.illustrative && <Ill />}
           </div>
         </div>
@@ -209,7 +210,7 @@ export default function Investor() {
           </TrackedLink>
         ))}
         <div className="caption">
-          {c.papers.foot}{" "}
+          <FounderLink>{c.papers.foot}</FounderLink>{" "}
           <a href={c.papers.footLink.href}>{c.papers.footLink.label}</a>
         </div>
       </section>
@@ -226,7 +227,7 @@ export default function Investor() {
         </div>
       </section>
 
-      <SiteFooter left={c.footer.left} middle={c.footer.middle} updated={c.meta.updated} />
+      <SiteFooter left={c.footer.left} middle={c.footer.middle} />
     </div>
   );
 }

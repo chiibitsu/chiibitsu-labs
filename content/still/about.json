@@ -152,22 +152,28 @@
   },
   "proof": {
     "heading": "From insight to operating proof",
-    "note": "From my operating record",
+    "note": "From the founder’s operating record",
     "figures": [
       {
         "value": "₱28M",
         "label": "peak quarterly revenue, on a mobility platform built from zero",
-        "illustrative": true
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, from her own ventures (stated 2026-09-30)"
       },
       {
         "value": "4,000+",
         "label": "vehicles on that platform",
-        "illustrative": true
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, from her own ventures (stated 2026-09-30)"
       },
       {
         "value": "76,000",
         "label": "members in a crypto community built into the country’s go-to group",
-        "illustrative": true
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, from her own ventures (stated 2026-09-30)"
       }
     ]
   },
@@ -214,9 +220,8 @@
     "body": "Mobility operations, behavior design, emerging-tech education, product and investor narratives, AI and Web3 market execution, and practical AI for teams.",
     "photoAlt": "Chii, founder of Chiibitsu Labs",
     "link": {
-      "label": "See my track record →",
-      "href": null,
-      "illustrative": true
+      "label": "See her track record →",
+      "href": "/angeline"
     }
   },
   "engage": {

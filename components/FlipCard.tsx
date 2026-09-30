@@ -7,12 +7,15 @@ type Props = {
   after: string;
   note: string;
   labels: { today: string; after: string; seeHover: string; seeTap: string };
+  forceFlipped?: boolean;
 };
 
 // Flips on hover with a mouse, on tap or Enter/Space otherwise. Both faces stay in the page for screen readers.
-export function FlipCard({ today, after, note, labels }: Props) {
-  const [flipped, setFlipped] = useState(false);
-  const toggle = () => setFlipped((f) => !f);
+export function FlipCard({ today, after, note, labels, forceFlipped }: Props) {
+  const [touched, setFlipped] = useState(false);
+  // In the film the scroll decides; a tap or key press inverts it. Elsewhere only taps and keys decide.
+  const flipped = forceFlipped === undefined ? touched : forceFlipped !== touched;
+  const toggle = () => setFlipped((t) => !t);
   return (
     <div
       className="flip"

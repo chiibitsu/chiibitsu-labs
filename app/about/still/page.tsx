@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FounderLink } from "@/components/FounderLink";
 import { SiteFooter } from "@/components/SiteFooter";
 import Image from "next/image";
 import { Compare } from "@/components/Compare";
@@ -192,8 +193,8 @@ export default function StillAbout() {
         </div>
         <div className="founder-copy">
           <div className="eyebrow">{c.founder.eyebrow}</div>
-          <div className="founder-name">{c.founder.name}</div>
-          <div className="caption" style={{ fontSize: 16 }}>{c.founder.role}</div>
+          <div className="founder-name"><FounderLink>{c.founder.name}</FounderLink></div>
+          <div className="caption" style={{ fontSize: 16 }}><FounderLink>{c.founder.role}</FounderLink></div>
           <div className="mid-line" style={{ maxWidth: 720 }}>
             {c.founder.line} <em>{c.founder.lineEm}</em>
           </div>
@@ -233,7 +234,7 @@ export default function StillAbout() {
         </TrackedLink>
       </section>
 
-      <SiteFooter left={c.footer.left} middle={c.footer.middle} updated={c.meta.updated} />
+      <SiteFooter left={c.footer.left} middle={c.footer.middle} />
     </div>
   );
 }

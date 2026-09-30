@@ -1,15 +1,19 @@
+import { FounderLink } from "@/components/FounderLink";
 import { about } from "@/lib/about";
 
-// One footer for every page: the legal line always sits here, above the row.
-export function SiteFooter({ left, middle, updated }: { left: string; middle: string; updated: string }) {
+// "Updated" is the day this build was made, in Manila time, so it is always current after a deploy.
+const built = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "Asia/Manila" }).format(new Date());
+
+// One footer for every page. The legal line sits below the footer row, centered.
+export function SiteFooter({ left, middle }: { left: string; middle: string; updated?: string }) {
   return (
     <footer className="foot">
-      <div className="foot-legal">
-        {about.legal.text} · <a href={`mailto:${about.legal.email}`}>{about.legal.email}</a>
-      </div>
       <div>{left}</div>
       <div>{middle}</div>
-      <div>Updated {updated}</div>
+      <div>Updated {built}</div>
+      <div className="foot-legal">
+        <FounderLink>{about.legal.text}</FounderLink> · <a href={`mailto:${about.legal.email}`}>{about.legal.email}</a>
+      </div>
     </footer>
   );
 }

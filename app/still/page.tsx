@@ -258,7 +258,7 @@ export default function StillHome() {
         </div>
       </section>
 
-      <SiteFooter left={c.footer.left} middle={c.footer.middle} updated={c.meta.updated} />
+      <SiteFooter left={c.footer.left} middle={c.footer.middle} />
     </div>
   );
 }
