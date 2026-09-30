@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { SiteFooter } from "@/components/SiteFooter";
 import { HeroCompanies, HeroSolo, DecideLess, Network, SeeEverything, TrustReceipt } from "@/components/art/art";
 import { AudienceSwitch } from "@/components/AudienceSwitch";
+import { Investors, Papers, Publication } from "@/components/home/sections";
 import { Mark } from "@/components/Mark";
 import { Molecule } from "@/components/Molecule";
 import { TrackedLink } from "@/components/TrackedLink";
 import { content as c } from "@/lib/content";
+import { proof } from "@/lib/proof";
 
 const both = ["companies", "solo"] as const;
 const Ill = () => <span className="ill">Illustrative</span>;
@@ -106,28 +108,23 @@ export default function StillHome() {
       </section>
 
       <section id="work" className="section" style={{ gap: 24 }}>
-        <h2 className="w400">{c.work.heading}</h2>
-        <div className="logos">
-          {c.work.logos.map((l, i) => (
-            <div key={i} className="logo">
-              <span>{l.label}</span>
-              {l.illustrative && <Ill />}
+        <h2 className="w400">{proof.scene.heading}</h2>
+        {both.map((k) => (
+          <div key={k} data-aud={k} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div className="cards3">
+              {proof.cards[k].map((card) => (
+                <div key={card.industry} className="work-card note">
+                  <div className="card-title nt">{card.industry}</div>
+                  <div className="body"><span className="proof-k">Need</span> {card.need}</div>
+                  <div className="body"><span className="proof-k">Built</span> {card.solution}</div>
+                  <div className="body" style={{ color: "var(--ink)" }}><span className="proof-k">Result</span> {card.result}</div>
+                  <div className="caption">{card.date}</div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className="cards3">
-          {c.work.cards.map((card) => (
-            <TrackedLink key={card.client} href={card.href} className="work-card note">
-              <div className="card-title nt">{card.client}</div>
-              <div className="body">{card.built}</div>
-              <div className="body" style={{ color: "var(--ink)" }}>{card.changed}</div>
-              <div className="caption">
-                {card.illustrative && <>Illustrative · </>}
-                {card.date} →
-              </div>
-            </TrackedLink>
-          ))}
-        </div>
+          </div>
+        ))}
+        <p className="caption">{proof.scene.note}</p>
       </section>
 
       <section id="run" className="run">
@@ -151,22 +148,16 @@ export default function StillHome() {
 
       <section className="section" style={{ gap: 20 }}>
         <div className="week-head">
-          <h2>{c.week.heading}</h2>
-          <div className="ill" style={{ fontSize: 14 }}>{c.week.note}</div>
+          <h2>{proof.record.heading}</h2>
+          <div className="caption">{proof.record.note}</div>
         </div>
         <div className="metrics">
-          {c.week.metrics.map((m) => {
-            const real = !m.illustrative;
-            return (
-              <div key={m.key} className="metric">
-                <div className={real ? "figure real" : "figure"}>{m.value}</div>
-                <TrackedLink href={m.href} className="more" event="metric_click" eventProps={{ metric: m.key }}>
-                  {m.label} →
-                </TrackedLink>
-                {m.illustrative && <Ill />}
-              </div>
-            );
-          })}
+          {proof.record.figures.map((m) => (
+            <div key={m.value} className="metric">
+              <div className="figure real">{m.value}</div>
+              <div className="more">{m.label}</div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -197,66 +188,11 @@ export default function StillHome() {
         </div>
       </section>
 
-      <section id="publication" className="section" style={{ gap: 24 }}>
-        <div className="week-head">
-          <h2>{c.publication.heading}</h2>
-          <TrackedLink href={null} className="more">{c.publication.allLabel}</TrackedLink>
-        </div>
-        <div className="posts">
-          {c.publication.posts.map((p) => (
-            <TrackedLink key={p.title} href={p.href} className="post note">
-              <span className="meta">
-                {p.date}
-                {p.illustrative && <> · <span className="ill">Illustrative</span></>}
-              </span>
-              <span className="nt">{p.title}</span>
-              <span className="summary">{p.summary}</span>
-              <span className="go">{c.publication.readLabel}</span>
-            </TrackedLink>
-          ))}
-        </div>
-      </section>
+      <Publication />
 
-      <section id="engage" className="section" style={{ gap: 32 }}>
-        <h2>{c.engage.heading}</h2>
-        <ol className="steps" style={{ listStyle: "none", margin: 0, padding: 0 }}>
-          {c.engage.steps.map((s, i) => (
-            <li key={s.title} className="step">
-              <span className="step-dot" aria-hidden="true">{i + 1}</span>
-              <div className="card-title">{s.title}</div>
-              <div className="body">{s.body}</div>
-            </li>
-          ))}
-        </ol>
-        <TrackedLink href={c.cta.href} className="btn big engage-cta" event="cta_click" eventProps={{ location: "engage" }}>
-          {c.cta.label}
-        </TrackedLink>
-      </section>
+      <Papers />
 
-      <section id="papers">
-        <TrackedLink href={c.papers.href} className="papers-row note" event="papers_click">
-          <span className="nt">{c.papers.title}</span>
-          <span className="caption">
-            {c.papers.meta}
-            {c.papers.illustrative && <> · <span className="ill">Illustrative</span></>}
-          </span>
-          <span className="go">{c.papers.linkLabel}</span>
-        </TrackedLink>
-      </section>
-
-      <section id="investors" className="investors">
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          <h2>{c.investors.heading}</h2>
-          <div className="line">{c.investors.line}</div>
-          <div className="body">{c.investors.sub}</div>
-        </div>
-        <div className="links">
-          <TrackedLink href={c.investors.decisionLog.href}>{c.investors.decisionLog.label}</TrackedLink>
-          <TrackedLink href={c.investors.dataRoom.href} event="cta_click" eventProps={{ location: "investors_data_room" }}>
-            {c.investors.dataRoom.label}
-          </TrackedLink>
-        </div>
-      </section>
+      <Investors />
 
       <SiteFooter left={c.footer.left} middle={c.footer.middle} />
     </div>

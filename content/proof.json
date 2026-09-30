@@ -17,10 +17,15 @@
       "solo": [
         "Retail and e-commerce",
         "Mentoring",
-        "Private sessions"
+        "Art and education",
+        "Décor"
       ]
     },
-    "note": "Anonymised for now. Each client will countersign on the Aikiri Network, and then we name them."
+    "note": "Anonymised for now. Each client will countersign on the Aikiri Network, and then we name them.",
+    "more": {
+      "companies": "More case studies: individuals and solo founders →",
+      "solo": "More case studies: companies →"
+    }
   },
   "cards": {
     "companies": [
@@ -64,7 +69,7 @@
         "need": "An owner who wanted AI to carry the routine work of a small shop.",
         "solution": "Private sessions: a second brain, an inventory intake, a travel workflow.",
         "result": "Still in sessions, with a lot of projects going.",
-        "date": "2026",
+        "date": "Jul 2026 →",
         "named": false,
         "illustrative": false,
         "measuredOn": "2026-09-30",
@@ -82,11 +87,22 @@
         "source": "Chii, stated 2026-09-30"
       },
       {
-        "industry": "A private-session client",
+        "industry": "A retired teacher and artist",
         "need": "Wanted one place to keep and use what she learns.",
         "solution": "Private sessions: a second brain and an art study partner.",
         "result": "Still using both after the sessions ended.",
         "date": "2026",
+        "named": false,
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "industry": "A décor business owner",
+        "need": "An owner who wanted AI in how she runs her business.",
+        "solution": "One-to-one mentorship, since June 2026.",
+        "result": "Still in mentorship.",
+        "date": "Jun 2026 →",
         "named": false,
         "illustrative": false,
         "measuredOn": "2026-09-30",

@@ -53,25 +53,23 @@ export function ProofOfWork() {
   );
 }
 
+// Publication and Papers share one layout: three cards, each "Coming soon", no dates.
 export function Publication() {
+  const p = c.publication;
   return (
       <section id="publication" className="section" style={{ gap: 24 }}>
         <div className="week-head">
-          <h2>{c.publication.heading}</h2>
-          <TrackedLink href={null} className="more">{c.publication.allLabel}</TrackedLink>
+          <h2>{p.heading}</h2>
+          {"href" in p && typeof p.href === "string" && (
+            <TrackedLink href={p.href} className="more" event="cta_click" eventProps={{ location: "publication" }}>{p.followLabel}</TrackedLink>
+          )}
         </div>
         <div className="posts">
-          {c.publication.posts.map((p) => (
-            <TrackedLink key={p.title} href={p.href} className="post note">
-              <span className="meta">
-                {seriesTag(p) && <><span className="tag">{seriesTag(p)}</span> · </>}
-                {p.date}
-                {p.illustrative && <> · <span className="ill">Illustrative</span></>}
-              </span>
-              <span className="nt">{p.title}</span>
-              <span className="summary">{p.summary}</span>
-              <span className="go">{c.publication.readLabel}</span>
-            </TrackedLink>
+          {p.posts.map((x) => (
+            <div key={x.title} className="post">
+              <span className="meta">{p.soon}</span>
+              <span className="nt">{x.title}</span>
+            </div>
           ))}
         </div>
       </section>
@@ -79,21 +77,27 @@ export function Publication() {
 }
 
 export function Papers() {
+  const p = c.papers;
   return (
-      <section id="papers">
-        <TrackedLink href={c.papers.href} className="papers-row note" event="papers_click">
-          <span className="nt">{c.papers.title}</span>
-          <span className="caption">
-            {c.papers.meta}
-            {c.papers.illustrative && <> · <span className="ill">Illustrative</span></>}
-          </span>
-          <span className="go">{c.papers.linkLabel}</span>
-        </TrackedLink>
+      <section id="papers" className="section" style={{ gap: 24 }}>
+        <div className="week-head">
+          <h2>{p.heading}</h2>
+        </div>
+        <div className="posts">
+          {p.items.map((x) => (
+            <div key={x.title} className="post">
+              <span className="meta">{p.soon}</span>
+              <span className="nt">{x.title}</span>
+            </div>
+          ))}
+        </div>
       </section>
   );
 }
 
 export function Investors() {
+  const d = c.investors.dataRoom;
+  const mail = `mailto:${d.email}?subject=${encodeURIComponent(d.subject)}&body=${encodeURIComponent(d.body)}`;
   return (
       <section id="investors" className="investors">
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -102,9 +106,8 @@ export function Investors() {
           <div className="body">{c.investors.sub}</div>
         </div>
         <div className="links">
-          <TrackedLink href={c.investors.decisionLog.href}>{c.investors.decisionLog.label}</TrackedLink>
-          <TrackedLink href={c.investors.dataRoom.href} event="cta_click" eventProps={{ location: "investors_data_room" }}>
-            {c.investors.dataRoom.label}
+          <TrackedLink href={mail} event="cta_click" eventProps={{ location: "investors_data_room" }}>
+            {d.label}
           </TrackedLink>
         </div>
       </section>

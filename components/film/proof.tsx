@@ -5,6 +5,7 @@ import { Figures, type Figure } from "./numbers";
 import { LitWords } from "./parts";
 import { SceneFrame } from "./SceneFrame";
 import { seg, useNarrow } from "./scroll";
+import { setAudience } from "../AudienceSwitch";
 
 const dim = (on: boolean) => `dim${on ? " on" : ""}`;
 const both = ["companies", "solo"] as const;
@@ -19,12 +20,14 @@ export function ProofScene({
   marks,
   cards,
   note,
+  more,
 }: {
   id?: string;
   heading: string;
   marks: Record<Aud, string[]>;
   cards: Record<Aud, Card[]>;
   note: string;
+  more: Record<Aud, string>;
 }) {
   const narrow = useNarrow();
   return (
@@ -44,7 +47,7 @@ export function ProofScene({
                     <span key={m} className="proof-mark">{m}</span>
                   ))}
                 </div>
-                <div className="proof-cards">
+                <div className="proof-cards" style={{ ["--n" as string]: cards[k].length }}>
                   {cards[k].map((c, i) => {
                     const on = p > 0.16 + i * 0.22;
                     return (
@@ -53,11 +56,14 @@ export function ProofScene({
                         <div className="proof-row"><span className="proof-k">Need</span><span className="body">{c.need}</span></div>
                         <div className="proof-row"><span className="proof-k">Built</span><span className="body">{c.solution}</span></div>
                         <div className="proof-row"><span className="proof-k">Result</span><span className="body proof-now">{c.result}</span></div>
-                        <div className="caption">{c.date}</div>
+                        <div className="caption proof-date">{c.date}</div>
                       </div>
                     );
                   })}
                 </div>
+                <button type="button" className={`proof-more ${dim(p > 0.8)}`} onClick={() => setAudience(k === "solo" ? "companies" : "solo")}>
+                  {more[k]}
+                </button>
               </div>
             );
           })}
