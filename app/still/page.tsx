@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SiteFooter } from "@/components/SiteFooter";
 import { HeroCompanies, HeroSolo, DecideLess, Network, SeeEverything, TrustReceipt } from "@/components/art/art";
 import { AudienceSwitch } from "@/components/AudienceSwitch";
 import { Mark } from "@/components/Mark";
@@ -257,11 +258,7 @@ export default function StillHome() {
         </div>
       </section>
 
-      <footer className="foot">
-        <div>{c.footer.left}</div>
-        <div>{c.footer.middle}</div>
-        <div>Updated {c.meta.updated}</div>
-      </footer>
+      <SiteFooter left={c.footer.left} middle={c.footer.middle} updated={c.meta.updated} />
     </div>
   );
 }

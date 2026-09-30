@@ -11,7 +11,7 @@ const browser = await chromium.launch({ executablePath: exe });
 const problems = [];
 if (shotsDir) fs.mkdirSync(shotsDir, { recursive: true });
 
-for (const route of ["/", "/investor", "/about", "/still", "/about/still"]) {
+for (const route of ["/", "/investor", "/about", "/still", "/about/still", "/angeline"]) {
 for (const width of [390, 768, 1280]) {
   for (const theme of ["day", "night"]) {
     for (const aud of ["companies", "solo"]) {

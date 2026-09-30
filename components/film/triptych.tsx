@@ -47,6 +47,24 @@ function TrustArt({ f }: { f: number }) {
   );
 }
 
+// "Every month you get further ahead": a network that grows node by node as the scene finishes.
+const NET_NODES: [number, number][] = [[30, 90], [80, 40], [100, 100], [140, 70], [180, 26]];
+const NET_LINKS: [number, number][] = [[0, 1], [1, 3], [3, 4], [1, 2], [2, 3], [0, 2]];
+function NetworkArt({ f }: { f: number }) {
+  return (
+    <svg className="tri-net" viewBox="0 0 200 130" role="img" aria-label="A network of points that grows, with signals moving between them">
+      <g fill="none" strokeWidth={1.3} style={{ stroke: "var(--accent)" }}>
+        {NET_LINKS.map(([a, b], i) => (
+          <path key={i} className={f >= 1 ? "flow" : undefined} d={`M${NET_NODES[a]} L${NET_NODES[b]}`} {...draw(seg(f, i * 0.12, i * 0.12 + 0.3))} />
+        ))}
+      </g>
+      {NET_NODES.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r={i === 3 ? 9 : 8} strokeWidth={1.4} opacity={seg(f, i * 0.14, i * 0.14 + 0.2)} className={i === 3 && f >= 1 ? "glow" : undefined} style={i === 3 ? { fill: "var(--accent)", stroke: "var(--accent)" } : { fill: "var(--ground)", stroke: "var(--ink)" }} />
+      ))}
+    </svg>
+  );
+}
+
 const arts = { see: SeeArt, decide: DecideArt, trust: TrustArt } as const;
 type Item = { art: string; title: string; body: string };
 
@@ -74,7 +92,10 @@ export function TriptychScene({ id, label, items, line }: { id?: string; label: 
                 );
               })}
             </div>
-            <p className={`film-line centered dim${p > 0.88 ? " on" : ""}`}>{line}</p>
+            <div className={`tri-season${p > 0.7 ? " on" : ""}`}>
+              <NetworkArt f={seg(p, 0.66, 0.96)} />
+              <p className="film-line centered dim on">{line}</p>
+            </div>
           </>
         );
       }}

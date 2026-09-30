@@ -7,7 +7,7 @@
   "nav": [
     { "label": "Work", "href": "/#work" },
     { "label": "About", "href": "/about" },
-    { "label": "Founder", "href": null, "illustrative": true },
+    { "label": "Founder", "href": "/angeline" },
     { "label": "Papers", "href": "/#papers" },
     { "label": "Investors", "href": "/investor" }
   ],
@@ -35,7 +35,7 @@
     "h": "Systems. Behavior. Emerging tech.",
     "hEm": "Designed together.",
     "body": "A process may exist, but people work around it. Data may exist, but nobody trusts it. New tools arrive, and nobody changes how they work.",
-    "line": "Most firms handle one of these. Changing one without the others rarely holds.",
+    "line": "Most AI help stops at the tools. Changing one without the others rarely holds.",
     "labels": { "systems": "Systems", "behavior": "Behavior", "tech": "Emerging tech", "center": "Chiibitsu Labs" }
   },
   "changes": {
@@ -68,7 +68,7 @@
   },
   "longBet": {
     "h": "Science moves because labs share what they learn.",
-    "hEm": "Business should too.",
+    "hEm": "A future-forward business helps move humanity forward.",
     "body": "What your company knows stays yours. What it learns can lift everyone who comes after. That is the long bet.",
     "link": { "label": "Read the paper →", "href": "/#papers" }
   },

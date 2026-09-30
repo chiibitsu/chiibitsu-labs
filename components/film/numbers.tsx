@@ -19,7 +19,7 @@ export function countUp(value: string, f: number): string {
 
 export type Figure = { value: string; label: string; illustrative?: boolean };
 
-// The figures row. A figure that is not real (dated and sourced) is set in ink and labelled Illustrative; green is for real numbers only.
+// The figures row. Numbers are green (Chii override); a figure that is not real (dated and sourced) still carries the Illustrative label.
 export function Figures({ figures, p, from = 0.1 }: { figures: Figure[]; p: number; from?: number }) {
   return (
     <div className="figs-film">

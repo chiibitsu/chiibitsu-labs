@@ -15,8 +15,7 @@
     },
     {
       "label": "Founder",
-      "href": null,
-      "illustrative": true
+      "href": "/angeline"
     },
     {
       "label": "Papers",
@@ -98,7 +97,7 @@
   },
   "longBet": {
     "h": "Science moves because labs share what they learn.",
-    "hEm": "Business should too.",
+    "hEm": "A future-forward business helps move humanity forward.",
     "body": "What your company knows stays yours. What it learns can lift everyone who comes after. That is the long bet.",
     "link": {
       "label": "Read the paper →",
@@ -139,7 +138,7 @@
     }
   },
   "founder": {
-    "eyebrow": "The founder",
+    "eyebrow": "Who is behind it",
     "name": "Chii",
     "role": "Angeline S. Viray · Principal Systems Architect and Behavioral Strategist",
     "line": "A one-person company, on purpose.",

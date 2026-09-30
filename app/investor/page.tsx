@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SiteFooter } from "@/components/SiteFooter";
 import { DataRoom } from "@/components/art/ir-art";
 import { Mark } from "@/components/Mark";
 import { Molecule } from "@/components/Molecule";
@@ -225,11 +226,7 @@ export default function Investor() {
         </div>
       </section>
 
-      <footer className="foot">
-        <div>{c.footer.left}</div>
-        <div>{c.footer.middle}</div>
-        <div>Updated {c.meta.updated}</div>
-      </footer>
+      <SiteFooter left={c.footer.left} middle={c.footer.middle} updated={c.meta.updated} />
     </div>
   );
 }

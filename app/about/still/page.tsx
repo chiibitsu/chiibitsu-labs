@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SiteFooter } from "@/components/SiteFooter";
 import Image from "next/image";
 import { Compare } from "@/components/Compare";
 import { FlipCard } from "@/components/FlipCard";
@@ -218,15 +219,7 @@ export default function StillAbout() {
         </TrackedLink>
       </section>
 
-      <div className="legal">
-        {c.legal.text} · <a href={`mailto:${c.legal.email}`}>{c.legal.email}</a>
-      </div>
-
-      <footer className="foot">
-        <div>{c.footer.left}</div>
-        <div>{c.footer.middle}</div>
-        <div>Updated {c.meta.updated}</div>
-      </footer>
+      <SiteFooter left={c.footer.left} middle={c.footer.middle} updated={c.meta.updated} />
     </div>
   );
 }

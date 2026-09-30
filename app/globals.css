@@ -2304,6 +2304,7 @@ html:not([data-js]) .hint {
 .fig-film .figure {
   font-size: clamp(40px, 5vw, 56px);
   line-height: 1;
+  color: var(--num);
 }
 .ring-stage {
   position: relative;
@@ -2482,5 +2483,242 @@ html:not([data-js]) .tri-item .chain-b {
   }
   .founder-film .eyebrow {
     line-height: 1.4;
+  }
+}
+
+/* Trust scene: the growing network beside the closing line */
+.tri-season {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.tri-net {
+  width: 120px;
+  height: auto;
+  flex: none;
+}
+.tri-season .film-line {
+  margin: 0;
+  text-align: left;
+}
+@media (max-width: 640px) {
+  .tri-net {
+    width: 72px;
+  }
+  .tri-season {
+    gap: 12px;
+  }
+}
+
+.foot-legal {
+  flex: 1 0 100%;
+  padding-bottom: 6px;
+}
+
+/* /angeline: the founder page (still lab-notebook) */
+.ang-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 64px;
+  align-items: end;
+}
+.ang-hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+.ang-name {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(56px, 9vw, 84px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.ang-legal-name {
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+  margin-top: -8px;
+}
+.ang-hero .hero-sub {
+  font-size: clamp(22px, 3vw, 28px);
+  max-width: 720px;
+  margin: 0;
+}
+.ang-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 28px;
+  font-size: 16px;
+  color: var(--ink-2);
+}
+.ang-photo {
+  position: relative;
+  width: 320px;
+  height: 380px;
+  border: 1px solid var(--rule);
+}
+.ang-cols3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+.ang-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--ink);
+  padding-top: 16px;
+}
+.ang-col-t {
+  font-family: var(--serif);
+  font-size: 26px;
+  line-height: 1.2;
+}
+.ang-col-t.sm {
+  line-height: 1.25;
+}
+.ang-sec-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px 24px;
+  flex-wrap: wrap;
+}
+.ang-figs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+}
+.ang-fig {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px 18px 22px 0;
+  border-right: 1px solid var(--rule);
+}
+.ang-fig:last-child {
+  border-right: none;
+}
+.ang-figure {
+  font-size: clamp(40px, 5vw, 52px);
+  line-height: 1;
+  color: var(--num);
+}
+.ang-road {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 48px;
+  position: relative;
+}
+.ang-road::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 28px;
+  bottom: 28px;
+  border-left: 1.2px solid var(--ink-3);
+}
+.ang-road-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 24px;
+  padding: 20px 12px;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+}
+.ang-dot {
+  position: absolute;
+  left: -46px;
+  top: 22px;
+  width: 20px;
+  height: 20px;
+}
+.ang-road-role {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ang-road-t {
+  font-family: var(--serif);
+  font-size: 24px;
+  line-height: 1.2;
+}
+.ang-road-row.current .ang-road-t {
+  color: var(--accent);
+}
+.ang-road-org {
+  font-size: 16px;
+  color: var(--ink-2);
+}
+.ang-verify {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+.ang-note {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--ink);
+  padding: 18px 14px 20px;
+}
+.ang-note .nt {
+  font-family: var(--serif);
+  font-size: 26px;
+}
+@media (max-width: 900px) {
+  .ang-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+  .ang-photo {
+    width: 240px;
+    height: 285px;
+    order: -1;
+  }
+  .ang-cols3 {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .ang-figs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ang-fig:nth-child(2) {
+    border-right: none;
+  }
+  .ang-verify {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ang-road-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+}
+@media (max-width: 640px) {
+  .ang-figs,
+  .ang-verify {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ang-fig {
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+  }
+  .ang-fig:last-child {
+    border-bottom: none;
+  }
+  .ang-road {
+    padding-left: 36px;
+  }
+  .ang-dot {
+    left: -34px;
   }
 }

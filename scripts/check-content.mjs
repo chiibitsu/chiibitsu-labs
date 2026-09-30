@@ -8,6 +8,7 @@ const data = load("home");
 const investor = load("investor");
 const about = load("about");
 const filmContent = load("film");
+const angeline = load("angeline");
 const stillAbout = JSON.parse(fs.readFileSync(new URL("../content/still/about.json", import.meta.url), "utf8"));
 const problems = [];
 
@@ -31,7 +32,7 @@ const walk = (node, path) => {
   }
   if (typeof node === "string") {
     // Career figures on /about (revenue, not prices) are the one place a currency amount may appear.
-    const careerFigure = /^(film|stillAbout)\.proof\.figures\[\d+\]\.value$/.test(path);
+    const careerFigure = /^(film|stillAbout)\.proof\.figures\[\d+\]\.value$|^angeline\.(outcomes\.figures\[\d+\]\.value|road\.items\[\d+\]\.body)$/.test(path);
     if (!careerFigure && /[₱$€£]\s?\d|\b(USD|PHP)\b|\bprice\b/i.test(node)) problems.push(`${path}: looks like a price`);
     if (/Book a call/i.test(node)) problems.push(`${path}: "Book a call" was replaced by "Request a workflow audit →"`);
   }
@@ -39,6 +40,7 @@ const walk = (node, path) => {
 walk(data, "home");
 walk(investor, "investor");
 walk(about, "about");
+walk(angeline, "angeline");
 walk(filmContent, "film");
 walk(stillAbout, "stillAbout");
 
@@ -55,6 +57,7 @@ for (const [name, d] of [["home", data], ["investor", investor]]) {
   const plural = text.match(/\b(we|our|ours|us)\b/gi);
   if (plural) problems.push(`about: first person plural found: ${[...new Set(plural)].join(", ")}`);
   if (/aikiri/i.test(text)) problems.push("about: the Aikiri Network is not named on /about");
+  if (/\bshould(n['’]t)?\b/i.test(text)) problems.push('about: no "shoulds" in copy');
   for (const f of filmContent.proof.figures) {
     if (f.illustrative !== true && !(f.illustrative === false && f.measuredOn && f.source)) problems.push(`film.proof: undischarged figure ${f.value}`);
   }

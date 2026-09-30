@@ -1,4 +1,5 @@
 import { Molecule } from "@/components/Molecule";
+import { SiteFooter } from "@/components/SiteFooter";
 import { TrackedLink } from "@/components/TrackedLink";
 import { content as c } from "@/lib/content";
 
@@ -194,11 +195,7 @@ export function Investors() {
 
 export function HomeFooter() {
   return (
-      <footer className="foot">
-        <div>{c.footer.left}</div>
-        <div>{c.footer.middle}</div>
-        <div>Updated {c.meta.updated}</div>
-      </footer>
+      <SiteFooter left={c.footer.left} middle={c.footer.middle} updated={c.meta.updated} />
     
   );
 }
