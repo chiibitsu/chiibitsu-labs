@@ -61,8 +61,8 @@
         "body": "Now: helping businesses use AI to strengthen judgment and the way work gets done, not to create busywork or tool dependence."
       }
     ],
-    "label": "I have watched the gap open many times",
-    "h": "These four shaped this company."
+    "h": "I have watched the gap open many times",
+    "caption": "These four shaped this company"
   },
   "changes": {
     "heading": "What changes inside a business",
@@ -102,7 +102,8 @@
     "link": {
       "label": "Read the paper →",
       "href": "/#papers"
-    }
+    },
+    "eyebrow": "Where this is going"
   },
   "work": {
     "heading": "How I work",
@@ -126,7 +127,7 @@
     ]
   },
   "choice": {
-    "eyebrow": "Conscious choice",
+    "eyebrow": "02 · Who decides",
     "h": "There is no one right answer to technological change.",
     "hEm": "I show you the paths. You choose.",
     "body": "Every path has costs, risks and trade-offs. I make them visible, then build the workflows, knowledge and systems for the choice you make.",
@@ -167,5 +168,13 @@
     "premise",
     "changes",
     "work"
-  ]
+  ],
+  "venn": {
+    "eyebrow": "01 · What I bring together",
+    "hand": "where real change happens",
+    "proof": {
+      "label": "Proof of work here →",
+      "href": "/angeline"
+    }
+  }
 }

@@ -4,7 +4,7 @@ import { LitWords } from "./parts";
 import { SceneFrame } from "./SceneFrame";
 import { clamp01, ease, seg } from "./scroll";
 
-// "+72%", "₱28M", "3,900+": count up from zero as f goes from 0 to 1. At f = 1 the value is shown exactly as written.
+// "₱28M", "4,000+", "76,000": count up from zero as f goes from 0 to 1. At f = 1 the value is shown exactly as written.
 export function countUp(value: string, f: number): string {
   if (f >= 1) return value;
   const m = value.match(/^([^\d]*)([\d,]*\.?\d+)(.*)$/);

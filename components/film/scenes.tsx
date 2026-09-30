@@ -90,12 +90,14 @@ export function ChainScene({
   parts,
   nodes,
   hand,
+  caption,
   cta,
   secondary,
 }: {
   id?: string;
   label?: string;
   parts?: Part[];
+  caption?: string;
   nodes: ChainNode[];
   hand?: string;
   cta?: Cta;
@@ -111,6 +113,7 @@ export function ChainScene({
               <LitWords parts={parts} f={0.3 + p * 2.5} />
             </h2>
           )}
+          {caption && <p className="film-line centered">{caption}</p>}
           <Chain nodes={nodes} f={p} hand={hand} />
           <CtaRow p={p} at={0.6} cta={cta} secondary={secondary} />
         </>
@@ -127,6 +130,8 @@ export function SpheresScene({
   labels,
   body,
   line,
+  hand,
+  proof,
 }: {
   id?: string;
   label?: string;
@@ -134,6 +139,8 @@ export function SpheresScene({
   labels: { systems: string; behavior: string; tech: string };
   body: string;
   line: string;
+  hand?: string;
+  proof?: { label: string; href: string };
 }) {
   const narrow = useNarrow();
   return (
@@ -166,18 +173,33 @@ export function SpheresScene({
               </defs>
               <g transform={tf(g.a, -1, -1)}>
                 <circle r={g.r} fill="url(#sph)" />
-                <text y={-g.ly} textAnchor="middle" style={{ fill: "var(--ink)", fontFamily: "var(--serif)", fontSize: g.fs }}>{labels.systems}</text>
               </g>
               <g transform={tf(g.b, 1, -1)}>
                 <circle r={g.r} fill="url(#sph)" />
-                <text y={-g.ly} textAnchor="middle" style={{ fill: "var(--ink)", fontFamily: "var(--serif)", fontSize: g.fs }}>{labels.behavior}</text>
               </g>
               <g transform={tf(g.c, 0, 1)}>
                 <circle r={g.r} fill="url(#sph)" />
-                <text y={g.ct} textAnchor="middle" style={{ fill: "var(--ink)", fontFamily: "var(--serif)", fontSize: g.fs }}>{labels.tech}</text>
               </g>
               <circle cx={g.w / 2} cy={narrow ? 150 : 200} r={g.gr} fill="url(#core)" opacity={clamp01((p - 0.6) / 0.3)} />
+              {[
+                { c: g.a, sx: -1, sy: -1, y: -g.ly, t: labels.systems },
+                { c: g.b, sx: 1, sy: -1, y: -g.ly, t: labels.behavior },
+                { c: g.c, sx: 0, sy: 1, y: g.ct, t: labels.tech },
+              ].map((l) => (
+                <text key={l.t} transform={tf(l.c, l.sx, l.sy)} y={l.y} textAnchor="middle" style={{ fill: "var(--ink)", fontFamily: "var(--serif)", fontSize: g.fs }}>{l.t}</text>
+              ))}
+              {hand && (
+                <g opacity={clamp01((p - 0.62) / 0.2)}>
+                  <text x={4} y={narrow ? 22 : 34} style={{ fill: "var(--accent)", fontFamily: "var(--hand)", fontWeight: 500, fontSize: narrow ? 24 : 34 }}>{hand}</text>
+                  <path d={narrow ? "M22 38 C10 170 80 205 164 154 M164 154 L152 160 M164 154 L162 141" : "M60 56 C90 210 260 262 462 206 M462 206 L446 210 M462 206 L450 196"} fill="none" strokeWidth={1.8} strokeLinecap="round" style={{ stroke: "var(--accent)" }} />
+                </g>
+              )}
             </svg>
+            {proof && (
+              <div className={dim(p > 0.8)}>
+                <TrackedLink href={proof.href} className="more">{proof.label}</TrackedLink>
+              </div>
+            )}
             <div className={`film-sub two ${dim(p > 0.8)}`}>
               <p className="body">{body}</p>
               <p className="film-line">{line}</p>
@@ -277,11 +299,13 @@ const NET = {
 
 export function LongBetScene({
   id,
+  label,
   parts,
   body,
   link,
 }: {
   id?: string;
+  label?: string;
   parts: Part[];
   body: string;
   link: Link;
@@ -311,6 +335,7 @@ export function LongBetScene({
                 );
               })}
             </svg>
+            {label && <div className="label">{label}</div>}
             <h2 className="film-h film-h2">
               <LitWords parts={parts} f={0.2 + p * 1.6} />
             </h2>

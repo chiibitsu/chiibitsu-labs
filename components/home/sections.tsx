@@ -2,6 +2,7 @@ import { Molecule } from "@/components/Molecule";
 import { SiteFooter } from "@/components/SiteFooter";
 import { TrackedLink } from "@/components/TrackedLink";
 import { content as c } from "@/lib/content";
+import { seriesTag } from "@/lib/publication";
 
 // Each still section of the home page is its own component, so any one of them can become a film scene
 // (see components/film) by swapping it for a scene component in app/page.tsx. Status: docs in README.md.
@@ -147,6 +148,7 @@ export function Publication() {
           {c.publication.posts.map((p) => (
             <TrackedLink key={p.title} href={p.href} className="post note">
               <span className="meta">
+                {seriesTag(p) && <><span className="tag">{seriesTag(p)}</span> · </>}
                 {p.date}
                 {p.illustrative && <> · <span className="ill">Illustrative</span></>}
               </span>
@@ -156,6 +158,26 @@ export function Publication() {
             </TrackedLink>
           ))}
         </div>
+      </section>
+  );
+}
+
+export function Working() {
+  return (
+      <section id="working" className="section" style={{ gap: 32 }}>
+        <h2>{c.engage.heading}</h2>
+        <ol className="steps" style={{ listStyle: "none", margin: 0, padding: 0 }}>
+          {c.engage.steps.map((s, i) => (
+            <li key={s.title} className="step">
+              <span className="step-dot" aria-hidden="true">{i + 1}</span>
+              <div className="card-title">{s.title}</div>
+              <div className="body">{s.body}</div>
+            </li>
+          ))}
+        </ol>
+        <TrackedLink href={c.cta.href} className="btn big engage-cta" event="cta_click" eventProps={{ location: "working" }}>
+          {c.cta.label}
+        </TrackedLink>
       </section>
   );
 }

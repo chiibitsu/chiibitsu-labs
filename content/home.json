@@ -247,7 +247,7 @@
   "publication": {
     "heading": "Publication",
     "allLabel": "Read on Substack →",
-    "readLabel": "Read the post →",
+    "readLabel": "Read the note →",
     "posts": [
       {
         "date": "Sep 24",
@@ -270,6 +270,9 @@
         "href": null,
         "illustrative": true
       }
+    ],
+    "tagPrefixes": [
+      "FOMO Report"
     ]
   },
   "engage": {
@@ -320,8 +323,5 @@
     "body": "This page is a placeholder. The audit request form is not built yet.",
     "contact": "Until then, write to labs@chiibitsu.com.",
     "back": "← Back to the home page"
-  },
-  "parked": [
-    "engage"
-  ]
+  }
 }

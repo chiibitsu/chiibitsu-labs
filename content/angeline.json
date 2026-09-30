@@ -5,21 +5,46 @@
     "updated": "Sep 30, 2026"
   },
   "nav": [
-    { "label": "Work", "href": "/#work" },
-    { "label": "About", "href": "/about" },
-    { "label": "Founder", "href": "/angeline" },
-    { "label": "Papers", "href": "/#papers" },
-    { "label": "Investors", "href": "/investor" }
+    {
+      "label": "Work",
+      "href": "/#work"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    },
+    {
+      "label": "Founder",
+      "href": "/angeline"
+    },
+    {
+      "label": "Papers",
+      "href": "/#papers"
+    },
+    {
+      "label": "Investors",
+      "href": "/investor"
+    }
   ],
-  "cta": { "label": "Request a workflow audit →", "href": "/audit" },
+  "cta": {
+    "label": "Request a workflow audit →",
+    "href": "/audit"
+  },
   "strip": "Chii · founder, Chiibitsu Labs",
-  "shift": { "label": "the team is on shift", "illustrative": true },
+  "shift": {
+    "label": "the team is on shift",
+    "illustrative": true
+  },
   "hero": {
     "eyebrow": "The founder",
     "name": "Chii",
     "legalName": "Angeline S. Viray",
     "line": "I find what a business actually runs on, and leave it running without me.",
-    "facts": ["Founder, Chiibitsu Labs", "12+ years leading teams", "Manila, working worldwide"],
+    "facts": [
+      "Founder, Chiibitsu Labs",
+      "12+ years leading teams",
+      "Manila, working worldwide"
+    ],
     "photoAlt": "Chii, founder of Chiibitsu Labs"
   },
   "now": {
@@ -46,10 +71,21 @@
     "heading": "Selected outcomes",
     "note": "From the roles below",
     "figures": [
-      { "value": "18×", "label": "cash position in one quarter, as co-CEO of a turnaround", "illustrative": true },
-      { "value": "76,000", "label": "members in a crypto community built into the country’s go-to group", "illustrative": true },
-      { "value": "3,900+", "label": "people coached through 100-day transformations", "illustrative": true },
-      { "value": "4,000+", "label": "vehicles on a mobility platform built from zero", "illustrative": true }
+      {
+        "value": "₱28M",
+        "label": "peak quarterly revenue, on a mobility platform built from zero",
+        "illustrative": true
+      },
+      {
+        "value": "4,000+",
+        "label": "vehicles on that platform",
+        "illustrative": true
+      },
+      {
+        "value": "76,000",
+        "label": "members in a crypto community built into the country’s go-to group",
+        "illustrative": true
+      }
     ]
   },
   "road": {
@@ -78,7 +114,7 @@
         "dates": "2022 to 2023",
         "title": "Co-CEO, turnaround",
         "org": "TalentHero (pre-merger)",
-        "body": "+72% revenue in the first month, 0% churn, and cash position up 18× in one quarter."
+        "body": "Co-led the company through a turnaround."
       },
       {
         "dates": "2023 to 2024",
@@ -90,7 +126,7 @@
         "dates": "2024 to 2025",
         "title": "Head of Personal Development",
         "org": "The Lazy Lifter (Kaizen)",
-        "body": "Behavior systems for 3,900+ participants across three 100-day seasons."
+        "body": "Behavior systems across three 100-day seasons."
       },
       {
         "dates": "2020 to now",
@@ -123,10 +159,26 @@
   "verify": {
     "heading": "Read and verify",
     "items": [
-      { "title": "The work", "body": "Companies I have built with", "href": "/#work" },
-      { "title": "Papers", "body": "Registered on the Aikiri Network", "href": "/#papers" },
-      { "title": "Investor relations", "body": "Company numbers, every Friday", "href": "/investor" },
-      { "title": "LinkedIn", "body": "linkedin.com/in/angelinev", "href": "https://linkedin.com/in/angelinev" }
+      {
+        "title": "The work",
+        "body": "Companies we have built with",
+        "href": "/#work"
+      },
+      {
+        "title": "Papers",
+        "body": "Registered on the Aikiri Network",
+        "href": "/#papers"
+      },
+      {
+        "title": "Investor relations",
+        "body": "Company numbers, every Friday",
+        "href": "/investor"
+      },
+      {
+        "title": "LinkedIn",
+        "body": "linkedin.com/in/angelinev",
+        "href": "https://linkedin.com/in/angelinev"
+      }
     ]
   },
   "engage": {

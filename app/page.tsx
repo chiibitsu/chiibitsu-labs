@@ -6,7 +6,7 @@ import { InviteScene } from "@/components/film/invite";
 import { NumbersScene } from "@/components/film/numbers";
 import { DoorScene, SpheresScene } from "@/components/film/scenes";
 import { TriptychScene } from "@/components/film/triptych";
-import { HomeFooter, Investors, Letter, Papers, ProofOfWork, Publication, Run, Week, Work } from "@/components/home/sections";
+import { HomeFooter, Investors, Letter, Papers, ProofOfWork, Publication, Run, Week, Work, Working } from "@/components/home/sections";
 import { content as c } from "@/lib/content";
 import { film } from "@/lib/film";
 
@@ -68,6 +68,7 @@ export default function Home() {
           <Week />
           <ProofOfWork />
           <Publication />
+          <Working />
           <Papers />
           <Investors />
           <HomeFooter />

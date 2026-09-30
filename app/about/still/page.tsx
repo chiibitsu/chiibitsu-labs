@@ -81,6 +81,10 @@ export default function StillAbout() {
         </Reveal>
       </section>
 
+      <section className="section" style={{ gap: 0 }}>
+        <h2>{c.work.heading}</h2>
+      </section>
+
       <section className="split">
         <div className="split-copy">
           <div className="eyebrow">{c.closes.eyebrow}</div>
@@ -90,13 +94,53 @@ export default function StillAbout() {
           <div className="body">{c.closes.body}</div>
           <div className="mid-line">{c.closes.line}</div>
         </div>
+        <div className="venn-col">
         <div className="venn">
           <Venn className="venn-art" />
           <div className="venn-l" style={{ left: "11.5%", top: "14.3%" }}>{c.closes.labels.systems}</div>
           <div className="venn-l" style={{ left: "70.8%", top: "14.3%" }}>{c.closes.labels.behavior}</div>
-          <div className="venn-l" style={{ left: "37.7%", top: "78.6%", color: "var(--accent)" }}>{c.closes.labels.tech}</div>
+          <div className="venn-l" style={{ left: "37.7%", top: "78.6%" }}>{c.closes.labels.tech}</div>
           <div className="venn-c">{c.closes.labels.center}</div>
+          <div className="hand-note venn-hand">{c.closes.hand}</div>
+          <svg className="venn-arrow" viewBox="0 0 520 420" aria-hidden="true">
+            <path d="M110 30 C170 40 210 110 236 164 M236 164 L226 158 M236 164 L237 152" fill="none" strokeWidth={1.6} strokeLinecap="round" style={{ stroke: "var(--accent)" }} />
+          </svg>
         </div>
+        <TrackedLink href={c.closes.proof.href} className="more venn-proof">
+          <span style={{ color: "var(--accent)" }}>{c.closes.proof.label}</span>
+        </TrackedLink>
+        </div>
+      </section>
+
+      <section className="split choice">
+        <div className="split-copy">
+          <div className="eyebrow">{c.choice.eyebrow}</div>
+          <div className="lead-h">
+            {c.choice.h} <em>{c.choice.hEm}</em>
+          </div>
+          <div className="body">{c.choice.body}</div>
+        </div>
+        <Reveal className="fork">
+          <Fork className="fork-art" role="img" aria-label={c.choice.alt} />
+          <div className="fork-labels">
+            <span className="fork-l t">{c.choice.labels.top}</span>
+            <span className="fork-l m" style={{ color: "var(--accent)" }}>{c.choice.labels.mid}</span>
+            <span className="fork-l b">{c.choice.labels.bottom}</span>
+          </div>
+        </Reveal>
+      </section>
+
+      <section className="section" style={{ gap: 28 }}>
+        <div className="eyebrow">{c.work.eyebrow}</div>
+        <ol className="steps steps4" style={{ listStyle: "none", margin: 0, padding: 0 }}>
+          {c.work.steps.map((s, i) => (
+            <li key={s.title} className="step">
+              <span className="step-dot" aria-hidden="true">{i + 1}</span>
+              <div className="card-title" style={{ fontSize: 24 }}>{s.title}</div>
+              <div className="body">{s.body}</div>
+            </li>
+          ))}
+        </ol>
       </section>
 
       <section id="changes" className="section" style={{ gap: 24 }}>
@@ -131,6 +175,7 @@ export default function StillAbout() {
       <section className="long-bet">
         <Network className="long-bet-art" aria-hidden="true" role="presentation" />
         <div className="long-bet-copy">
+          <div className="eyebrow">{c.longBet.eyebrow}</div>
           <div className="lb-h">
             {c.longBet.h} <em>{c.longBet.hEm}</em>
           </div>
@@ -139,53 +184,6 @@ export default function StillAbout() {
             <span style={{ color: "var(--accent)" }}>{c.longBet.link.label}</span>
           </TrackedLink>
         </div>
-      </section>
-
-      <section className="section" style={{ gap: 18 }}>
-        <div className="week-head">
-          <h2>{c.proof.heading}</h2>
-          <div className="caption">{c.proof.note}</div>
-        </div>
-        <div className="figs">
-          {c.proof.figures.map((f) => (
-            <div key={f.value} className="fig">
-              <div className={f.illustrative ? "figure" : "figure real"}>{f.value}</div>
-              <div className="body">{f.label}</div>
-              {f.illustrative && <Ill />}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="section" style={{ gap: 28 }}>
-        <h2>{c.work.heading}</h2>
-        <ol className="steps steps4" style={{ listStyle: "none", margin: 0, padding: 0 }}>
-          {c.work.steps.map((s, i) => (
-            <li key={s.title} className="step">
-              <span className="step-dot" aria-hidden="true">{i + 1}</span>
-              <div className="card-title" style={{ fontSize: 24 }}>{s.title}</div>
-              <div className="body">{s.body}</div>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section className="split choice">
-        <div className="split-copy">
-          <div className="eyebrow">{c.choice.eyebrow}</div>
-          <div className="lead-h">
-            {c.choice.h} <em>{c.choice.hEm}</em>
-          </div>
-          <div className="body">{c.choice.body}</div>
-        </div>
-        <Reveal className="fork">
-          <Fork className="fork-art" role="img" aria-label={c.choice.alt} />
-          <div className="fork-labels">
-            <span className="fork-l t">{c.choice.labels.top}</span>
-            <span className="fork-l m" style={{ color: "var(--accent)" }}>{c.choice.labels.mid}</span>
-            <span className="fork-l b">{c.choice.labels.bottom}</span>
-          </div>
-        </Reveal>
       </section>
 
       <section className="founder">
@@ -203,6 +201,22 @@ export default function StillAbout() {
           <TrackedLink href={c.founder.link.href} className="more">
             <span style={{ color: "var(--accent)" }}>{c.founder.link.label}</span>
           </TrackedLink>
+        </div>
+      </section>
+
+      <section className="section" style={{ gap: 18 }}>
+        <div className="week-head">
+          <h2>{c.proof.heading}</h2>
+          <div className="caption">{c.proof.note}</div>
+        </div>
+        <div className="figs">
+          {c.proof.figures.map((f) => (
+            <div key={f.value} className="fig">
+              <div className={f.illustrative ? "figure" : "figure real"}>{f.value}</div>
+              <div className="body">{f.label}</div>
+              {f.illustrative && <Ill />}
+            </div>
+          ))}
         </div>
       </section>
 

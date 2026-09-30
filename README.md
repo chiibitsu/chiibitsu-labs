@@ -10,7 +10,7 @@ The chiibitsu.com site: home, /about, /investor and /audit. Next.js on Vercel. B
 | Investor `/investor`, papers, articles, legal | **Lab notebook**: still pages |
 | `/still`, `/about/still` | The earlier still lab-notebook versions of home and About, kept whole and `noindex` (the original build is commit `e7d64bb`) |
 
-**Home scenes, in order:** the owner hook (lines rewire from "you" into a network) → See everything / Decide less / Trust every result → the door → the spheres → the numbers count up → the invitation. Below the film, the sections that have not become scenes yet stay as plain components in `components/home/sections.tsx`: the founder letter, Work, How it runs, This week, Proof of work, Publication, Papers, For investors.
+**Home scenes, in order:** the owner hook (lines rewire from "you" into a network) → See everything / Decide less / Trust every result → the door → the spheres → the numbers count up → the invitation. Below the film, the sections that have not become scenes yet stay as plain components in `components/home/sections.tsx`: the founder letter, Work, How it runs, This week, Proof of work, Publication, Working with us, Papers, For investors. Each Publication card can show a series tag before its date: a post's `tag` (the Substack section or category) wins, otherwise a title that starts with a name in `publication.tagPrefixes` (for example "FOMO Report") takes it; untagged posts show none (`lib/publication.ts`).
 
 **About scenes, in order:** the mission → the four waves (a molecular chain, "we are here" on AI) → the spheres → "You choose" (the fork) → the long bet → Chii with the photo and the numbers → the invitation. Content that is not in a scene right now (the premise paragraph, the flip cards, How I work) is kept in `content/about.json` (`parked`) and in the still version.
 
@@ -37,6 +37,7 @@ BASE=http://localhost:3000 npm run check:layout   # against a running build
 ## Content
 
 - `content/home.json`, `content/about.json`, `content/investor.json`: page copy. `content/film.json`: copy shared by the two film pages (the door, the spheres, the numbers, the invitation). `content/still/about.json`: the still About.
+- Privacy: no numbers from companies Chii worked for unless already public (the content gate fails on the removed TalentHero and Lazy Lifter figures). Numbers from her own ventures are fine.
 - Every placeholder carries `"illustrative": true` and renders an "Illustrative" label. A real figure sets `"illustrative": false` and must carry `measuredOn` and `source`. `npm run check:content` enforces this and fails on prices, "Book a call", "we / our / us" and any Aikiri mention on About, and on "Field Notes" or the publication's name anywhere on the site (the publication is only "Publication").
 - **Theme:** day by default. Night runs 18:00 to 06:00 on the reader's own clock (`lib/boot.ts`). No location is read. `?theme=day|night` overrides it for review.
 - **Audience:** "For companies" or "For solo founders", also `?for=companies|solo`.

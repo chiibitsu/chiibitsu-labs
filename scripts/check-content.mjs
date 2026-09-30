@@ -62,6 +62,13 @@ for (const [name, d] of [["home", data], ["investor", investor]]) {
     if (f.illustrative !== true && !(f.illustrative === false && f.measuredOn && f.source)) problems.push(`film.proof: undischarged figure ${f.value}`);
   }
 }
+// Privacy: no numbers from companies Chii worked for (TalentHero, The Lazy Lifter) unless already public (Chii, 2026-09-30).
+{
+  const all = JSON.stringify([data, investor, about, filmContent, stillAbout, angeline]);
+  for (const banned of [/\+72/, /\b72%/, /18×/, /3,900/, /churn/i]) {
+    if (banned.test(all)) problems.push(`privacy: ${banned} is a number from a company Chii worked for and must not be on the site`);
+  }
+}
 if (!/securities/i.test(investor.room.disclaimer)) problems.push("investor: the securities disclaimer is missing");
 if (investor.hero.cta.label !== "Request the data room →") problems.push("investor: CTA must be 'Request the data room →'");
 if (data.cta.label !== "Request a workflow audit →") problems.push("cta.label must be 'Request a workflow audit →'");

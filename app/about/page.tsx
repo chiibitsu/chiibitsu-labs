@@ -24,14 +24,16 @@ export default function About() {
       <main>
         <ThesisScene label={c.hero.eyebrow} parts={[{ t: c.hero.h1a }, { t: c.hero.h1b, em: true }]} sub={c.hero.sub} />
 
-        <ChainScene label={c.waves.label} parts={[{ t: c.waves.h }]} nodes={c.waves.items} hand={c.waves.here} />
+        <ChainScene parts={[{ t: c.waves.h }]} caption={c.waves.caption} nodes={c.waves.items} hand={c.waves.here} />
 
         <SpheresScene
-          label={film.closes.eyebrow}
+          label={c.venn.eyebrow}
           parts={[{ t: film.closes.h }, { t: film.closes.hEm, em: true }]}
           labels={film.closes.labels}
           body={film.closes.body}
           line={film.closes.line}
+          hand={c.venn.hand}
+          proof={c.venn.proof}
         />
 
         <ForkScene
@@ -42,7 +44,7 @@ export default function About() {
           labels={c.choice.labels}
         />
 
-        <LongBetScene parts={[{ t: c.longBet.h }, { t: c.longBet.hEm, em: true }]} body={c.longBet.body} link={c.longBet.link} />
+        <LongBetScene label={c.longBet.eyebrow} parts={[{ t: c.longBet.h }, { t: c.longBet.hEm, em: true }]} body={c.longBet.body} link={c.longBet.link} />
 
         <FounderScene
           eyebrow={c.founder.eyebrow}

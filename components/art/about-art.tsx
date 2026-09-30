@@ -31,7 +31,7 @@ export function Venn(props: P) {
 <svg viewBox="0 0 520 420" width="520" height="420" role="img" aria-label="Three overlapping circles: systems, behavior and emerging tech, with Chiibitsu Labs where all three meet" {...props}>
 <circle style={{ stroke: "var(--ink)" }} cx="200" cy="150" r="120" fill="none" strokeWidth="1.4"/>
 <circle style={{ stroke: "var(--ink)" }} cx="320" cy="150" r="120" fill="none" strokeWidth="1.4"/>
-<circle style={{ stroke: "var(--accent)" }} className="glow" cx="260" cy="254" r="120" fill="none" strokeWidth="1.8"/>
+<circle style={{ stroke: "var(--ink)" }} cx="260" cy="254" r="120" fill="none" strokeWidth="1.4"/>
 <circle style={{ fill: "var(--hover-bg)" }} cx="260" cy="186" r="46"/>
 <circle style={{ fill: "var(--accent)" }} className="glow" cx="260" cy="186" r="6"/>
 </svg>
