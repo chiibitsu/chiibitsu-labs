@@ -711,6 +711,31 @@ h2.w400 {
   letter-spacing: -0.02em;
 }
 
+.mail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px;
+  border: 1px solid var(--rule);
+  border-top: 1px solid var(--ink);
+  background: var(--card);
+}
+.mail-addr {
+  font-family: var(--serif);
+  font-size: 26px;
+  overflow-wrap: anywhere;
+}
+.mail-opts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 18px;
+}
+.mail-opts a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* Animations. Every one is guarded below. */
 .flicker {
   animation: flicker 5s steps(1) infinite;
@@ -3133,10 +3158,30 @@ html:not([data-js]) .day {
 }
 .proof-cards {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr));
   gap: 20px;
   width: 100%;
   max-width: 1040px;
+}
+.proof-more {
+  font: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (max-width: 900px) {
+  .proof-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.proof-date {
+  margin-top: auto;
+  padding-top: 6px;
 }
 .proof-card {
   display: flex;

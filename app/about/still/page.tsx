@@ -45,9 +45,6 @@ export default function StillAbout() {
         </div>
         <div className="sub-strip">
           <span className="caption">{c.strip}</span>
-          <div className="shift">
-            <span className="dot">●</span> {c.shift.label} <span className="ill">· Illustrative</span>
-          </div>
         </div>
       </header>
 

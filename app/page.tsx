@@ -7,7 +7,7 @@ import { InviteScene } from "@/components/film/invite";
 import { ProofScene, RecordScene, RunScene } from "@/components/film/proof";
 import { LetterScene, PathScene } from "@/components/film/scenes2";
 import { TriptychScene } from "@/components/film/triptych";
-import { HomeFooter, ProofOfWork } from "@/components/home/sections";
+import { HomeFooter, Investors, Papers, ProofOfWork, Publication } from "@/components/home/sections";
 import { content as c } from "@/lib/content";
 import { film } from "@/lib/film";
 import { proof } from "@/lib/proof";
@@ -17,13 +17,13 @@ const both = ["companies", "solo"] as const;
 // Home in scroll-film mode, eight scenes: the owner hook, the founder's note, what changes, how it runs (the diagram),
 // working with us (the path), who we've built with, the record (four counts), the invitation.
 // Behind them runs "A day with the ghost team". After the film: the proof-of-work table and the footer.
-// Publication, Papers and For investors are built (components/home/sections.tsx) but hidden until they hold real content.
+// After the film: the proof-of-work table, Publication and Papers (three "Coming soon" cards each), For investors, the footer.
 export default function Home() {
   const a = c.audiences;
   return (
     <>
       <FilmProgress />
-      <FilmBar nav={c.nav} cta={c.cta} location="nav" shift={c.shift.label} />
+      <FilmBar nav={c.nav} cta={c.cta} location="nav" />
       <main>
         <div className="film" data-film>
           {both.map((k) => (
@@ -68,7 +68,7 @@ export default function Home() {
             cta={{ label: c.cta.label, href: c.cta.href, location: "run" }}
           />
 
-          <ProofScene id="proof" heading={proof.scene.heading} marks={proof.scene.marks} cards={proof.cards} note={proof.scene.note} />
+          <ProofScene id="proof" heading={proof.scene.heading} marks={proof.scene.marks} cards={proof.cards} note={proof.scene.note} more={proof.scene.more} />
 
           <RecordScene id="record" heading={proof.record.heading} note={proof.record.note} figures={proof.record.figures} />
 
@@ -84,6 +84,9 @@ export default function Home() {
 
         <div className="page still">
           <ProofOfWork />
+          <Publication />
+          <Papers />
+          <Investors />
           <HomeFooter />
         </div>
       </main>

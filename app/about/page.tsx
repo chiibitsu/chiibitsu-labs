@@ -22,7 +22,7 @@ export default function About() {
   return (
     <>
       <FilmProgress />
-      <FilmBar nav={c.nav} cta={c.cta} location="about_nav" shift={c.shift.label} />
+      <FilmBar nav={c.nav} cta={c.cta} location="about_nav" />
       <main>
         <ThesisScene
           label={c.hero.eyebrow}

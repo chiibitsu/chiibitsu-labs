@@ -11,12 +11,10 @@ export function FilmBar({
   nav,
   cta,
   location,
-  shift,
 }: {
   nav: NavItem[];
   cta: { label: string; href: string };
   location: string;
-  shift?: string;
 }) {
   const [open, setOpen] = useState(false);
   const links = nav.map((n) => (
@@ -30,11 +28,6 @@ export function FilmBar({
         <Mark />
         <span className="wordmark">Chiibitsu Labs</span>
       </TrackedLink>
-      {shift && (
-        <span className="shift film-shift">
-          <span className="dot">●</span> {shift} <span className="ill">· Illustrative</span>
-        </span>
-      )}
       <nav className="film-nav" aria-label="Main">
         {links}
         <TrackedLink href={cta.href} className="btn" event="cta_click" eventProps={{ location }}>

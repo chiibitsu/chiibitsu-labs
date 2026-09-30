@@ -15,12 +15,16 @@
         "Home goods"
       ],
       "solo": [
-        "Retail and e-commerce",
-        "Mentoring",
-        "Private sessions"
+        "Antiques and e-commerce",
+        "Trucking accessories",
+        "Art and education"
       ]
     },
-    "note": "Anonymised for now. Each client will countersign on the Aikiri Network, and then we name them."
+    "note": "Anonymised for now. Each client will countersign on the Aikiri Network, and then we name them.",
+    "more": {
+      "companies": "More case studies: individuals and solo founders →",
+      "solo": "More case studies: companies →"
+    }
   },
   "cards": {
     "companies": [
@@ -60,21 +64,21 @@
     ],
     "solo": [
       {
-        "industry": "A shop owner in retail and e-commerce",
+        "industry": "An antique dealer in retail and e-commerce",
         "need": "An owner who wanted AI to carry the routine work of a small shop.",
         "solution": "Private sessions: a second brain, an inventory intake, a travel workflow.",
         "result": "Still in sessions, with a lot of projects going.",
-        "date": "2026",
+        "date": "Jul 2026 →",
         "named": false,
         "illustrative": false,
         "measuredOn": "2026-09-30",
         "source": "Chii, stated 2026-09-30"
       },
       {
-        "industry": "A business owner, mentored since 2024",
-        "need": "Wanted AI to become a daily habit.",
+        "industry": "A trucking-accessories importer, mentored since 2024",
+        "need": "An owner who wanted AI to become a daily habit in her business.",
         "solution": "One-to-one mentoring, then a daily practice she keeps herself.",
-        "result": "Still practises daily.",
+        "result": "Increased sales, and a new segment of buyers. Still practises daily.",
         "date": "Oct 2024 →",
         "named": false,
         "illustrative": false,
@@ -82,7 +86,7 @@
         "source": "Chii, stated 2026-09-30"
       },
       {
-        "industry": "A private-session client",
+        "industry": "A retired teacher and artist",
         "need": "Wanted one place to keep and use what she learns.",
         "solution": "Private sessions: a second brain and an art study partner.",
         "result": "Still using both after the sessions ended.",

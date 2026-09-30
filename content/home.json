@@ -26,10 +26,6 @@
     "label": "Request a workflow audit →",
     "href": "/audit"
   },
-  "shift": {
-    "label": "the team is on shift",
-    "illustrative": true
-  },
   "audiences": {
     "companies": {
       "switchLabel": "For companies",
@@ -276,34 +272,23 @@
   },
   "publication": {
     "heading": "Publication",
-    "allLabel": "Read on Substack →",
-    "readLabel": "Read the note →",
+    "followLabel": "Follow us on Substack →",
+    "soon": "Coming soon",
     "posts": [
       {
-        "date": "Sep 24",
-        "title": "What your business actually runs on",
-        "summary": "Most owners guess. Here is how we find out, in one afternoon.",
-        "href": null,
-        "illustrative": true
+        "title": "Commanding AI, not learning it"
       },
       {
-        "date": "Sep 17",
-        "title": "The owner who stopped being the bottleneck",
-        "summary": "He used to approve everything. Now he approves what matters.",
-        "href": null,
-        "illustrative": true
+        "title": "You already tried AI and nothing changed. Here's why."
       },
       {
-        "date": "Sep 10",
-        "title": "Why we check AI work twice",
-        "summary": "Why every piece of AI work gets a second pair of eyes.",
-        "href": null,
-        "illustrative": true
+        "title": "Three questions, and you'll know what you actually want"
       }
     ],
     "tagPrefixes": [
       "FOMO Report"
-    ]
+    ],
+    "href": "https://substack.com/@chiibitsulabs"
   },
   "engage": {
     "heading": "Working with us",
@@ -323,25 +308,29 @@
     ]
   },
   "papers": {
-    "title": "Read our papers",
-    "meta": "3 published · each registered on the Aikiri Network",
-    "linkLabel": "Papers →",
-    "href": null,
-    "illustrative": true
+    "heading": "Papers",
+    "soon": "Coming soon",
+    "items": [
+      {
+        "title": "The Aikiri Network"
+      },
+      {
+        "title": "The Second Brain Kit"
+      },
+      {
+        "title": "The Seasoning Method"
+      }
+    ]
   },
   "investors": {
     "heading": "For investors",
     "line": "The long bet: the Aikiri Network, shared infrastructure for AI-run companies.",
-    "sub": "Thesis, decisions and numbers in the open. Financials by request.",
-    "decisionLog": {
-      "label": "Decision log →",
-      "href": null,
-      "illustrative": true
-    },
+    "sub": "Thesis and numbers in the open. Financials by request.",
     "dataRoom": {
       "label": "Request the data room →",
-      "href": null,
-      "illustrative": true
+      "email": "labs@chiibitsu.com",
+      "subject": "Data room request",
+      "body": "Hello,\n\nI would like to request access to the Chiibitsu Labs data room.\n\nName:\nFirm:\nWhat I would like to review:\n\nThank you."
     }
   },
   "footer": {
@@ -350,7 +339,10 @@
   },
   "audit": {
     "heading": "Request a workflow audit",
-    "body": "Send a short note to labs@chiibitsu.com about the workflow you want looked at.",
+    "body": "Send a short note about the workflow you want looked at.",
+    "email": "labs@chiibitsu.com",
+    "openIn": "Open in",
+    "subject": "Workflow audit",
     "contact": "Say what breaks when you are away, and who else is involved.",
     "back": "← Back to the home page"
   }

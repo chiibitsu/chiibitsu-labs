@@ -14,17 +14,18 @@ function subscribe(cb: () => void) {
   return () => mo.disconnect();
 }
 
+export function setAudience(to: Aud) {
+  if (read() === to) return;
+  document.documentElement.setAttribute("data-aud", to);
+  const url = new URL(window.location.href);
+  url.searchParams.set("for", to);
+  window.history.replaceState(null, "", url);
+  track("audience_switch", { to });
+}
+
 export function AudienceSwitch({ labels }: { labels: Record<Aud, string> }) {
   const aud = useSyncExternalStore(subscribe, read, () => "companies" as Aud);
-
-  const pick = (to: Aud) => {
-    if (to === aud) return;
-    document.documentElement.setAttribute("data-aud", to);
-    const url = new URL(window.location.href);
-    url.searchParams.set("for", to);
-    window.history.replaceState(null, "", url);
-    track("audience_switch", { to });
-  };
+  const pick = setAudience;
 
   return (
     <div className="switch" role="group" aria-label="Who is this for">
