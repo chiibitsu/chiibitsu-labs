@@ -485,15 +485,6 @@ h2.w400 {
   pointer-events: none;
   line-height: 1;
 }
-.mol-legend {
-  display: none;
-  margin: 12px 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 14px;
-  color: var(--ink-2);
-  gap: 4px;
-}
 
 /* This week */
 .week-head,
@@ -909,12 +900,11 @@ h2.w400 {
   .art text {
     display: none;
   }
-  .mol-label,
-  .mol-ai {
+  /* Phone: the labels stay on the molecule. The "AI" inside each small node and the two long captions
+     (the line under the drawing says the same) are dropped. */
+  .mol-node,
+  .mol-wide {
     display: none;
-  }
-  .mol-legend {
-    display: grid;
   }
   .seasoning {
     align-items: flex-start;

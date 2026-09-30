@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useNarrow } from "@/components/film/scroll";
 
 type Node = { label: string; x: number; y: number; r: number; z: number; lx: number; ly: number; tf: string; col: string };
 
@@ -8,7 +9,8 @@ const W = 580;
 const H = 300;
 const pct = (v: number, of: number) => `${((v / of) * 100).toFixed(3)}%`;
 
-function build(labels: string[], spin: number): Node[] {
+// Wide screens set each label out from the centre; on a phone the labels sit above or below their node, so none runs off the edge.
+function build(labels: string[], spin: number, narrow: boolean): Node[] {
   const cx = 380, cy = 150, rx = 130, ry = 50, phi = (-26 * Math.PI) / 180;
   const cp = Math.cos(phi), sp = Math.sin(phi);
   const nodes = labels.map((label, i) => {
@@ -22,7 +24,12 @@ function build(labels: string[], spin: number): Node[] {
     const gap = r + 10;
     const tf = dx > 0.35 ? "translate(0, -50%)" : dx < -0.35 ? "translate(-100%, -50%)" : "translate(-50%, -50%)";
     const lx = x + dx * gap, ly = y + dy * (gap + (Math.abs(dx) <= 0.35 ? 6 : 0));
-    return { label, x, y, r, z, lx, ly, tf, col: z >= 0 ? "var(--ink)" : "var(--ink-3)" };
+    const col = z >= 0 ? "var(--ink)" : "var(--ink-3)";
+    if (narrow) {
+      const up = y <= cy;
+      return { label, x, y, r, z, lx: x, ly: up ? y - r - 4 : y + r + 4, tf: up ? "translate(-50%, -100%)" : "translate(-50%, 0)", col };
+    }
+    return { label, x, y, r, z, lx, ly, tf, col };
   });
   return nodes.sort((a, b) => a.z - b.z);
 }
@@ -34,6 +41,7 @@ type Props = {
 
 export function Molecule({ labels, human }: Props) {
   const [spin, setSpin] = useState(0);
+  const narrow = useNarrow();
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -57,7 +65,7 @@ export function Molecule({ labels, human }: Props) {
     };
   }, []);
 
-  const nodes = build(labels, spin);
+  const nodes = build(labels, spin, narrow);
   const back = nodes.filter((n) => n.z < 0);
   const front = nodes.filter((n) => n.z >= 0);
   const at = (x: number, y: number) => ({ left: pct(x, W), top: pct(y, H) });
@@ -101,8 +109,8 @@ export function Molecule({ labels, human }: Props) {
         </svg>
 
         {/* Labels are HTML overlays, never SVG text. */}
-        <div className="mol-label" style={{ ...at(252, 135), transform: "translate(-50%, -100%)", color: "var(--ink-3)" }}>decides · cross-checks</div>
-        <div className="mol-label" style={{ ...at(380, 290), transform: "translate(-50%, -100%)", color: "var(--ink-3)" }}>Chief AI Officer · runs the AI team</div>
+        <div className="mol-label mol-wide" style={{ ...at(252, 135), transform: "translate(-50%, -100%)", color: "var(--ink-3)" }}>decides · cross-checks</div>
+        <div className="mol-label mol-wide" style={{ ...at(380, 290), transform: "translate(-50%, -100%)", color: "var(--ink-3)" }}>Chief AI Officer · runs the AI team</div>
         <div className="mol-label" style={{ ...at(380, 0), transform: "translateX(-50%)", letterSpacing: ".12em", textTransform: "uppercase", color: "var(--ink-3)" }}>AI team · six specialists</div>
         <div className="mol-ai" style={{ ...at(380, 150), color: "var(--ground)" }}>CAIO</div>
         {nodes.map((n) => (
@@ -111,7 +119,7 @@ export function Molecule({ labels, human }: Props) {
           </div>
         ))}
         {nodes.map((n) => (
-          <div key={`a-${n.label}`} className="mol-ai" style={{ ...at(n.x, n.y), color: "var(--ink)" }}>AI</div>
+          <div key={`a-${n.label}`} className="mol-ai mol-node" style={{ ...at(n.x, n.y), color: "var(--ink)" }}>AI</div>
         ))}
         {(["companies", "solo"] as const).map((k) => (
           <div key={k} data-aud={k}>
@@ -121,16 +129,6 @@ export function Molecule({ labels, human }: Props) {
         ))}
       </div>
 
-      {/* Phone width: the drawing is too small to carry labels, so this list does. */}
-      <ul className="mol-legend">
-        {(["companies", "solo"] as const).map((k) => (
-          <li key={k} data-aud={k}>
-            {human[k].name} · {human[k].note}
-          </li>
-        ))}
-        <li>CAIO · Chief AI Officer, runs the AI team</li>
-        <li>{labels.join(" · ")}</li>
-      </ul>
     </div>
   );
 }
