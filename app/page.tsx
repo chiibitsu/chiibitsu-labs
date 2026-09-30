@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <>
       <FilmProgress />
-      <FilmBar nav={c.nav} cta={c.cta} location="nav" shift={c.shift.label} />
+      <FilmBar nav={c.nav} cta={c.cta} location="nav" />
       <main>
         <div className="film" data-film>
           {both.map((k) => (

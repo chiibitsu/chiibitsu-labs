@@ -40,9 +40,6 @@ export default function StillHome() {
         </div>
         <div className="sub-strip">
           <AudienceSwitch labels={{ companies: a.companies.switchLabel, solo: a.solo.switchLabel }} />
-          <div className="shift">
-            <span className="dot">●</span> {c.shift.label} <span className="ill">· Illustrative</span>
-          </div>
         </div>
       </header>
 

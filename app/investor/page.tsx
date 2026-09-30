@@ -42,9 +42,6 @@ export default function Investor() {
           <span className="caption">
             {c.strip.text} {c.strip.illustrative && <Ill />}
           </span>
-          <div className="shift">
-            <span className="dot">●</span> {c.shift.label} <span className="ill">· Illustrative</span>
-          </div>
         </div>
       </header>
 

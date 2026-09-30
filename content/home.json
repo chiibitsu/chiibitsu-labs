@@ -26,10 +26,6 @@
     "label": "Request a workflow audit →",
     "href": "/audit"
   },
-  "shift": {
-    "label": "the team is on shift",
-    "illustrative": true
-  },
   "audiences": {
     "companies": {
       "switchLabel": "For companies",
