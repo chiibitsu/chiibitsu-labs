@@ -15,10 +15,9 @@
         "Home goods"
       ],
       "solo": [
-        "Retail and e-commerce",
-        "Mentoring",
-        "Art and education",
-        "Décor"
+        "Antiques and e-commerce",
+        "Trucker accessories",
+        "Art and education"
       ]
     },
     "note": "Anonymised for now. Each client will countersign on the Aikiri Network, and then we name them.",
@@ -65,7 +64,7 @@
     ],
     "solo": [
       {
-        "industry": "A shop owner in retail and e-commerce",
+        "industry": "An antique dealer in retail and e-commerce",
         "need": "An owner who wanted AI to carry the routine work of a small shop.",
         "solution": "Private sessions: a second brain, an inventory intake, a travel workflow.",
         "result": "Still in sessions, with a lot of projects going.",
@@ -76,10 +75,10 @@
         "source": "Chii, stated 2026-09-30"
       },
       {
-        "industry": "A business owner, mentored since 2024",
-        "need": "Wanted AI to become a daily habit.",
+        "industry": "A trucker-accessories importer, mentored since 2024",
+        "need": "An owner who wanted AI to become a daily habit in her business.",
         "solution": "One-to-one mentoring, then a daily practice she keeps herself.",
-        "result": "Still practises daily.",
+        "result": "Increased sales, and a new segment of buyers. Still practises daily.",
         "date": "Oct 2024 →",
         "named": false,
         "illustrative": false,
@@ -92,17 +91,6 @@
         "solution": "Private sessions: a second brain and an art study partner.",
         "result": "Still using both after the sessions ended.",
         "date": "2026",
-        "named": false,
-        "illustrative": false,
-        "measuredOn": "2026-09-30",
-        "source": "Chii, stated 2026-09-30"
-      },
-      {
-        "industry": "A décor business owner",
-        "need": "An owner who wanted AI in how she runs her business.",
-        "solution": "One-to-one mentorship, since June 2026.",
-        "result": "Still in mentorship.",
-        "date": "Jun 2026 →",
         "named": false,
         "illustrative": false,
         "measuredOn": "2026-09-30",
