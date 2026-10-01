@@ -5,7 +5,7 @@ import { bootScript } from "@/lib/boot";
 import { content } from "@/lib/content";
 import "./globals.css";
 
-// The share card (app/opengraph-image.png, 1200x630, source design/og-woah.html): a 06:09 lock screen with one notification from the ghost team.
+// The share card (app/opengraph-image.png, 1200x630, source design/og-woah.html): a 6:15 lock screen with one notification from the ghost team.
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.chiibitsu.com"),
   title: content.meta.title,
