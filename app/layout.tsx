@@ -5,9 +5,23 @@ import { bootScript } from "@/lib/boot";
 import { content } from "@/lib/content";
 import "./globals.css";
 
+// The share card (app/opengraph-image.png, 1200x630) is the home hook on the lab-notebook grid with the molecule.
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.chiibitsu.com"),
   title: content.meta.title,
   description: content.meta.description,
+  openGraph: {
+    type: "website",
+    siteName: content.meta.title,
+    title: content.meta.title,
+    description: content.meta.description,
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: content.meta.title,
+    description: content.meta.description,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
