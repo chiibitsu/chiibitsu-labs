@@ -10,17 +10,14 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.chiibitsu.com"),
   title: content.meta.title,
   description: content.meta.description,
+  // No fixed title or description here: each page's own <title> and description stand, so a shared /about or /angeline keeps its name.
   openGraph: {
     type: "website",
     siteName: content.meta.title,
-    title: content.meta.title,
-    description: content.meta.description,
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: content.meta.title,
-    description: content.meta.description,
   },
 };
 
