@@ -14,16 +14,17 @@ const GHOSTS = [780, 920, 1060, 1200];
 // The ghost team, as on the ghost-team page: a round-topped ghost with two eyes and a scalloped hem.
 // Operations drafts, Quality checks, Finance stamps receipts, the Chief AI Officer reports to her.
 const NAMES = ["Operations", "Quality", "Finance", "CAIO"];
-// [start, end] of the clock in each of the six stages, in minutes.
+// [start, end] of the clock in each of the six stages, in minutes. The morning stage holds at 06:15, the house time
+// (Chii's birthday, as 9:41 is Apple's): every clock we show reads 6:15 when it is not moving.
 const CLOCK: [number, number][] = [
-  [6 * 60, 6 * 60 + 10],
+  [6 * 60 + 15, 6 * 60 + 15],
   [6 * 60 + 15, 6 * 60 + 30],
   [7 * 60 + 30, 8 * 60 + 15],
   [12 * 60, 16 * 60],
   [18 * 60 + 30, 19 * 60 + 30],
   [20 * 60 + 30, 20 * 60 + 45],
 ];
-const CAPTION = { morning: "Overnight: 14 done · 1 needs you.", glance: "On track.", card: "Shipped · verified · logged." };
+const CAPTION = { morning: "Good morning. Overnight: 14 done · 1 needs you.", glance: "On track.", card: "Shipped · verified · logged." };
 
 const pad = (n: number) => String(n).padStart(2, "0");
 const clock = (m: number) => `${pad(Math.floor(m / 60))}:${pad(Math.floor(m % 60))}`;
@@ -247,7 +248,7 @@ export function DayLayer() {
     <div ref={root} className="day" aria-hidden="true">
       <div className="day-inner">
         <div className="day-hud">
-          <span className="day-clock" data-k="clock">06:00</span>
+          <span className="day-clock" data-k="clock">06:15</span>
           <span className="day-cap" data-k="cap">{CAPTION.morning}</span>
         </div>
         <svg className="day-art" viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`} preserveAspectRatio="xMidYMax meet" fill="none" strokeLinecap="round" strokeLinejoin="round">
