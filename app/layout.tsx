@@ -5,7 +5,7 @@ import { bootScript } from "@/lib/boot";
 import { content } from "@/lib/content";
 import "./globals.css";
 
-// The share card (app/opengraph-image.png, 1200x630) is the home hook on the lab-notebook grid with the molecule.
+// The share card (app/opengraph-image.png, 1200x630, source design/og-night.html): the belief line at night, the ghost team done for the day.
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.chiibitsu.com"),
   title: content.meta.title,
