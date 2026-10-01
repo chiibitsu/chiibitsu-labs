@@ -24,7 +24,7 @@ const CLOCK: [number, number][] = [
   [18 * 60 + 30, 19 * 60 + 30],
   [20 * 60 + 30, 20 * 60 + 45],
 ];
-const CAPTION = { morning: "Good morning. Overnight: 14 done · 1 needs you.", glance: "On track.", card: "Shipped · verified · logged." };
+const CAPTION = { morning: "Good morning. Overnight: 14 done · 1 decision needs you.", glance: "On track.", card: "Shipped · verified · logged." };
 
 const pad = (n: number) => String(n).padStart(2, "0");
 const clock = (m: number) => `${pad(Math.floor(m / 60))}:${pad(Math.floor(m % 60))}`;
