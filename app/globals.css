@@ -16,9 +16,9 @@
   --node-lo: #aeb8bd;
   --ink-hi: #5c666b;
   --acc-hi: #a58ad0;
-  --serif: "Spectral", serif;
-  --mono: "IBM Plex Mono", monospace;
-  --hand: "Caveat", cursive;
+  --serif: var(--font-spectral), "Spectral", serif;
+  --mono: var(--font-plex-mono), "IBM Plex Mono", monospace;
+  --hand: var(--font-caveat), "Caveat", cursive;
   color-scheme: light;
 }
 
@@ -167,7 +167,7 @@ h2.w400 {
 }
 .nav {
   display: flex;
-  gap: 26px;
+  gap: clamp(16px, 1.8vw, 26px);
   align-items: center;
   font-size: 15px;
 }
