@@ -59,7 +59,10 @@ export function Publication() {
   return (
       <section id="publication" className="section" style={{ gap: 24 }}>
         <div className="week-head">
-          <h2>{p.heading}</h2>
+          <div className="head-tag">
+            <h2>{p.heading}</h2>
+            <span className="soon-tag">{p.soon}</span>
+          </div>
           {"href" in p && typeof p.href === "string" && (
             <TrackedLink href={p.href} className="more" event="cta_click" eventProps={{ location: "publication" }}>{p.followLabel}</TrackedLink>
           )}
@@ -81,7 +84,10 @@ export function Papers() {
   return (
       <section id="papers" className="section" style={{ gap: 24 }}>
         <div className="week-head">
-          <h2>{p.heading}</h2>
+          <div className="head-tag">
+            <h2>{p.heading}</h2>
+            <span className="soon-tag">{p.soon}</span>
+          </div>
         </div>
         <div className="posts">
           {p.items.map((x) => (
