@@ -1,0 +1,98 @@
+{
+  "meta": {
+    "title": "The Aikiri ledger · Chiibitsu Labs",
+    "description": "The Aikiri Network's ledger contract on Base: what it records, the address, and how anyone can check it."
+  },
+  "hero": {
+    "eyebrow": "The Aikiri Network",
+    "h1": "The ledger.",
+    "sub": "One small contract on Base that witnesses the Aikiri Network's record. It stores hashes, never content, and there is no token."
+  },
+  "holds": {
+    "heading": "What it holds",
+    "items": [
+      {
+        "label": "Stores",
+        "title": "Hashes only.",
+        "body": "Each entry is a block number, that block's hash and the time it was recorded. No names, no files, no content."
+      },
+      {
+        "label": "Rules",
+        "title": "Append-only.",
+        "body": "Only the owner can add an entry, in order, and an entry can never be replaced."
+      },
+      {
+        "label": "Never",
+        "title": "No token.",
+        "body": "There is no coin and no sale. The contract only keeps the record."
+      }
+    ]
+  },
+  "onchain": {
+    "heading": "On chain",
+    "asOf": "Checked 2 Oct 2026 against Basescan and the public repository.",
+    "rows": [
+      {
+        "k": "Contract",
+        "v": "0x15eFF43a5CFA703215fAa943D42168aF5a7A6a9e",
+        "href": "https://basescan.org/address/0x15eFF43a5CFA703215fAa943D42168aF5a7A6a9e"
+      },
+      {
+        "k": "Network",
+        "v": "Base (chain ID 8453)"
+      },
+      {
+        "k": "Source code",
+        "v": "Verified on Basescan",
+        "href": "https://basescan.org/address/0x15eFF43a5CFA703215fAa943D42168aF5a7A6a9e#code"
+      },
+      {
+        "k": "Owner",
+        "v": "0xB76B710cDa104DB946A619B1450E02D44cB97194",
+        "href": "https://basescan.org/address/0xB76B710cDa104DB946A619B1450E02D44cB97194"
+      },
+      {
+        "k": "Owner verified",
+        "v": "Signed message on Basescan, 2 Oct 2026"
+      },
+      {
+        "k": "Genesis hash",
+        "v": "73715608c05be3f134036de0f5a1606b348098e2bebf34c8102680be08650ea8"
+      }
+    ]
+  },
+  "check": {
+    "heading": "Check it yourself",
+    "steps": [
+      "Open the contract on Basescan and read the source code. It matches the code in the repository.",
+      "Under Read Contract, genesisHash equals the genesis hash above, and owner equals the owner address above.",
+      "latestIndex is the number of the last block anchored. Each block's hash is in the repository under ledger/blocks, and it matches what the contract recorded."
+    ]
+  },
+  "links": {
+    "heading": "Read more",
+    "items": [
+      {
+        "label": "Contract on Basescan",
+        "href": "https://basescan.org/address/0x15eFF43a5CFA703215fAa943D42168aF5a7A6a9e"
+      },
+      {
+        "label": "Code and records on GitHub",
+        "href": "https://github.com/chiibitsu/aikiri-network"
+      },
+      {
+        "label": "Security review",
+        "href": "https://github.com/chiibitsu/aikiri-network/blob/main/docs/approval.md"
+      }
+    ],
+    "soon": {
+      "label": "Design paper",
+      "tag": "Coming soon"
+    }
+  },
+  "back": "← Back to the home page",
+  "footer": {
+    "left": "Chiibitsu Labs",
+    "middle": "More human, by design"
+  }
+}
