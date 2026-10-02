@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
+import { profileGraph } from "@/lib/identity";
 import Image from "next/image";
 import { emails } from "@/lib/emails";
 import { mailto } from "@/lib/mail";
@@ -8,6 +10,7 @@ import { TrackedLink } from "@/components/TrackedLink";
 import { angeline as c } from "@/lib/angeline";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/angeline" },
   title: c.meta.title,
   description: c.meta.description,
 };
@@ -18,6 +21,7 @@ const Ill = () => <span className="ill">Illustrative</span>;
 export default function Angeline() {
   return (
     <div className="page">
+      <JsonLd data={profileGraph} />
       <header className="head">
         <div className="head-row">
           <TrackedLink href="/" className="brand">

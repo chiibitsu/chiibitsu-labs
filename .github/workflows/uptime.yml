@@ -1,0 +1,47 @@
+name: uptime
+# Checks the live site every hour. If a page is down, opens one issue titled "Site down",
+# which GitHub emails to the repo owner. When the site is back, the next run closes it.
+# Hourly keeps this inside the free Actions minutes.
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+permissions:
+  issues: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - id: probe
+        run: |
+          failed=""
+          for path in / /about /angeline /audit /privacy; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 20 "https://www.chiibitsu.com$path" || echo 000)
+            echo "$path $code"
+            if [ "$code" != "200" ]; then
+              sleep 30
+              code=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 20 "https://www.chiibitsu.com$path" || echo 000)
+              [ "$code" != "200" ] && failed="$failed $path=$code"
+            fi
+          done
+          echo "failed=$failed" >> "$GITHUB_OUTPUT"
+      - uses: actions/github-script@v7
+        env:
+          FAILED: ${{ steps.probe.outputs.failed }}
+        with:
+          script: |
+            const title = "Site down";
+            const { data: open } = await github.rest.issues.listForRepo({ ...context.repo, state: "open", creator: "github-actions[bot]" });
+            const existing = open.find((i) => i.title === title);
+            const failed = process.env.FAILED.trim();
+            if (failed && !existing) {
+              await github.rest.issues.create({
+                ...context.repo,
+                title,
+                body: `These pages on www.chiibitsu.com did not answer 200 twice in a row, 30 seconds apart:\n\n${failed.split(" ").map((f) => "- " + f).join("\n")}\n\nFirst seen ${new Date().toISOString()}. Rollback: Vercel → chiibitsu-labs → Deployments → previous production → Instant Rollback.`,
+              });
+            } else if (!failed && existing) {
+              await github.rest.issues.createComment({ ...context.repo, issue_number: existing.number, body: `Back up at ${new Date().toISOString()}.` });
+              await github.rest.issues.update({ ...context.repo, issue_number: existing.number, state: "closed" });
+            }
