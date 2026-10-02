@@ -5,6 +5,12 @@ import { bootScript } from "@/lib/boot";
 import { content } from "@/lib/content";
 import "./globals.css";
 
+// Microsoft Clarity: recordings, scroll maps, time on page and events. Apollo: which company a visit comes from.
+// Both are named on /privacy. Each runs once per page load from the head.
+const CLARITY_ID = "yr62qfnz0b";
+const clarityScript = `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${CLARITY_ID}");`;
+const apolloScript = `function initApollo(){var n=Math.random().toString(36).substring(7),o=document.createElement("script");o.src="https://assets.apollo.io/micro/website-tracker/tracker.iife.js?nocache="+n,o.async=!0,o.defer=!0,o.onload=function(){window.trackingFunctions.onLoad({appId:"69eaa9571f03c5000da5a540"})},document.head.appendChild(o)}initApollo();`;
+
 // The share card (app/opengraph-image.png, 1200x630, source design/og-woah.html): a 6:15 lock screen with one notification from the ghost team.
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.chiibitsu.com"),
@@ -26,6 +32,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" data-theme="day" data-aud="companies" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
+        <script dangerouslySetInnerHTML={{ __html: clarityScript }} />
+        <script dangerouslySetInnerHTML={{ __html: apolloScript }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* eslint-disable-next-line @next/next/no-page-custom-font -- App Router root layout: this loads on every page. */}

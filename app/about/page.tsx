@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SiteFooter } from "@/components/SiteFooter";
+import { SceneBeacon } from "@/components/SceneBeacon";
 import { FilmBar } from "@/components/film/FilmBar";
 import { FilmProgress } from "@/components/film/FilmProgress";
 import { ForkScene } from "@/components/film/fork";
@@ -22,6 +23,7 @@ export default function About() {
   return (
     <>
       <FilmProgress />
+      <SceneBeacon />
       <FilmBar nav={c.nav} cta={c.cta} location="about_nav" />
       <main>
         <ThesisScene
