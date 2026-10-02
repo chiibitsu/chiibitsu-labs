@@ -50,6 +50,10 @@ export default function Privacy() {
           </li>
         </ul>
         <p className="body">There are no forms on this site and we do not ask for sensitive information.</p>
+        <p className="body">
+          The file checker on the Network page works out a file&apos;s fingerprint on your own device, and the file is never uploaded. To look the fingerprint up, your
+          browser reads public ledger files from GitHub, which sees your IP address as it would on any visit to its site.
+        </p>
 
         <h2>How we use it</h2>
         <ul className="body">

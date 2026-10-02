@@ -63,6 +63,9 @@ export default function Ledger() {
             </li>
           ))}
           <li>
+            <Link href={c.links.check.href}>{c.links.check.label}</Link>
+          </li>
+          <li>
             {c.links.soon.label} <span className="soon-tag">{c.links.soon.tag}</span>
           </li>
         </ul>
