@@ -34,7 +34,7 @@
       "sub": "See the whole business at a glance, decide faster, and stop being the only one who knows how it all works.",
       "secondary": {
         "label": "Or see the work first",
-        "href": "#work"
+        "href": "#proof"
       },
       "letter": "We find the jobs only you know how to do, and set up AI to do them too.",
       "run": "You see everything and make the big calls. Your people handle the rest. AI does the work.",
@@ -134,7 +134,7 @@
       {
         "client": "Real estate brokerage",
         "built": "Lead follow-ups that never go cold",
-        "changed": "Every enquiry answered within the hour",
+        "changed": "Every inquiry answered within the hour",
         "date": "Jun 2026",
         "href": null,
         "illustrative": true
@@ -219,7 +219,7 @@
       },
       {
         "client": "A home-goods company",
-        "built": "Workshop for two owners and six staff",
+        "built": "Workshop for the owners and their sales and marketing team",
         "changed": "The owner still uses AI daily",
         "miss": false,
         "date": "Jun 2026",
@@ -230,9 +230,29 @@
       {
         "client": "A retail shop",
         "built": "Second brain, inventory, travel workflow",
-        "changed": "Still in sessions, building more",
+        "changed": "Shop workflow running and still in use; more projects under way",
         "miss": false,
         "date": "2026",
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "client": "A trucking-accessories importer",
+        "built": "One-to-one mentoring since 2024",
+        "changed": "Increased sales and a new segment of buyers",
+        "date": "Oct 2024 →",
+        "miss": false,
+        "illustrative": false,
+        "measuredOn": "2026-09-30",
+        "source": "Chii, stated 2026-09-30"
+      },
+      {
+        "client": "A retired teacher and artist",
+        "built": "Second brain and an art study partner",
+        "changed": "Still using both after the sessions ended",
+        "date": "2026",
+        "miss": false,
         "illustrative": false,
         "measuredOn": "2026-09-30",
         "source": "Chii, stated 2026-09-30"
@@ -341,8 +361,6 @@
     "heading": "Request a workflow audit",
     "body": "Send a short note about the workflow you want looked at.",
     "email": "labs@chiibitsu.com",
-    "openIn": "Open in",
-    "subject": "Workflow audit",
     "contact": "Say what breaks when you are away, and who else is involved.",
     "back": "← Back to the home page"
   }

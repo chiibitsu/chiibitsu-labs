@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Mark } from "@/components/Mark";
 import { about } from "@/lib/about";
+import { emails } from "@/lib/emails";
+import { mailto } from "@/lib/mail";
 
 export const metadata: Metadata = {
   title: "Privacy Policy · Chiibitsu Labs",
@@ -16,7 +18,7 @@ const MS_PRIVACY = "https://privacy.microsoft.com/en-us/privacystatement";
 // Update this page whenever a tool that records visits is added to or removed from app/layout.tsx.
 export default function Privacy() {
   const email = about.legal.email;
-  const mail = <a href={`mailto:${email}`}>{email}</a>;
+  const mail = <a href={mailto(emails.privacy)}>{email}</a>;
   return (
     <div className="page">
       <Link href="/" className="brand" aria-label="Chiibitsu Labs, home">
@@ -39,7 +41,7 @@ export default function Privacy() {
             (country or city, from your IP address), and how you use the pages, such as clicks, scrolling and time spent, including session recordings.
           </li>
           <li>
-            <strong>Organisation information</strong> inferred from your IP address, such as the name of the company whose network you use. We do not
+            <strong>Organization information</strong> inferred from your IP address, such as the name of the company whose network you use. We do not
             use this to identify you personally.
           </li>
           <li>
@@ -51,7 +53,7 @@ export default function Privacy() {
         <h2>How we use it</h2>
         <ul className="body">
           <li>To understand how the site is used and improve it.</li>
-          <li>To understand which organisations are interested in our services.</li>
+          <li>To understand which organizations are interested in our services.</li>
           <li>To reply to you and provide the services you ask for.</li>
           <li>To keep the site secure and meet our legal obligations.</li>
         </ul>
@@ -65,7 +67,7 @@ export default function Privacy() {
         <h2>Cookies</h2>
         <p className="body">
           We use analytics cookies and similar technologies to understand how the site is used. You can block or delete cookies in your browser settings.
-          Where the law requires consent, these cookies are used only with it. We honour Global Privacy Control signals where our providers support them.
+          Where the law requires consent, these cookies are used only with it. We honor Global Privacy Control signals where our providers support them.
         </p>
 
         <h2>Who we share it with</h2>
@@ -73,7 +75,7 @@ export default function Privacy() {
           We use service providers for website hosting, analytics and business information. They process information on our behalf and under contract.
         </p>
         <p className="body">
-          We partner with Microsoft Clarity to capture how you use and interact with our website through behavioural metrics, heatmaps and session
+          We partner with Microsoft Clarity to capture how you use and interact with our website through behavioral metrics, heatmaps and session
           replay. Website usage data is captured using first and third-party cookies and other tracking technologies. Microsoft may use this data for its
           own purposes, including improving its products. For more information about how Microsoft collects and uses your data, see the{" "}
           <a href={MS_PRIVACY} target="_blank" rel="noreferrer">
@@ -117,7 +119,7 @@ export default function Privacy() {
         <p className="body">This site is not directed at children under 16, and we do not knowingly collect their information.</p>
 
         <h2>Security</h2>
-        <p className="body">We use reasonable technical and organisational measures to protect information. No method of transmission over the internet is fully secure.</p>
+        <p className="body">We use reasonable technical and organizational measures to protect information. No method of transmission over the internet is fully secure.</p>
 
         <h2>Changes</h2>
         <p className="body">We will post any changes on this page with a new effective date.</p>

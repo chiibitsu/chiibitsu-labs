@@ -9,7 +9,7 @@ const W = 580;
 const H = 300;
 const pct = (v: number, of: number) => `${((v / of) * 100).toFixed(3)}%`;
 
-// Wide screens set each label out from the centre; on a phone the labels sit above or below their node, so none runs off the edge.
+// Wide screens set each label out from the center; on a phone the labels sit above or below their node, so none runs off the edge.
 function build(labels: string[], spin: number, narrow: boolean): Node[] {
   const cx = 380, cy = 150, rx = 130, ry = 50, phi = (-26 * Math.PI) / 180;
   const cp = Math.cos(phi), sp = Math.sin(phi);

@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Chii, founder of Chiibitsu Labs",
-    "description": "Angeline S. Viray (Chii): founder of Chiibitsu Labs. I find what a business actually runs on, and leave it running without me.",
+    "description": "Angeline S. Viray (Chii): founder of Chiibitsu Labs. I map how your business really runs, put AI to work in it, and hand it over to your team.",
     "updated": "Sep 30, 2026"
   },
   "nav": [
@@ -27,7 +27,7 @@
     "eyebrow": "The founder",
     "name": "Chii",
     "legalName": "Angeline S. Viray",
-    "line": "I find what a business actually runs on, and leave it running without me.",
+    "line": "I map how your business really runs, put AI to work in it, and hand it over to your team.",
     "facts": [
       "Founder, Chiibitsu Labs",
       "12+ years leading teams",
@@ -166,9 +166,10 @@
     ]
   },
   "engage": {
-    "h": "If your business still needs you for everything, let’s look at why.",
+    "h": "If your business ",
     "press": "Press, speaking and partners",
-    "email": "labs@chiibitsu.com"
+    "hEm": "still needs you",
+    "hEnd": " for everything, let’s look at why."
   },
   "footer": {
     "left": "Chiibitsu Labs · Based in Manila, working worldwide",
