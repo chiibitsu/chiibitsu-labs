@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { ThemeClock } from "@/components/ThemeClock";
 import { bootScript } from "@/lib/boot";
 import { content } from "@/lib/content";
+import { caveat, plexMono, spectral } from "./fonts";
 import "./globals.css";
 
 // Microsoft Clarity: recordings, scroll maps, time on page and events. Apollo: which company a visit comes from.
@@ -29,18 +30,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="day" data-aud="companies" suppressHydrationWarning>
+    <html lang="en" data-theme="day" data-aud="companies" className={`${spectral.variable} ${plexMono.variable} ${caveat.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
         <script dangerouslySetInnerHTML={{ __html: clarityScript }} />
         <script dangerouslySetInnerHTML={{ __html: apolloScript }} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* eslint-disable-next-line @next/next/no-page-custom-font -- App Router root layout: this loads on every page. */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;1,300&family=IBM+Plex+Mono:wght@400;500&family=Caveat:wght@500&display=swap"
-        />
       </head>
       <body>
         {children}
