@@ -9,6 +9,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { TrackedLink } from "@/components/TrackedLink";
 import { CountUp, InView } from "@/components/Scroll";
 import { angeline as c } from "@/lib/angeline";
+import { AikiriText } from "@/components/AikiriText";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/angeline" },
@@ -69,7 +70,7 @@ export default function Angeline() {
           {c.now.items.map((it, i) => (
             <InView rise i={i} key={it.n} className="ang-col">
               <div className="eyebrow">{it.n}</div>
-              <div className="ang-col-t">{it.title}</div>
+              <div className="ang-col-t"><AikiriText text={it.title} where="angeline_now" /></div>
               <div className="body">{it.body}</div>
             </InView>
           ))}

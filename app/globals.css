@@ -3377,3 +3377,13 @@ html:not([data-js]) #proof {
     transition: none;
   }
 }
+
+.aikiri-link {
+  text-decoration: underline;
+  text-decoration-color: var(--ink-3);
+  text-underline-offset: 3px;
+}
+.aikiri-link:hover {
+  opacity: 1;
+  text-decoration-color: currentColor;
+}
