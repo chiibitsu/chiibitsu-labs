@@ -30,7 +30,7 @@
   },
   "onchain": {
     "heading": "On chain",
-    "asOf": "Checked 2 Oct 2026 against Basescan and the public repository.",
+    "asOf": "Checked 2 Oct 2026 against Basescan and the public repository. A block counts as fully verified only when both witnesses agree.",
     "rows": [
       {
         "k": "Contract",
@@ -42,8 +42,13 @@
         "v": "Base (chain ID 8453)"
       },
       {
+        "k": "Deployed",
+        "v": "2 Sep 2026, Base block 50,753,088",
+        "href": "https://basescan.org/tx/0x5a676ed613f98dbb28f193589ad646c7c6d05f24ba3c0656d6b9c12c9ed4e843"
+      },
+      {
         "k": "Source code",
-        "v": "Verified on Basescan",
+        "v": "Contract verified on Basescan",
         "href": "https://basescan.org/address/0x15eFF43a5CFA703215fAa943D42168aF5a7A6a9e#code"
       },
       {
@@ -56,8 +61,20 @@
         "v": "Signed message on Basescan, 2 Oct 2026"
       },
       {
+        "k": "Genesis block",
+        "v": "Block 0 · 2026-09-02 04:43:29 (UTC+8) · 2026-09-01 20:43:29 UTC"
+      },
+      {
         "k": "Genesis hash",
         "v": "73715608c05be3f134036de0f5a1606b348098e2bebf34c8102680be08650ea8"
+      },
+      {
+        "k": "Witness: Base",
+        "v": "The genesis hash is written into the contract. Blocks 1 and 2 are anchored there."
+      },
+      {
+        "k": "Witness: Bitcoin",
+        "v": "Stamped with OpenTimestamps, awaiting Bitcoin confirmation. Not yet verified."
       }
     ]
   },
@@ -77,12 +94,12 @@
         "href": "https://basescan.org/address/0x15eFF43a5CFA703215fAa943D42168aF5a7A6a9e"
       },
       {
-        "label": "Code and records on GitHub",
-        "href": "https://github.com/chiibitsu/aikiri-network"
-      },
-      {
         "label": "Security review",
         "href": "https://github.com/chiibitsu/aikiri-network/blob/main/docs/approval.md"
+      },
+      {
+        "label": "Source code and records",
+        "href": "https://github.com/chiibitsu/aikiri-network"
       }
     ],
     "soon": {
