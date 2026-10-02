@@ -722,6 +722,23 @@ h2.w400 {
   align-items: baseline;
   gap: 8px 18px;
 }
+.mail-addr {
+  text-decoration: none;
+}
+.mail-copy {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.cta-h em {
+  font-style: italic;
+  color: var(--accent);
+}
 .mail-opts a {
   text-decoration: underline;
   text-underline-offset: 3px;

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { emails } from "@/lib/emails";
+import { mailto } from "@/lib/mail";
 import { Mark } from "@/components/Mark";
 import { SiteFooter } from "@/components/SiteFooter";
 import { TrackedLink } from "@/components/TrackedLink";
@@ -140,12 +142,16 @@ export default function Angeline() {
       </section>
 
       <section id="engage" className="about-cta">
-        <div className="cta-h">{c.engage.h}</div>
+        <div className="cta-h">
+          {c.engage.h}
+          <em>{c.engage.hEm}</em>
+          {c.engage.hEnd}
+        </div>
         <TrackedLink href={c.cta.href} className="btn big" event="cta_click" eventProps={{ location: "angeline_cta" }}>
           {c.cta.label}
         </TrackedLink>
         <div className="caption">
-          {c.engage.press} · <a href={`mailto:${c.engage.email}`}>{c.engage.email}</a>
+          {c.engage.press} · <a href={mailto(emails.press)}>{emails.press.email}</a>
         </div>
       </section>
 
