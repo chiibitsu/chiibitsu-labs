@@ -6,6 +6,7 @@ import { emails } from "@/lib/emails";
 import { mailto } from "@/lib/mail";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" },
   title: "Privacy Policy · Chiibitsu Labs",
   description: "How Chiibitsu Labs collects, uses and protects information when you visit chiibitsu.com, and your rights.",
 };

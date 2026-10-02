@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/JsonLd";
+import { profileGraph } from "@/lib/identity";
 import Image from "next/image";
 import { emails } from "@/lib/emails";
 import { mailto } from "@/lib/mail";
 import { Mark } from "@/components/Mark";
 import { SiteFooter } from "@/components/SiteFooter";
 import { TrackedLink } from "@/components/TrackedLink";
+import { CountUp, InView } from "@/components/Scroll";
 import { angeline as c } from "@/lib/angeline";
+import { AikiriText } from "@/components/AikiriText";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/angeline" },
   title: c.meta.title,
   description: c.meta.description,
 };
@@ -18,6 +23,7 @@ const Ill = () => <span className="ill">Illustrative</span>;
 export default function Angeline() {
   return (
     <div className="page">
+      <JsonLd data={profileGraph} />
       <header className="head">
         <div className="head-row">
           <TrackedLink href="/" className="brand">
@@ -61,12 +67,12 @@ export default function Angeline() {
       <section className="section" style={{ gap: 28 }}>
         <h2>{c.now.heading}</h2>
         <div className="ang-cols3">
-          {c.now.items.map((it) => (
-            <div key={it.n} className="ang-col">
+          {c.now.items.map((it, i) => (
+            <InView rise i={i} key={it.n} className="ang-col">
               <div className="eyebrow">{it.n}</div>
-              <div className="ang-col-t">{it.title}</div>
+              <div className="ang-col-t"><AikiriText text={it.title} where="angeline_now" /></div>
               <div className="body">{it.body}</div>
-            </div>
+            </InView>
           ))}
         </div>
       </section>
@@ -77,12 +83,12 @@ export default function Angeline() {
           <div className="caption">{c.outcomes.note}</div>
         </div>
         <div className="ang-figs">
-          {c.outcomes.figures.map((f) => (
-            <div key={f.value} className="ang-fig">
-              <div className="figure ang-figure">{f.value}</div>
+          {c.outcomes.figures.map((f, i) => (
+            <InView rise i={i} key={f.value} className="ang-fig" threshold={0.5}>
+              <div className="figure ang-figure"><CountUp value={f.value} /></div>
               <div className="body">{f.label}</div>
               {f.illustrative && <Ill />}
-            </div>
+            </InView>
           ))}
         </div>
       </section>
@@ -94,9 +100,9 @@ export default function Angeline() {
             {c.road.note} {c.road.illustrative && <>· <Ill /></>}
           </div>
         </div>
-        <ol className="ang-road">
+        <InView as="ol" className="ang-road" threshold={0.1}>
           {c.road.items.map((r) => (
-            <li key={r.dates} className={`ang-road-row${"current" in r && r.current ? " current" : ""}`}>
+            <InView as="li" rise key={r.dates} className={`ang-road-row${"current" in r && r.current ? " current" : ""}`}>
               <svg className="ang-dot" viewBox="0 0 20 20" aria-hidden="true">
                 {"current" in r && r.current ? (
                   <circle style={{ fill: "var(--accent)" }} className="glow" cx="10" cy="10" r="7" />
@@ -110,19 +116,19 @@ export default function Angeline() {
                 <span className="ang-road-org">{r.org}</span>
               </div>
               <div className="body">{r.body}</div>
-            </li>
+            </InView>
           ))}
-        </ol>
+        </InView>
       </section>
 
       <section className="section" style={{ gap: 22 }}>
         <div className="ang-cols3">
-          {c.background.items.map((it) => (
-            <div key={it.label} className="ang-col">
+          {c.background.items.map((it, i) => (
+            <InView rise i={i} key={it.label} className="ang-col">
               <div className="eyebrow">{it.label}</div>
               <div className="ang-col-t sm">{it.title}</div>
               {"body" in it && it.body && <div className="body">{it.body}</div>}
-            </div>
+            </InView>
           ))}
         </div>
         <div className="caption">{c.background.reach}</div>

@@ -2,6 +2,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { TrackedLink } from "@/components/TrackedLink";
 import { content as c } from "@/lib/content";
 import { seriesTag } from "@/lib/publication";
+import { AikiriText } from "@/components/AikiriText";
 
 // Each still section of the home page is its own component, so any one of them can become a film scene
 // (see components/film) by swapping it for a scene component in app/page.tsx. Status: docs in README.md.
@@ -59,7 +60,10 @@ export function Publication() {
   return (
       <section id="publication" className="section" style={{ gap: 24 }}>
         <div className="week-head">
-          <h2>{p.heading}</h2>
+          <div className="head-tag">
+            <h2>{p.heading}</h2>
+            <span className="soon-tag">{p.soon}</span>
+          </div>
           {"href" in p && typeof p.href === "string" && (
             <TrackedLink href={p.href} className="more" event="cta_click" eventProps={{ location: "publication" }}>{p.followLabel}</TrackedLink>
           )}
@@ -81,7 +85,10 @@ export function Papers() {
   return (
       <section id="papers" className="section" style={{ gap: 24 }}>
         <div className="week-head">
-          <h2>{p.heading}</h2>
+          <div className="head-tag">
+            <h2>{p.heading}</h2>
+            <span className="soon-tag">{p.soon}</span>
+          </div>
         </div>
         <div className="posts">
           {p.items.map((x) => (
@@ -102,7 +109,7 @@ export function Investors() {
       <section id="investors" className="investors">
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <h2>{c.investors.heading}</h2>
-          <div className="line">{c.investors.line}</div>
+          <div className="line"><AikiriText text={c.investors.line} where="home_investors" /></div>
           <div className="body">{c.investors.sub}</div>
         </div>
         <div className="links">
