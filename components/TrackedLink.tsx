@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { track } from "@vercel/analytics";
+import { trackEvent } from "@/lib/analytics";
 import type { ReactNode } from "react";
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 export function TrackedLink({ href, className, event, eventProps, children }: Props) {
   // A placeholder click is tagged so it is never counted as a real conversion.
   const fire = () => {
-    if (event) track(event, href === null ? { ...eventProps, placeholder: true } : eventProps);
+    if (event) trackEvent(event, href === null ? { ...eventProps, placeholder: true } : eventProps);
   };
   if (href === null) {
     return (

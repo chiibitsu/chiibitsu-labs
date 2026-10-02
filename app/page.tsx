@@ -1,5 +1,6 @@
 import { AudienceSwitch } from "@/components/AudienceSwitch";
 import { DayLayer } from "@/components/film/DayLayer";
+import { SceneBeacon } from "@/components/SceneBeacon";
 import { FilmBar } from "@/components/film/FilmBar";
 import { FilmProgress } from "@/components/film/FilmProgress";
 import { HookScene } from "@/components/film/hook";
@@ -23,6 +24,7 @@ export default function Home() {
   return (
     <>
       <FilmProgress />
+      <SceneBeacon />
       <FilmBar nav={c.nav} cta={c.cta} location="nav" />
       <main>
         <div className="film" data-film>
@@ -48,7 +50,7 @@ export default function Home() {
             byline={c.letter.byline}
           />
 
-          <TriptychScene label={c.changes.heading} items={c.changes.items} line={c.changes.seasoning} />
+          <TriptychScene id="what-changes" label={c.changes.heading} items={c.changes.items} line={c.changes.seasoning} />
 
           <RunScene
             id="how-it-runs"

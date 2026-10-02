@@ -727,6 +727,23 @@ h2.w400 {
   text-underline-offset: 3px;
 }
 
+.privacy h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 28px;
+  margin-top: 8px;
+}
+.privacy ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 20px;
+}
+.privacy a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* Animations. Every one is guarded below. */
 .flicker {
   animation: flicker 5s steps(1) infinite;
