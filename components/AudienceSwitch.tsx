@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { track } from "@vercel/analytics";
+import { trackEvent } from "@/lib/analytics";
 
 type Aud = "companies" | "solo";
 
@@ -20,7 +20,7 @@ export function setAudience(to: Aud) {
   const url = new URL(window.location.href);
   url.searchParams.set("for", to);
   window.history.replaceState(null, "", url);
-  track("audience_switch", { to });
+  trackEvent("audience_switch", { to });
 }
 
 export function AudienceSwitch({ labels }: { labels: Record<Aud, string> }) {
