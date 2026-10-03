@@ -26,6 +26,19 @@ export default function Ledger() {
         <h1>{c.hero.h1}</h1>
         <p className="body"><AikiriText text={c.hero.sub} where="ledger_hero" /></p>
 
+        <h2>{c.why.heading}</h2>
+        <p className="body">{c.why.intro}</p>
+        <div className="ang-cols3">
+          {c.why.items.map((it) => (
+            <div key={it.title} className="ang-col">
+              <div className="eyebrow">{it.label}</div>
+              <div className="ang-col-t sm">{it.title}</div>
+              <div className="body">{it.body}</div>
+            </div>
+          ))}
+        </div>
+        <p className="caption">{c.why.status}</p>
+
         <h2>{c.holds.heading}</h2>
         <div className="ang-cols3">
           {c.holds.items.map((it) => (
