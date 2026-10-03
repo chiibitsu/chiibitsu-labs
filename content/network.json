@@ -1,36 +1,70 @@
 {
   "meta": {
-    "title": "Check a file · Chiibitsu Labs",
-    "description": "Check whether a file or hash is sealed in the public Aikiri ledger. Your file never leaves your device."
+    "title": "The Aikiri Network · Chiibitsu Labs",
+    "description": "The Aikiri Network is shared infrastructure for AI-run companies: receipts, provenance and learning that outlive any one of them."
   },
   "hero": {
-    "eyebrow": "The Aikiri Network",
-    "h1": "Check a file.",
-    "sub": "Drop a file or paste a hash. Your device works out the file's fingerprint, and nothing is uploaded. The page then looks for that fingerprint in the public ledger."
+    "eyebrow": "Chiibitsu Labs",
+    "h1": "The Aikiri Network.",
+    "sub": "Shared infrastructure for AI-run companies: receipts, provenance and learning that outlive any one of them."
   },
-  "check": {
-    "heading": "Check",
-    "drop": "Drop a file here, or choose one",
-    "dropNote": "The file stays on your device. Files up to 250 MB.",
-    "or": "Or paste a hash",
-    "hashLabel": "SHA-256 hash",
-    "hashPlaceholder": "64 characters, 0 to 9 and a to f",
-    "button": "Check",
-    "example": "Try an example: the genesis block's hash",
-    "big": "That file is over 250 MB. Work out its hash on your computer instead, then paste it here: on a Mac, shasum -a 256 file; on Windows, certutil -hashfile file SHA256.",
-    "bad": "That is not a SHA-256 hash. It is 64 characters, using 0 to 9 and a to f."
+  "why": {
+    "heading": "What it is for",
+    "intro": "A company run with AI makes results fast and keeps few records anyone else can trust. The network is meant to give every piece of work a record that anyone can check without asking the company.",
+    "items": [
+      {
+        "label": "Receipts",
+        "title": "Proof of what was delivered.",
+        "body": "Each piece of work leaves a receipt that can be checked on its own, so trust does not depend on the company's word."
+      },
+      {
+        "label": "Provenance",
+        "title": "Where a result came from.",
+        "body": "The record stays checkable if the company, the tool or the platform goes away."
+      },
+      {
+        "label": "Learning",
+        "title": "What worked can travel.",
+        "body": "With consent, an outcome that helped one company can reach the next."
+      }
+    ],
+    "status": "Today the contract records hashes. Provenance and shared learning are being built."
   },
   "how": {
-    "heading": "What a result means",
+    "heading": "How it works",
     "items": [
-      "A fingerprint (hash) is a short code worked out from a file. Change one byte of the file and the code changes completely.",
-      "Found means this exact file's fingerprint was sealed in a block, so the file existed in this exact form when the block was made. It does not say the file is good or true.",
-      "Not found means no block holds it. The ledger holds only what Chiibitsu Labs has sealed, and a file that was edited after sealing will not match."
+      {
+        "label": "Seal",
+        "title": "A fingerprint of the work.",
+        "body": "The fingerprint (hash) of a piece of work is sealed in a block of the ledger. Only hashes go in, never content."
+      },
+      {
+        "label": "Witness",
+        "title": "Two outside records.",
+        "body": "Each block is anchored on Base and stamped for Bitcoin, so it cannot be quietly changed afterwards."
+      },
+      {
+        "label": "Check",
+        "title": "Anyone can look.",
+        "body": "Anyone can check a file or a hash against the ledger without asking us."
+      }
     ]
   },
-  "soon": {
-    "heading": "Coming next",
+  "today": {
+    "heading": "Where it stands",
     "items": [
+      {
+        "title": "The ledger",
+        "body": "Live on Base. The contract, its address and how to check it.",
+        "href": "/ledger",
+        "linkLabel": "The ledger, technically →"
+      },
+      {
+        "title": "Check a file",
+        "body": "Live. Drop a file or paste a hash and see whether it is sealed.",
+        "href": "/network/check",
+        "linkLabel": "Check a file →"
+      },
       {
         "title": "Record",
         "body": "Add a file's fingerprint to the ledger. Chiibitsu Labs approves each entry.",
@@ -39,6 +73,11 @@
       {
         "title": "Is this really us?",
         "body": "Check an email, handle or page against a sealed list of Chiibitsu Labs' official channels.",
+        "tag": "Coming soon"
+      },
+      {
+        "title": "Design paper",
+        "body": "The long bet, written down.",
         "tag": "Coming soon"
       }
     ]

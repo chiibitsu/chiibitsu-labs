@@ -116,8 +116,8 @@ export function Investors() {
           <TrackedLink href={mail} event="cta_click" eventProps={{ location: "investors_data_room" }}>
             {d.label}
           </TrackedLink>
-          <TrackedLink href="/network" event="cta_click" eventProps={{ location: "investors_ledger" }}>
-            Verify the ledger →
+          <TrackedLink href="/network/check" event="cta_click" eventProps={{ location: "investors_check" }}>
+            Check a file →
           </TrackedLink>
         </div>
       </section>

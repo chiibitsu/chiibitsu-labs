@@ -1,25 +1,19 @@
 "use client";
 
+import Link from "next/link";
 import { Fragment } from "react";
 import { trackEvent } from "@/lib/analytics";
-import { AIKIRI_LEDGER_URL } from "@/lib/links";
+import { NETWORK_PATH } from "@/lib/links";
 
-// Renders text with every "Aikiri Network" linked to the ledger contract on Base.
+// Renders text with every "Aikiri Network" linked to the network's about page.
 export function AikiriText({ text, where }: { text: string; where: string }) {
   return (
     <>
       {text.split(/(Aikiri Network)/).map((part, i) =>
         part === "Aikiri Network" ? (
-          <a
-            key={i}
-            className="aikiri-link"
-            href={AIKIRI_LEDGER_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => trackEvent("cta_click", { location: `aikiri_ledger_${where}` })}
-          >
+          <Link key={i} className="aikiri-link" href={NETWORK_PATH} onClick={() => trackEvent("cta_click", { location: `aikiri_network_${where}` })}>
             {part}
-          </a>
+          </Link>
         ) : (
           <Fragment key={i}>{part}</Fragment>
         ),

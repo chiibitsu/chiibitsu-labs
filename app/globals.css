@@ -3524,3 +3524,71 @@ html:not([data-js]) #proof {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.net-modal {
+  width: min(600px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 0;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--ink);
+  border-radius: 6px;
+  overflow: auto;
+  box-shadow: 0 24px 60px rgba(20, 16, 24, 0.35);
+}
+.net-modal::backdrop {
+  background: rgba(20, 16, 24, 0.55);
+}
+.net-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px;
+}
+.net-card .ledger-facts {
+  margin: 0;
+}
+.net-proof {
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+}
+.net-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.net-today {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--ink);
+}
+.net-today li {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr) auto;
+  gap: 8px 24px;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.net-link {
+  font-family: var(--mono);
+  font-size: 14px;
+  white-space: nowrap;
+}
+@media (max-width: 700px) {
+  .net-card {
+    padding: 22px 18px;
+  }
+  .net-today li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.privacy .net-today {
+  padding-left: 0;
+}
