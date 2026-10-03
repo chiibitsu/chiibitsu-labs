@@ -4,5 +4,5 @@ import type { MetadataRoute } from "next";
 const BASE = "https://www.chiibitsu.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return ["", "/about", "/angeline", "/ledger", "/network", "/network/check", "/privacy"].map((p) => ({ url: `${BASE}${p}`, lastModified: new Date(), changeFrequency: "weekly", priority: p === "" ? 1 : 0.6 }));
+  return ["", "/about", "/angeline", "/ledger", "/network", "/network/check", "/privacy", "/verify"].map((p) => ({ url: `${BASE}${p}`, lastModified: new Date(), changeFrequency: "weekly", priority: p === "" ? 1 : 0.6 }));
 }

@@ -72,8 +72,9 @@
       },
       {
         "title": "Is this really us?",
-        "body": "Check an email, handle or page against a sealed list of Chiibitsu Labs' official channels.",
-        "tag": "Coming soon"
+        "body": "Live. Paste an email address, link, handle or number and see whether it is one of our official channels.",
+        "href": "/verify",
+        "linkLabel": "Is this really us? →"
       },
       {
         "title": "Design paper",

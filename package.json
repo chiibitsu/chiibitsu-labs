@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit",
     "check:content": "node scripts/check-content.mjs",
     "check:layout": "node scripts/check-layout.mjs",
-    "gates": "npm run lint && npm run typecheck && npm run check:content && npm run build"
+    "check:verify": "node --no-warnings --experimental-strip-types scripts/check-verify.mjs",
+    "gates": "npm run lint && npm run typecheck && npm run check:content && npm run check:verify && npm run build"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
