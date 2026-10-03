@@ -1,0 +1,49 @@
+{
+  "meta": {
+    "title": "Check a file · Chiibitsu Labs",
+    "description": "Check whether a file or hash is sealed in the public Aikiri ledger. Your file never leaves your device."
+  },
+  "hero": {
+    "eyebrow": "The Aikiri Network",
+    "h1": "Check a file.",
+    "sub": "Drop a file or paste a hash. Your device works out the file's fingerprint, and nothing is uploaded. The page then looks for that fingerprint in the public ledger."
+  },
+  "check": {
+    "heading": "Check",
+    "drop": "Drop a file here, or choose one",
+    "dropNote": "The file stays on your device. Files up to 250 MB.",
+    "or": "Or paste a hash",
+    "hashLabel": "SHA-256 hash",
+    "hashPlaceholder": "64 characters, 0 to 9 and a to f",
+    "button": "Check",
+    "example": "Try an example: the genesis block's hash",
+    "big": "That file is over 250 MB. Work out its hash on your computer instead, then paste it here: on a Mac, shasum -a 256 file; on Windows, certutil -hashfile file SHA256.",
+    "bad": "That is not a SHA-256 hash. It is 64 characters, using 0 to 9 and a to f."
+  },
+  "how": {
+    "heading": "What a result means",
+    "items": [
+      "A fingerprint (hash) is a short code worked out from a file. Change one byte of the file and the code changes completely.",
+      "Found means this exact file's fingerprint was sealed in a block, so the file existed in this exact form when the block was made. It does not say the file is good or true.",
+      "Not found means no block holds it. The ledger holds only what Chiibitsu Labs has sealed, and a file that was edited after sealing will not match."
+    ]
+  },
+  "modal": {
+    "found": "Found in block",
+    "none": "Not found.",
+    "noneBody": "No block holds this hash.",
+    "checked": "Checked",
+    "site": "chiibitsu.com/network/check",
+    "close": "Close",
+    "again": "Check another",
+    "blocks": "blocks checked"
+  },
+  "back": {
+    "label": "← Back to the Aikiri Network",
+    "href": "/network"
+  },
+  "footer": {
+    "left": "Chiibitsu Labs",
+    "middle": "More human, by design"
+  }
+}

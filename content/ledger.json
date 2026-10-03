@@ -8,28 +8,6 @@
     "h1": "The ledger.",
     "sub": "The Aikiri Network is shared infrastructure for AI-run companies: receipts, provenance and learning that outlive any one of them. This contract is its public record. It stores hashes, never content, and there is no token."
   },
-  "why": {
-    "heading": "What it is for",
-    "intro": "A company run with AI makes results fast and keeps few records anyone else can trust. The network is meant to give every piece of work a record that anyone can check without asking the company.",
-    "items": [
-      {
-        "label": "Receipts",
-        "title": "Proof of what was delivered.",
-        "body": "Each piece of work leaves a receipt that can be checked on its own, so trust does not depend on the company's word."
-      },
-      {
-        "label": "Provenance",
-        "title": "Where a result came from.",
-        "body": "The record stays checkable if the company, the tool or the platform goes away."
-      },
-      {
-        "label": "Learning",
-        "title": "What worked can travel.",
-        "body": "With consent, an outcome that helped one company can reach the next."
-      }
-    ],
-    "status": "Today the contract records hashes. Provenance and shared learning are being built."
-  },
   "holds": {
     "heading": "What it holds",
     "items": [
@@ -130,6 +108,10 @@
     },
     "check": {
       "label": "Check a file or hash",
+      "href": "/network/check"
+    },
+    "about": {
+      "label": "About the Aikiri Network",
       "href": "/network"
     }
   },

@@ -20,6 +20,10 @@ const config: NextConfig = {
   // Security headers on every response. HSTS is already set by Vercel.
   // The Content Security Policy runs in report-only mode first: browsers log what it would block and block nothing.
   // Once a week of real visits shows no violations, rename the header to Content-Security-Policy to enforce it.
+  // A short address to share with clients: chiibitsu.com/verify.
+  async redirects() {
+    return [{ source: "/verify", destination: "/network/check", permanent: false }];
+  },
   async headers() {
     return [
       {

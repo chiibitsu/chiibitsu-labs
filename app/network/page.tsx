@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Mark } from "@/components/Mark";
-import { NetworkTools } from "@/components/NetworkTools";
 import { SiteFooter } from "@/components/SiteFooter";
 import networkJson from "@/content/network.json";
 
@@ -13,7 +12,7 @@ export const metadata: Metadata = {
   description: c.meta.description,
 };
 
-// /network: the hasher and verifier for the Aikiri ledger. Record and "is this really us" are announced, not built.
+// /network: about the Aikiri Network. The technical page is /ledger; the tools are at /network/check.
 export default function Network() {
   return (
     <div className="page">
@@ -26,30 +25,45 @@ export default function Network() {
         <h1>{c.hero.h1}</h1>
         <p className="body">{c.hero.sub}</p>
 
-        <h2>{c.check.heading}</h2>
-        <NetworkTools />
-
-        <h2>{c.how.heading}</h2>
-        <ul className="body">
-          {c.how.items.map((s) => (
-            <li key={s}>{s}</li>
-          ))}
-        </ul>
-
-        <h2>{c.soon.heading}</h2>
-        <div className="ang-cols3 net-soon">
-          {c.soon.items.map((it) => (
+        <h2>{c.why.heading}</h2>
+        <p className="body">{c.why.intro}</p>
+        <div className="ang-cols3">
+          {c.why.items.map((it) => (
             <div key={it.title} className="ang-col">
+              <div className="eyebrow">{it.label}</div>
               <div className="ang-col-t sm">{it.title}</div>
               <div className="body">{it.body}</div>
-              <span className="soon-tag">{it.tag}</span>
+            </div>
+          ))}
+        </div>
+        <p className="caption">{c.why.status}</p>
+
+        <h2>{c.how.heading}</h2>
+        <div className="ang-cols3">
+          {c.how.items.map((it) => (
+            <div key={it.title} className="ang-col">
+              <div className="eyebrow">{it.label}</div>
+              <div className="ang-col-t sm">{it.title}</div>
+              <div className="body">{it.body}</div>
             </div>
           ))}
         </div>
 
-        <p className="body">
-          How the ledger works, and its contract address, are on the <Link href="/ledger">ledger page</Link>.
-        </p>
+        <h2>{c.today.heading}</h2>
+        <ul className="net-today">
+          {c.today.items.map((it) => (
+            <li key={it.title}>
+              <span className="ang-col-t sm">{it.title}</span>
+              <span className="body">{it.body}</span>
+              {"href" in it && it.href ? (
+                <Link href={it.href} className="net-link">{it.linkLabel}</Link>
+              ) : (
+                <span className="soon-tag">{"tag" in it ? it.tag : ""}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+
         <Link href="/" className="caption">{c.back}</Link>
       </main>
       <SiteFooter left={c.footer.left} middle={c.footer.middle} />
