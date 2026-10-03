@@ -3419,3 +3419,108 @@ html:not([data-js]) #proof {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.net-tool {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.net-drop {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  padding: 28px 24px;
+  border: 1.2px dashed var(--ink-3);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.net-drop:hover,
+.net-drop.over,
+.net-drop:focus-within {
+  border-color: var(--ink);
+  background: var(--card);
+  opacity: 1;
+}
+.net-drop-t {
+  font-family: var(--serif);
+  font-size: 24px;
+  line-height: 1.2;
+}
+.net-hash {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.net-hash-row {
+  display: flex;
+  gap: 10px;
+}
+.net-hash-row input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 14px;
+  padding: 12px 14px;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+.net-hash-row input:focus {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+.net-hash-row .btn:disabled {
+  opacity: 0.5;
+}
+.net-example {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--ink-3);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.net-example:hover {
+  color: var(--ink);
+}
+.net-out {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 24px;
+}
+.net-result {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.net-verdict {
+  font-family: var(--serif);
+  font-size: 32px;
+  line-height: 1.1;
+  margin: 0;
+}
+.mono-wrap {
+  font-family: var(--mono);
+  overflow-wrap: anywhere;
+}
+.net-soon {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.net-soon .soon-tag {
+  align-self: flex-start;
+}
+@media (max-width: 700px) {
+  .net-hash-row {
+    flex-direction: column;
+  }
+  .net-soon {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

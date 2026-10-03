@@ -127,6 +127,10 @@
     "soon": {
       "label": "Design paper",
       "tag": "Coming soon"
+    },
+    "check": {
+      "label": "Check a file or hash",
+      "href": "/network"
     }
   },
   "back": "← Back to the home page",

@@ -11,6 +11,7 @@ const filmContent = load("film");
 const angeline = load("angeline");
 const proofContent = load("proof");
 const ledger = load("ledger");
+const network = load("network");
 const stillAbout = JSON.parse(fs.readFileSync(new URL("../content/still/about.json", import.meta.url), "utf8"));
 const problems = [];
 
@@ -45,6 +46,7 @@ walk(about, "about");
 walk(angeline, "angeline");
 walk(proofContent, "proof");
 walk(ledger, "ledger");
+walk(network, "network");
 walk(filmContent, "film");
 walk(stillAbout, "stillAbout");
 

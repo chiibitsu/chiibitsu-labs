@@ -5,7 +5,7 @@ import type { NextConfig } from "next";
 const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' https://www.clarity.ms https://*.clarity.ms https://assets.apollo.io",
-  "connect-src 'self' https://*.clarity.ms https://c.bing.com https://*.apollo.io",
+  "connect-src 'self' https://*.clarity.ms https://c.bing.com https://*.apollo.io https://raw.githubusercontent.com",
   "img-src 'self' data: https://*.clarity.ms https://c.bing.com",
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self'",
