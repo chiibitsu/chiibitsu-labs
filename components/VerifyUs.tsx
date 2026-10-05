@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
-import { checkOfficial, type Check, type OfficialList } from "@/lib/verifyUs";
+import { checkOfficial, privatePhoneOwner, type Check, type OfficialList } from "@/lib/verifyUs";
 import official from "@/content/official.json";
 
 const c = official.check;
@@ -22,8 +22,13 @@ export function VerifyUs() {
     if (result && dialog.current && !dialog.current.open) dialog.current.showModal();
   }, [result]);
 
-  function run(raw: string) {
-    const check = checkOfficial(raw, official.list as unknown as OfficialList);
+  async function run(raw: string) {
+    const list = official.list as unknown as OfficialList;
+    let check = checkOfficial(raw, list);
+    if (check.kind === "phone" && check.verdict === "unconfirmed") {
+      const owner = await privatePhoneOwner(raw, list).catch(() => null);
+      if (owner) check = { ...check, verdict: "official", detail: owner };
+    }
     setResult({ check, at: new Date() });
     trackEvent("verify_us", { result: check.verdict, kind: check.kind });
   }
@@ -38,7 +43,7 @@ export function VerifyUs() {
 
   return (
     <div className="net-tool">
-      <form className="net-hash" onSubmit={(e) => { e.preventDefault(); run(text); }}>
+      <form className="net-hash" onSubmit={(e) => { e.preventDefault(); void run(text); }}>
         <label htmlFor="verify-in" className="caption">{c.label}</label>
         <div className="net-hash-row">
           <input
@@ -56,7 +61,7 @@ export function VerifyUs() {
         <div className="net-chips">
           <span className="caption">{c.examplesLabel}</span>
           {c.examples.map((ex) => (
-            <button key={ex} type="button" className="net-example" onClick={() => { setText(ex); run(ex); }}>{ex}</button>
+            <button key={ex} type="button" className="net-example" onClick={() => { setText(ex); void run(ex); }}>{ex}</button>
           ))}
         </div>
       </form>

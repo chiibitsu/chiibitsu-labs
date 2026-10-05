@@ -9,10 +9,12 @@ export type Check = { verdict: Verdict; kind: Kind; input: string; detail: strin
 export type OfficialList = {
   domains: string[];
   emails: { value: string; owner: string }[];
-  profiles: { platform: string; host: string; path: string; owner: string }[];
+  profiles: { platform: string; host: string; path: string; owner: string; hidden?: boolean }[];
   addresses: { value: string; owner: string }[];
   handles: { platform?: string; value: string; owner: string }[];
   phones: { value: string; owner: string }[];
+  privatePhones?: { salt: string; iterations: number; items: { hash: string; owner: string }[] };
+  partial?: string[];
 };
 
 // Hosts of social and messaging platforms. A page here that is not a listed profile cannot be confirmed.
@@ -103,6 +105,26 @@ function unicodeHost(host: string): string {
     .join(".");
 }
 
+// Digits only, with a Philippine local number (09xx…) written in its international form (639xx…).
+export function phoneKey(input: string): string {
+  let d = input.replace(/[^\d]/g, "").replace(/^00/, "");
+  if (/^09\d{9}$/.test(d)) d = `63${d.slice(1)}`;
+  else if (/^9\d{9}$/.test(d)) d = `63${d}`;
+  return d;
+}
+
+export const looksLikePhone = (input: string) => /^[+()\d\s.-]{7,}$/.test(input.trim()) && input.replace(/[^\d]/g, "").length >= 7;
+
+// A number listed without being printed is stored as a slow fingerprint (PBKDF2-SHA-256), checked here on the device.
+export async function privatePhoneOwner(input: string, list: OfficialList): Promise<string | null> {
+  const p = list.privatePhones;
+  if (!p || !p.items.length || !looksLikePhone(input)) return null;
+  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(phoneKey(input)), "PBKDF2", false, ["deriveBits"]);
+  const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt: new TextEncoder().encode(p.salt), iterations: p.iterations }, key, 256);
+  const hex = Array.from(new Uint8Array(bits), (b) => b.toString(16).padStart(2, "0")).join("");
+  return p.items.find((i) => i.hash === hex)?.owner ?? null;
+}
+
 const isOwn = (host: string, domains: string[]) => domains.some((d) => host === d || host.endsWith(`.${d}`));
 
 // True when the host imitates one of our domains: our name inside another address, or a label that reads like ours.
@@ -164,18 +186,18 @@ export function checkOfficial(rawInput: string, list: OfficialList): Check {
   }
 
   // A phone number.
-  const digits = input.replace(/[^\d]/g, "");
-  if (/^[+()\d\s.-]{7,}$/.test(input) && digits.length >= 7) {
-    const norm = digits.replace(/^00/, "");
-    const hit = list.phones.find((p) => p.value.replace(/[^\d]/g, "").replace(/^00/, "") === norm);
-    return hit ? make("official", "phone", hit.owner) : make("unconfirmed", "phone", "No phone number is listed yet.");
+  if (looksLikePhone(input)) {
+    const norm = phoneKey(input);
+    const hit = list.phones.find((p) => phoneKey(p.value) === norm);
+    return hit ? make("official", "phone", hit.owner) : make("unconfirmed", "phone", "This number is not one we list.");
   }
 
   // A handle such as @name.
-  if (/^@[\w.-]{2,}$/.test(input)) {
-    const h = input.slice(1).toLowerCase();
+  const bareHandle = list.handles.some((x) => x.value.replace(/^@/, "").toLowerCase() === input.toLowerCase());
+  if (/^@[\w.-]{2,}$/.test(input) || bareHandle) {
+    const h = input.replace(/^@/, "").toLowerCase();
     const hit = list.handles.find((x) => x.value.replace(/^@/, "").toLowerCase() === h);
-    return hit ? make("official", "handle", `${hit.platform ? `${hit.platform}, ` : ""}${hit.owner}`) : make("unconfirmed", "handle", "No handle is listed yet.");
+    return hit ? make("official", "handle", `${hit.platform ? `${hit.platform}, ` : ""}${hit.owner}`) : make("unconfirmed", "handle", "This handle is not one we list.");
   }
 
   // A link or bare address.
@@ -189,11 +211,13 @@ export function checkOfficial(rawInput: string, list: OfficialList): Check {
       return make(imitates(before, list.domains) || imitates(host, list.domains) ? "lookalike" : "unlisted", "link", detail);
     }
     if (isOwn(host, list.domains) || isOwn(bare, list.domains)) return make("official", "link", `On ${list.domains[0]}.`);
-    const profile = list.profiles.find((p) => strip(p.host) === bare);
-    if (profile) {
-      return link.path === profile.path.toLowerCase()
-        ? make("official", "link", `${profile.platform}, ${profile.owner}.`)
-        : make("unlisted", "link", `A different ${profile.platform} page from the one we list.`);
+    const onHost = list.profiles.filter((p) => strip(p.host) === bare);
+    if (onHost.length) {
+      const hit = onHost.find((p) => link.path === p.path.toLowerCase());
+      if (hit) return make("official", "link", `${hit.platform}, ${hit.owner}.`);
+      return (list.partial ?? []).includes(bare)
+        ? make("unconfirmed", "link", `We list only some of our ${onHost[0].platform} pages.`)
+        : make("unlisted", "link", `A different ${onHost[0].platform} page from the ones we list.`);
     }
     if (imitates(host, list.domains)) return make("lookalike", "link", `The site ${unicodeHost(host)} reads like ours but is a different address.`);
     if (PLATFORMS.some((p) => bare === p || bare.endsWith(`.${p}`))) return make("unconfirmed", "link", "We list no page on that platform yet.");

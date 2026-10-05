@@ -27,11 +27,16 @@ const hash = (list: Record<string, unknown>) => createHash("sha256").update(cano
 
 // /verify: is this email, link, handle, number or wallet really ours? The list is public; the check runs on the device.
 export default function Verify() {
-  const fingerprint = hash({ domains: L.domains, emails: L.emails, profiles: L.profiles, addresses: L.addresses, handles: L.handles, phones: L.phones });
+  const fingerprint = hash({
+    domains: L.domains, emails: L.emails, profiles: L.profiles, addresses: L.addresses, handles: L.handles, phones: L.phones,
+    privatePhones: (L.privatePhones.items as { hash: string }[]).map((i) => i.hash),
+  });
   const rows: { k: string; v: string; owner: string }[] = [
     ...L.domains.map((d) => ({ k: "Website", v: `${d} and its subdomains`, owner: "Chiibitsu Labs" })),
     ...L.emails.map((e) => ({ k: "Email", v: e.value, owner: e.owner })),
-    ...L.profiles.map((p) => ({ k: p.platform, v: `${p.host}${p.path}`, owner: p.owner })),
+    ...L.phones.map((p) => ({ k: "Phone", v: p.value, owner: p.owner })),
+    ...L.handles.map((h) => ({ k: h.platform, v: h.platform === "Messenger" ? h.value : `@${h.value}`, owner: h.owner })),
+    ...L.profiles.filter((p) => !("hidden" in p && p.hidden)).map((p) => ({ k: p.platform, v: `${p.host}${p.path}`, owner: p.owner })),
     ...L.addresses.map((a) => ({ k: "Wallet", v: a.value, owner: a.owner })),
   ];
   return (
@@ -57,6 +62,7 @@ export default function Verify() {
             </div>
           ))}
         </dl>
+        {L.privatePhones.items.length > 0 && <p className="caption">{L.privatePhones.note}</p>}
         <p className="caption">{c.list.pending}</p>
         <p className="caption">{c.list.note}</p>
 
