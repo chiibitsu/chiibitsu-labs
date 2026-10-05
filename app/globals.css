@@ -3608,3 +3608,33 @@ html:not([data-js]) #proof {
   align-items: baseline;
   gap: 6px 16px;
 }
+/* Lovebirds (components/Lovebirds.tsx): a rare visitor perched on a heading. */
+.lovebird {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  width: 34px;
+  cursor: default;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.lovebird svg { display: block; overflow: visible; filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.15)); }
+.lovebird .lb-flip { transition: transform 0.25s ease; }
+.lovebird .lb-flip.lb-left { transform: scaleX(-1); }
+.lovebird .lb-head { transform-origin: 26px 15px; }
+.lovebird .lb-wing { transform-origin: 16px 14px; }
+.lovebird.lb-flying .lb-feet { opacity: 0; }
+.lovebird.lb-flying .lb-wing { animation: lb-flap 0.16s ease-in-out infinite alternate; }
+@keyframes lb-flap {
+  from { transform: scaleY(1); }
+  to { transform: scaleY(-1.1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lovebird { display: none; }
+}
+.lb-puff { position: absolute; top: 0; left: 0; z-index: 40; pointer-events: none; line-height: 1; }
+.lb-note { font: 13px/1 var(--serif, serif); color: var(--accent); }
+.lovebird .lb-wing { transform-origin: 22px 15px; }
+.lovebird svg { transform-origin: 50% 90%; }
+@media (prefers-reduced-motion: reduce) { .lb-puff { display: none; } }

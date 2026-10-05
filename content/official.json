@@ -186,7 +186,12 @@
       "note": "Numbers checked here without being printed: only a slow fingerprint is stored.",
       "salt": "chiibitsu.com/verify v1",
       "iterations": 300000,
-      "items": []
+      "items": [
+        {
+          "hash": "0db3446fa5c22431f5714cc8958677d10189efbfcf7a6467166c4c5496b38b70",
+          "owner": "Chii, personal: WhatsApp"
+        }
+      ]
     },
     "partial": [
       "instagram.com"
