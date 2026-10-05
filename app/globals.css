@@ -3618,3 +3618,8 @@ html:not([data-js]) #proof {
 @media (prefers-reduced-motion: reduce) {
   .lovebird { display: none; }
 }
+.lb-puff { position: absolute; top: 0; left: 0; z-index: 40; pointer-events: none; line-height: 1; }
+.lb-note { font: 13px/1 var(--serif, serif); color: var(--accent); }
+.lovebird .lb-wing { transform-origin: 22px 15px; }
+.lovebird svg { transform-origin: 50% 90%; }
+@media (prefers-reduced-motion: reduce) { .lb-puff { display: none; } }
