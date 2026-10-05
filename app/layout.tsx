@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Lovebirds } from "@/components/Lovebirds";
 import { ThemeClock } from "@/components/ThemeClock";
 import { bootScript } from "@/lib/boot";
 import { content } from "@/lib/content";
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <ThemeClock />
+        <Lovebirds />
         <Analytics />
         <SpeedInsights />
       </body>
