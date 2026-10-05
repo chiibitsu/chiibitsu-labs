@@ -3593,6 +3593,21 @@ html:not([data-js]) #proof {
   padding-left: 0;
 }
 
+.net-verdict.warn {
+  color: var(--down);
+}
+.net-you {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.net-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 16px;
+}
 /* Lovebirds (components/Lovebirds.tsx): a rare visitor perched on a heading. */
 .lovebird {
   position: absolute;

@@ -1,0 +1,254 @@
+{
+  "meta": {
+    "title": "Is this really us? · Chiibitsu Labs",
+    "description": "Check an email address, link, handle or number against the official channels of Chiibitsu Labs and Angeline Viray."
+  },
+  "hero": {
+    "eyebrow": "Chiibitsu Labs",
+    "h1": "Is this really us?",
+    "sub": "Someone may use our name to reach you. Paste an email address, link, handle or number, and this page checks it against the channels we list as official. Nothing you type leaves your device."
+  },
+  "check": {
+    "heading": "Check",
+    "label": "Email address, link, handle or number",
+    "placeholder": "labs@chiibitsu.com",
+    "button": "Check",
+    "examples": [
+      "labs@chiibitsu.com",
+      "labs@chiibitsu.co"
+    ],
+    "examplesLabel": "Try an example"
+  },
+  "list": {
+    "heading": "Our official channels",
+    "note": "If a channel is not on this list, we do not list it as official. We add channels here as we confirm them.",
+    "domains": [
+      "chiibitsu.com"
+    ],
+    "emails": [
+      {
+        "value": "labs@chiibitsu.com",
+        "owner": "Chiibitsu Labs"
+      },
+      {
+        "value": "chii@chiibitsu.com",
+        "owner": "Angeline Viray"
+      }
+    ],
+    "profiles": [
+      {
+        "platform": "LinkedIn",
+        "host": "linkedin.com",
+        "path": "/in/angelinev",
+        "owner": "Angeline Viray"
+      },
+      {
+        "platform": "Substack",
+        "host": "substack.com",
+        "path": "/@chiibitsulabs",
+        "owner": "Chiibitsu Labs"
+      },
+      {
+        "platform": "Substack",
+        "host": "substack.com",
+        "path": "/@chiiaikiri",
+        "owner": "Chii Aikiri, music"
+      },
+      {
+        "platform": "Facebook",
+        "host": "facebook.com",
+        "path": "/chiibitsu.labs",
+        "owner": "Chiibitsu Labs page"
+      },
+      {
+        "platform": "Facebook",
+        "host": "facebook.com",
+        "path": "/chii.legend",
+        "owner": "Angeline Viray"
+      },
+      {
+        "platform": "Instagram",
+        "host": "instagram.com",
+        "path": "/chiibitsu",
+        "owner": "Angeline Viray",
+        "hidden": true
+      },
+      {
+        "platform": "Instagram",
+        "host": "instagram.com",
+        "path": "/chii.aikiri",
+        "owner": "Chii Aikiri, music",
+        "hidden": true
+      },
+      {
+        "platform": "Telegram",
+        "host": "t.me",
+        "path": "/chiibitsu",
+        "owner": "Angeline Viray",
+        "hidden": true
+      },
+      {
+        "platform": "Telegram",
+        "host": "t.me",
+        "path": "/chiibitsu_labs",
+        "owner": "Chiibitsu Labs",
+        "hidden": true
+      },
+      {
+        "platform": "Telegram",
+        "host": "t.me",
+        "path": "/chiiweb3",
+        "owner": "Angeline Viray, rarely used",
+        "hidden": true
+      },
+      {
+        "platform": "Telegram",
+        "host": "t.me",
+        "path": "/chii0xkween",
+        "owner": "Angeline Viray, channel",
+        "hidden": true
+      },
+      {
+        "platform": "Messenger",
+        "host": "m.me",
+        "path": "/chiibitsu.labs",
+        "owner": "Chiibitsu Labs page",
+        "hidden": true
+      },
+      {
+        "platform": "Messenger",
+        "host": "m.me",
+        "path": "/chii.legend",
+        "owner": "Angeline Viray",
+        "hidden": true
+      }
+    ],
+    "addresses": [
+      {
+        "value": "0x15eFF43a5CFA703215fAa943D42168aF5a7A6a9e",
+        "owner": "Aikiri ledger contract on Base"
+      },
+      {
+        "value": "0xB76B710cDa104DB946A619B1450E02D44cB97194",
+        "owner": "Owner of the Aikiri ledger contract"
+      }
+    ],
+    "handles": [
+      {
+        "platform": "Telegram",
+        "value": "chiibitsu",
+        "owner": "Angeline Viray, main"
+      },
+      {
+        "platform": "Telegram",
+        "value": "chiibitsu_labs",
+        "owner": "Chiibitsu Labs"
+      },
+      {
+        "platform": "Telegram",
+        "value": "chii0xKween",
+        "owner": "Angeline Viray, channel"
+      },
+      {
+        "platform": "Telegram",
+        "value": "chiiweb3",
+        "owner": "Angeline Viray, used once for a project and rarely since"
+      },
+      {
+        "platform": "Instagram",
+        "value": "chiibitsu",
+        "owner": "Angeline Viray"
+      },
+      {
+        "platform": "Instagram",
+        "value": "chii.aikiri",
+        "owner": "Chii Aikiri, music"
+      },
+      {
+        "platform": "Messenger",
+        "value": "chiibitsu.labs",
+        "owner": "Chiibitsu Labs page"
+      },
+      {
+        "platform": "Messenger",
+        "value": "chii.legend",
+        "owner": "Angeline Viray"
+      }
+    ],
+    "phones": [
+      {
+        "value": "+639241131973",
+        "owner": "Chiibitsu Labs, work: Viber and WhatsApp Business"
+      }
+    ],
+    "pending": "Some of our pages on Instagram and other platforms are not listed, and no team members or AI assistants are listed yet. This page cannot confirm what is not listed.",
+    "privatePhones": {
+      "note": "Numbers checked here without being printed: only a slow fingerprint is stored.",
+      "salt": "chiibitsu.com/verify v1",
+      "iterations": 300000,
+      "items": [
+        {
+          "hash": "0db3446fa5c22431f5714cc8958677d10189efbfcf7a6467166c4c5496b38b70",
+          "owner": "Chii, personal: WhatsApp"
+        }
+      ]
+    },
+    "partial": [
+      "instagram.com"
+    ]
+  },
+  "verdicts": {
+    "official": {
+      "title": "Official.",
+      "action": "This is on our list of official channels."
+    },
+    "domain": {
+      "title": "Our domain, not a listed address.",
+      "action": "The address is on chiibitsu.com, but it is not one we list. If you were not expecting it, confirm by writing to labs@chiibitsu.com."
+    },
+    "lookalike": {
+      "title": "Looks like ours, but it is not on our list.",
+      "action": "Be careful. Do not act on a request from it, such as a payment, a login or a file. Write to labs@chiibitsu.com from an address you already know."
+    },
+    "unlisted": {
+      "title": "Not on our list.",
+      "action": "We do not list this as an official channel. If you expected to hear from us here, confirm by writing to labs@chiibitsu.com."
+    },
+    "unconfirmed": {
+      "title": "Cannot confirm yet.",
+      "action": "We do not list any channel of this kind yet, so this page cannot tell you. Confirm by writing to labs@chiibitsu.com from an address you already know."
+    },
+    "unrecognized": {
+      "title": "Not an email, link, handle or number.",
+      "action": "Paste an email address, a link, a handle such as @name, or a phone number."
+    }
+  },
+  "means": {
+    "heading": "What a result means",
+    "items": [
+      "Official means the channel is on the list below. It does not mean a message from it is safe to act on blindly.",
+      "Looks like ours means the address imitates ours, for example with a swapped letter or a different ending. Treat it with care.",
+      "Not on our list or Cannot confirm yet means this page has no record of it. It is not proof of a scam, and it is not proof of the opposite."
+    ]
+  },
+  "fingerprint": {
+    "heading": "Fingerprint of this list",
+    "body": "A fingerprint (hash) is a short code worked out from the list. If the list changes, the code changes. Once a version of the list is sealed in the Aikiri ledger, you can paste its fingerprint into the file checker to see the block it is in.",
+    "method": "SHA-256 of the list as JSON with keys sorted and no spaces."
+  },
+  "back": {
+    "label": "← Back to the Aikiri Network",
+    "href": "/network"
+  },
+  "footer": {
+    "left": "Chiibitsu Labs",
+    "middle": "More human, by design"
+  },
+  "modal": {
+    "checked": "Checked",
+    "site": "chiibitsu.com/verify",
+    "youChecked": "You checked",
+    "close": "Close",
+    "again": "Check another"
+  }
+}
