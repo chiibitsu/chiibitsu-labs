@@ -22,7 +22,7 @@ type Bird = {
 
 const BIRDS: Bird[] = [
   // At home.
-  { name: "Indee", weight: 3, born: "04-10", head: "#8a9a3e", face: "#f2a27c", body: "#7f9c40", wing: "#33452a", tail: "#4f7395", beak: "#e2633c" },
+  { name: "Indee", weight: 3, born: "04-10", head: "#8a9a3e", face: "#f2a27c", body: "#7f9c40", wing: "#1c2125", tail: "#1c2125", beak: "#e2633c" },
   { name: "Myst", weight: 3, born: "01-08", head: "#eceff1", face: "#f6f6f6", body: "#cdd6de", wing: "#4e5c76", tail: "#7d8da6", beak: "#f2a27c" },
   // Flew off while being fostered.
   { name: "Melon", weight: 2, born: "01-02", head: "#e5532a", face: "#f06b2c", body: "#eaa42c", wing: "#5f8a2e", tail: "#4f8a3a", beak: "#c83a3a" },
@@ -365,6 +365,8 @@ function spawn(bird: Bird, start: { x: number; y: number }, startle: () => void)
     if (++clicks >= 3) return startle();
     turnSoundOn();
     act(live, "sing");
+    // No hover on a phone: a tap also shows who it is.
+    puff(live, `<span class="lb-name-in">${bird.name}${bird.born === today() ? " 🎂" : ""}</span>`, "lb-puff lb-name", { x: W / 2, y: H + 2 }, { x: 0, y: 5 }, 2400);
   });
   return live;
 }
