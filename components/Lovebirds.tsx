@@ -51,7 +51,12 @@ const H = (W * 32) / 40;
 const FIRST = [6_000, 14_000]; // first chance after this long on the site
 const NEXT = [35_000, 70_000]; // then at most one visit per this long
 const CHANCE = 0.85;
-const PAIR = 0.25;
+const PAIR = 0.3;
+// Indee and Melon are a bonded pair: they are picked together far more than any other two, and when either
+// comes alone it often brings the other.
+const BONDED: [string, string] = ["Indee", "Melon"];
+const BOND_BOOST = 5;
+const BOND_FOLLOWS = 0.5;
 const KEY = "lovebird-last";
 
 const rand = (a: number, b: number) => a + Math.random() * (b - a);
@@ -72,7 +77,8 @@ function weighted<T>(items: T[], w: (t: T) => number): T {
 
 const pickOne = () => weighted(BIRDS, weightOf);
 const pickPair = () => {
-  const [a, b] = weighted(FAMILY, ([a, b]) => weightOf(byName(a)) * weightOf(byName(b)));
+  const bonded = ([a, b]: [string, string]) => (a === BONDED[0] && b === BONDED[1] ? BOND_BOOST : 1);
+  const [a, b] = weighted(FAMILY, (f) => weightOf(byName(f[0])) * weightOf(byName(f[1])) * bonded(f));
   return Math.random() < 0.5 ? [byName(a), byName(b)] : [byName(b), byName(a)];
 };
 
@@ -381,8 +387,17 @@ function faceEachOther(birds: Live[]) {
 }
 
 async function visit(flock: Set<Live>, only?: Kind) {
-  let pair = Math.random() < PAIR;
-  const spot = Math.random() < FLYBY ? null : landing(pair) ?? (pair ? ((pair = false), landing(false)) : null);
+  // Choose who comes first. A bonded bird on its own often brings its mate.
+  let [first, second]: (Bird | undefined)[] = Math.random() < PAIR ? pickPair() : [pickOne()];
+  if (!second && BONDED.includes(first!.name) && Math.random() < BOND_FOLLOWS) second = byName(BONDED[BONDED[0] === first!.name ? 1 : 0]);
+  // Then where to land. With no heading wide enough for two, the second one stays away.
+  const flyby = Math.random() < FLYBY;
+  let spot = flyby ? null : landing(!!second);
+  if (!flyby && !spot && second) {
+    second = undefined;
+    spot = landing(false);
+  }
+  const pair = !!second;
   const vw = window.innerWidth;
   // With nowhere to land (or now and then anyway), they just fly across the screen.
   const target = spot ?? { x: window.scrollX + vw / 2, y: window.scrollY + rand(0.15, 0.55) * window.innerHeight };
@@ -391,13 +406,12 @@ async function visit(flock: Set<Live>, only?: Kind) {
 
   const birds: Live[] = [];
   const startle = () => birds.forEach((b) => b.leave());
-  const [first, second] = pair ? pickPair() : [pickOne()];
   const done = () => wait(1400).then(() => birds.forEach((b) => flock.delete(b)));
 
   if (!spot) {
     const across = (b: Live, dy: number, delay: number) =>
       wait(delay).then(() => fly(b, { x: fromRight ? window.scrollX - 80 : window.scrollX + vw + 60, y: target.y + dy }, rand(2600, 3400)));
-    const a = spawn(first, edge(rand(-40, 60)), startle);
+    const a = spawn(first!, edge(rand(-40, 60)), startle);
     flock.add(a);
     birds.push(a);
     const trips = [across(a, rand(-60, 40), 0)];
@@ -412,7 +426,7 @@ async function visit(flock: Set<Live>, only?: Kind) {
     return done();
   }
 
-  const a = spawn(first, edge(rand(120, 220)), startle);
+  const a = spawn(first!, edge(rand(120, 220)), startle);
   flock.add(a);
   birds.push(a);
   const arrivals = [fly(a, spot, 1900)];
