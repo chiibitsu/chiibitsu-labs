@@ -48,9 +48,9 @@ const BIRTHDAY = 6;
 
 const W = 34; // bird width in px; the drawing is 40x32
 const H = (W * 32) / 40;
-const FIRST = [20_000, 45_000]; // first chance after this long on the site
-const NEXT = [120_000, 240_000]; // then at most one visit per this long
-const CHANCE = 0.55;
+const FIRST = [6_000, 14_000]; // first chance after this long on the site
+const NEXT = [35_000, 70_000]; // then at most one visit per this long
+const CHANCE = 0.85;
 const PAIR = 0.25;
 const KEY = "lovebird-last";
 
@@ -511,7 +511,7 @@ export function Lovebirds() {
     const tick = async () => {
       if (stopped) return;
       const ready = !document.hidden && !document.querySelector("dialog[open]") && (preview || Date.now() - last() > NEXT[0]) && flock.size === 0;
-      if (!ready) return schedule(rand(30_000, 60_000));
+      if (!ready) return schedule(rand(8_000, 15_000));
       try {
         sessionStorage.setItem(KEY, String(Date.now()));
       } catch {}
