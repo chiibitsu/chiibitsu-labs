@@ -22,14 +22,14 @@ type Bird = {
 
 const BIRDS: Bird[] = [
   // At home.
-  { name: "Indee", weight: 3, born: "04-10", head: "#8a9a3e", face: "#f2a27c", body: "#7f9c40", wing: "#33452a", tail: "#4f7395", beak: "#e2633c" },
+  { name: "Indee", weight: 3, born: "04-10", head: "#8a9a3e", face: "#f2a27c", body: "#7f9c40", wing: "#1c2125", tail: "#1c2125", beak: "#e2633c" },
   { name: "Myst", weight: 3, born: "01-08", head: "#eceff1", face: "#f6f6f6", body: "#cdd6de", wing: "#4e5c76", tail: "#7d8da6", beak: "#f2a27c" },
   // Flew off while being fostered.
   { name: "Melon", weight: 2, born: "01-02", head: "#e5532a", face: "#f06b2c", body: "#eaa42c", wing: "#5f8a2e", tail: "#4f8a3a", beak: "#c83a3a" },
   { name: "Twilight", weight: 2, born: "05-11", head: "#aab84c", face: "#f07a3a", body: "#8f9b6c", wing: "#5f6b5a", tail: "#6f8fc0", beak: "#e2552e" },
   // In Chii's heart.
-  { name: "Happyeon", weight: 1.5, born: "03-07", head: "#f2c63c", face: "#f2561f", body: "#f6d73c", wing: "#f3dd5e", tail: "#f6f2e6", beak: "#e8613c", eye: "#c2303e" },
-  { name: "Skye", weight: 1.5, head: "#fbfaf6", face: "#fbfaf6", body: "#f6f4ee", wing: "#ece8dc", tail: "#efebe0", beak: "#f4c2b0", eye: "#c2303e" },
+  { name: "Happyeon", weight: 1.5, born: "03-07", head: "#f2c63c", face: "#f2561f", body: "#f6d73c", wing: "#f3dd5e", tail: "#f0bd1e", beak: "#e8613c", eye: "#c2303e" },
+  { name: "Skye", weight: 1.5, born: "01-04", head: "#fbfaf6", face: "#fbfaf6", body: "#f6f4ee", wing: "#ece8dc", tail: "#efebe0", beak: "#f4c2b0", eye: "#c2303e" },
 ];
 
 // Who sits together: mates, and parents with their chicks.
@@ -42,16 +42,22 @@ const FAMILY: [string, string][] = [
   ["Myst", "Twilight"],
   ["Melon", "Myst"],
   ["Skye", "Myst"],
+  ["Skye", "Melon"],
 ];
 
 const BIRTHDAY = 6;
 
 const W = 34; // bird width in px; the drawing is 40x32
 const H = (W * 32) / 40;
-const FIRST = [20_000, 45_000]; // first chance after this long on the site
-const NEXT = [120_000, 240_000]; // then at most one visit per this long
-const CHANCE = 0.55;
-const PAIR = 0.25;
+const FIRST = [6_000, 14_000]; // first chance after this long on the site
+const NEXT = [35_000, 70_000]; // then at most one visit per this long
+const CHANCE = 0.85;
+const PAIR = 0.3;
+// Indee and Melon are a bonded pair: they are picked together far more than any other two, and when either
+// comes alone it often brings the other.
+const BONDED: [string, string] = ["Indee", "Melon"];
+const BOND_BOOST = 5;
+const BOND_FOLLOWS = 0.5;
 const KEY = "lovebird-last";
 
 const rand = (a: number, b: number) => a + Math.random() * (b - a);
@@ -72,7 +78,8 @@ function weighted<T>(items: T[], w: (t: T) => number): T {
 
 const pickOne = () => weighted(BIRDS, weightOf);
 const pickPair = () => {
-  const [a, b] = weighted(FAMILY, ([a, b]) => weightOf(byName(a)) * weightOf(byName(b)));
+  const bonded = ([a, b]: [string, string]) => (a === BONDED[0] && b === BONDED[1] ? BOND_BOOST : 1);
+  const [a, b] = weighted(FAMILY, (f) => weightOf(byName(f[0])) * weightOf(byName(f[1])) * bonded(f));
   return Math.random() < 0.5 ? [byName(a), byName(b)] : [byName(b), byName(a)];
 };
 
@@ -359,6 +366,8 @@ function spawn(bird: Bird, start: { x: number; y: number }, startle: () => void)
     if (++clicks >= 3) return startle();
     turnSoundOn();
     act(live, "sing");
+    // No hover on a phone: a tap also shows who it is.
+    puff(live, `<span class="lb-name-in">${bird.name}${bird.born === today() ? " 🎂" : ""}</span>`, "lb-puff lb-name", { x: W / 2, y: H + 2 }, { x: 0, y: 5 }, 2400);
   });
   return live;
 }
@@ -381,8 +390,17 @@ function faceEachOther(birds: Live[]) {
 }
 
 async function visit(flock: Set<Live>, only?: Kind) {
-  let pair = Math.random() < PAIR;
-  const spot = Math.random() < FLYBY ? null : landing(pair) ?? (pair ? ((pair = false), landing(false)) : null);
+  // Choose who comes first. A bonded bird on its own often brings its mate.
+  let [first, second]: (Bird | undefined)[] = Math.random() < PAIR ? pickPair() : [pickOne()];
+  if (!second && BONDED.includes(first!.name) && Math.random() < BOND_FOLLOWS) second = byName(BONDED[BONDED[0] === first!.name ? 1 : 0]);
+  // Then where to land. With no heading wide enough for two, the second one stays away.
+  const flyby = Math.random() < FLYBY;
+  let spot = flyby ? null : landing(!!second);
+  if (!flyby && !spot && second) {
+    second = undefined;
+    spot = landing(false);
+  }
+  const pair = !!second;
   const vw = window.innerWidth;
   // With nowhere to land (or now and then anyway), they just fly across the screen.
   const target = spot ?? { x: window.scrollX + vw / 2, y: window.scrollY + rand(0.15, 0.55) * window.innerHeight };
@@ -391,13 +409,12 @@ async function visit(flock: Set<Live>, only?: Kind) {
 
   const birds: Live[] = [];
   const startle = () => birds.forEach((b) => b.leave());
-  const [first, second] = pair ? pickPair() : [pickOne()];
   const done = () => wait(1400).then(() => birds.forEach((b) => flock.delete(b)));
 
   if (!spot) {
     const across = (b: Live, dy: number, delay: number) =>
       wait(delay).then(() => fly(b, { x: fromRight ? window.scrollX - 80 : window.scrollX + vw + 60, y: target.y + dy }, rand(2600, 3400)));
-    const a = spawn(first, edge(rand(-40, 60)), startle);
+    const a = spawn(first!, edge(rand(-40, 60)), startle);
     flock.add(a);
     birds.push(a);
     const trips = [across(a, rand(-60, 40), 0)];
@@ -412,7 +429,7 @@ async function visit(flock: Set<Live>, only?: Kind) {
     return done();
   }
 
-  const a = spawn(first, edge(rand(120, 220)), startle);
+  const a = spawn(first!, edge(rand(120, 220)), startle);
   flock.add(a);
   birds.push(a);
   const arrivals = [fly(a, spot, 1900)];
@@ -511,7 +528,7 @@ export function Lovebirds() {
     const tick = async () => {
       if (stopped) return;
       const ready = !document.hidden && !document.querySelector("dialog[open]") && (preview || Date.now() - last() > NEXT[0]) && flock.size === 0;
-      if (!ready) return schedule(rand(30_000, 60_000));
+      if (!ready) return schedule(rand(8_000, 15_000));
       try {
         sessionStorage.setItem(KEY, String(Date.now()));
       } catch {}
