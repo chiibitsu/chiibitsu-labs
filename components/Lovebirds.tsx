@@ -29,7 +29,7 @@ const BIRDS: Bird[] = [
   { name: "Twilight", weight: 2, born: "05-11", head: "#aab84c", face: "#f07a3a", body: "#8f9b6c", wing: "#5f6b5a", tail: "#6f8fc0", beak: "#e2552e" },
   // In Chii's heart.
   { name: "Happyeon", weight: 1.5, born: "03-07", head: "#f2c63c", face: "#f2561f", body: "#f6d73c", wing: "#f3dd5e", tail: "#f0bd1e", beak: "#e8613c", eye: "#c2303e" },
-  { name: "Skye", weight: 1.5, head: "#fbfaf6", face: "#fbfaf6", body: "#f6f4ee", wing: "#ece8dc", tail: "#efebe0", beak: "#f4c2b0", eye: "#c2303e" },
+  { name: "Skye", weight: 1.5, born: "01-04", head: "#fbfaf6", face: "#fbfaf6", body: "#f6f4ee", wing: "#ece8dc", tail: "#efebe0", beak: "#f4c2b0", eye: "#c2303e" },
 ];
 
 // Who sits together: mates, and parents with their chicks.
@@ -42,6 +42,7 @@ const FAMILY: [string, string][] = [
   ["Myst", "Twilight"],
   ["Melon", "Myst"],
   ["Skye", "Myst"],
+  ["Skye", "Melon"],
 ];
 
 const BIRTHDAY = 6;
