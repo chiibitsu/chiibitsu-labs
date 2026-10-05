@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 // Chii's six lovebirds. Now and then one (sometimes two) flies in, perches on a heading, does bird things and leaves.
 // Rare, small, decorative: hidden from screen readers, never shown with reduced motion or over an open popup.
-// Clicking a bird makes it chirp (the only time there is sound); the third click sends it off.
+// Clicking a bird makes it chirp and turns on its sounds for the visit; the third click sends it off.
 // `weight` sets how often each one visits; on a bird's birthday it comes far more often.
 type Bird = {
   name: string;
@@ -150,17 +150,49 @@ function puff(b: Live, html: string, cls: string, at: { x: number; y: number }, 
   ).finished.then(() => el.remove(), () => el.remove());
 }
 
-// Soft synthesized chirps, only ever in answer to a click (a user gesture).
+// Soft synthesized bird sounds. Silent until the visitor clicks a bird: that click (a user gesture, which
+// browsers require before any sound) turns sound on for the rest of the visit, remembered for the tab.
+type Sound = "tweet" | "chatter" | "purr" | "plip" | "ruffle" | "flutter";
+const SOUND_KEY = "lovebird-sound";
 let audio: AudioContext | null = null;
-function chirp(kind: "chirp" | "chatter") {
+let soundOn = false;
+
+function turnSoundOn() {
+  soundOn = true;
+  try {
+    sessionStorage.setItem(SOUND_KEY, "1");
+  } catch {}
+}
+
+function noise(ac: AudioContext, secs: number) {
+  const buf = ac.createBuffer(1, Math.ceil(ac.sampleRate * secs), ac.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  const src = ac.createBufferSource();
+  src.buffer = buf;
+  return src;
+}
+
+function sound(kind: Sound) {
+  // After a reload the browser needs a fresh click or tap on the page before it allows sound again.
+  if (!soundOn || navigator.userActivation?.hasBeenActive === false) return;
   try {
     audio ??= new AudioContext();
     const ac = audio;
+    if (ac.state === "suspended") void ac.resume();
     const t = ac.currentTime + 0.01;
     const out = ac.createGain();
     out.gain.value = 0.05;
     out.connect(ac.destination);
-    if (kind === "chirp") {
+    const env = (g: GainNode, t0: number, peak: number, hold: number, end: number) => {
+      g.gain.setValueAtTime(0, t0);
+      g.gain.linearRampToValueAtTime(peak, t0 + 0.02);
+      g.gain.setValueAtTime(peak, t0 + hold);
+      g.gain.exponentialRampToValueAtTime(0.001, t0 + end);
+    };
+
+    // A few quick rising tweets.
+    if (kind === "tweet") {
       for (let i = 0, n = 2 + Math.floor(Math.random() * 3); i < n; i++) {
         const o = ac.createOscillator();
         const g = ac.createGain();
@@ -175,8 +207,10 @@ function chirp(kind: "chirp" | "chatter") {
         o.start(t0);
         o.stop(t0 + 0.1);
       }
-    } else {
-      // The happy chatter: a fast, warbling trill.
+    }
+
+    // The happy chatter: a fast, warbling trill.
+    if (kind === "chatter") {
       const o = ac.createOscillator();
       const lfo = ac.createOscillator();
       const depth = ac.createGain();
@@ -185,15 +219,70 @@ function chirp(kind: "chirp" | "chatter") {
       lfo.frequency.value = rand(22, 30);
       depth.gain.value = 500;
       lfo.connect(depth).connect(o.frequency);
-      g.gain.setValueAtTime(0, t);
-      g.gain.linearRampToValueAtTime(0.7, t + 0.05);
-      g.gain.setValueAtTime(0.7, t + 0.4);
-      g.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+      env(g, t, 0.7, 0.4, 0.6);
       o.connect(g).connect(out);
       o.start(t);
       lfo.start(t);
       o.stop(t + 0.65);
       lfo.stop(t + 0.65);
+    }
+
+    // The content "purr": a soft, low, fluttering chirrup, like beak grinding before a nap.
+    if (kind === "purr") {
+      const o = ac.createOscillator();
+      const g = ac.createGain();
+      const am = ac.createOscillator();
+      const amDepth = ac.createGain();
+      const f = rand(1100, 1400);
+      o.type = "triangle";
+      o.frequency.setValueAtTime(f, t);
+      o.frequency.linearRampToValueAtTime(f * 0.88, t + 0.8);
+      am.frequency.value = rand(34, 44);
+      amDepth.gain.value = 0.45;
+      am.connect(amDepth).connect(g.gain);
+      env(g, t, 0.5, 0.6, 0.9);
+      o.connect(g).connect(out);
+      o.start(t);
+      am.start(t);
+      o.stop(t + 0.95);
+      am.stop(t + 0.95);
+    }
+
+    // A tiny "plip" as the dropping lands.
+    if (kind === "plip") {
+      const o = ac.createOscillator();
+      const g = ac.createGain();
+      const t0 = t + 0.55;
+      o.frequency.setValueAtTime(1400, t0);
+      o.frequency.exponentialRampToValueAtTime(380, t0 + 0.07);
+      g.gain.setValueAtTime(0, t0);
+      g.gain.linearRampToValueAtTime(0.8, t0 + 0.005);
+      g.gain.exponentialRampToValueAtTime(0.001, t0 + 0.09);
+      o.connect(g).connect(out);
+      o.start(t0);
+      o.stop(t0 + 0.1);
+    }
+
+    // Feathers: a ruffle when it fluffs up, a soft flutter of wings as it lands.
+    if (kind === "ruffle" || kind === "flutter") {
+      const secs = kind === "ruffle" ? 0.55 : 0.45;
+      const n = noise(ac, secs);
+      const bp = ac.createBiquadFilter();
+      bp.type = "bandpass";
+      bp.frequency.value = kind === "ruffle" ? 2600 : 1500;
+      bp.Q.value = 0.8;
+      const g = ac.createGain();
+      const am = ac.createOscillator();
+      const amDepth = ac.createGain();
+      am.frequency.value = kind === "ruffle" ? 16 : 11;
+      amDepth.gain.value = 0.5;
+      am.connect(amDepth).connect(g.gain);
+      env(g, t, kind === "ruffle" ? 0.9 : 0.5, secs * 0.6, secs);
+      n.connect(bp).connect(g).connect(out);
+      n.start(t);
+      am.start(t);
+      n.stop(t + secs);
+      am.stop(t + secs);
     }
   } catch {}
 }
@@ -211,6 +300,7 @@ function act(b: Live, kind: Kind) {
   const body = b.el.querySelector<SVGSVGElement>("svg")!;
   if (kind === "turn") b.flip.classList.toggle("lb-left");
   if (kind === "tilt") head.animate([{ transform: "rotate(0)" }, { transform: `rotate(${rand(-18, 18)}deg)` }, { transform: "rotate(0)" }], { duration: 1400, easing: "ease-in-out" });
+  if (kind === "preen") sound("purr");
   if (kind === "preen") head.animate([{ transform: "rotate(0)" }, { transform: "rotate(38deg) translate(-2px,3px)" }, { transform: "rotate(30deg) translate(-2px,3px)" }, { transform: "rotate(0)" }], { duration: 1600, easing: "ease-in-out" });
   if (kind === "hop") {
     const dx = rand(-14, 14);
@@ -224,6 +314,7 @@ function act(b: Live, kind: Kind) {
       { duration: 1700, easing: "ease-in-out" },
     );
   // Puff up, shake it out, smooth down.
+  if (kind === "fluff") sound("ruffle");
   if (kind === "fluff")
     body.animate(
       [{ transform: "scale(1)" }, { transform: "scale(1.14,1.1)", offset: 0.3 }, { transform: "scale(1.14,1.1) rotate(-4deg)", offset: 0.45 }, { transform: "scale(1.14,1.1) rotate(4deg)", offset: 0.6 }, { transform: "scale(1.12,1.08) rotate(-2deg)", offset: 0.72 }, { transform: "scale(1)" }],
@@ -231,11 +322,13 @@ function act(b: Live, kind: Kind) {
     );
   // Tail lifts, a tiny dropping falls and fades before it lands anywhere.
   if (kind === "poop") {
+    sound("plip");
     body.animate([{ transform: "rotate(0)" }, { transform: "rotate(-9deg)", offset: 0.4 }, { transform: "rotate(0)" }], { duration: 700, easing: "ease-in-out" });
     setTimeout(() => !b.gone && puff(b, DROP, "lb-puff", { x: 3, y: H * 0.78 }, { x: -3, y: 18 }, 900), 280);
   }
   // A silent song: a little note floats up from the beak.
   if (kind === "sing") {
+    sound(Math.random() < 0.7 ? "tweet" : "chatter");
     head.animate([{ transform: "rotate(0)" }, { transform: "rotate(-10deg)" }, { transform: "rotate(0)" }], { duration: 600, easing: "ease-in-out" });
     puff(b, NOTE, "lb-puff lb-note", { x: W - 2, y: -6 }, { x: 8, y: -22 }, 1500);
   }
@@ -264,7 +357,7 @@ function spawn(bird: Bird, start: { x: number; y: number }, startle: () => void)
   el.addEventListener("click", () => {
     if (live.gone || el.classList.contains("lb-flying")) return;
     if (++clicks >= 3) return startle();
-    chirp(Math.random() < 0.6 ? "chirp" : "chatter");
+    turnSoundOn();
     act(live, "sing");
   });
   return live;
@@ -330,6 +423,7 @@ async function visit(flock: Set<Live>, only?: Kind) {
     arrivals.push(wait(500).then(() => fly(b, { x: spot.x + W * 0.95, y: spot.y }, 1900)));
   }
   await Promise.all(arrivals);
+  sound("flutter");
 
   // Fly together to another heading: to follow the reader when they scroll this one away, or just because.
   let busy = false;
@@ -398,6 +492,9 @@ export function Lovebirds() {
     // ?lovebirds on any page brings one right away, for a preview; ?lovebirds=stretch (or poop, fluff, sing…) shows only that.
     const q = new URLSearchParams(location.search);
     const preview = q.has("lovebirds");
+    try {
+      soundOn = sessionStorage.getItem(SOUND_KEY) === "1";
+    } catch {}
     const only = KINDS.find((k) => k === q.get("lovebirds"));
     const flock = new Set<Live>();
     let timer = 0;
