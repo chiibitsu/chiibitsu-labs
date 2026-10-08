@@ -49,9 +49,9 @@ const BIRTHDAY = 6;
 
 const W = 34; // bird width in px; the drawing is 40x32
 const H = (W * 32) / 40;
-const FIRST = [6_000, 14_000]; // first chance after this long on the site
-const NEXT = [35_000, 70_000]; // then at most one visit per this long
-const CHANCE = 0.85;
+const FIRST = [1_800, 2_600]; // first chance after this long on a page (the very first visit of a session always comes)
+const NEXT = [20_000, 45_000]; // then at most one visit per this long
+const CHANCE = 0.9;
 const PAIR = 0.3;
 // Indee and Melon are a bonded pair: they are picked together far more than any other two, and when either
 // comes alone it often brings the other.
@@ -528,11 +528,12 @@ export function Lovebirds() {
     const tick = async () => {
       if (stopped) return;
       const ready = !document.hidden && !document.querySelector("dialog[open]") && (preview || Date.now() - last() > NEXT[0]) && flock.size === 0;
-      if (!ready) return schedule(rand(8_000, 15_000));
+      if (!ready) return schedule(rand(5_000, 10_000));
+      const firstOfSession = last() === 0;
       try {
         sessionStorage.setItem(KEY, String(Date.now()));
       } catch {}
-      if (preview || Math.random() < CHANCE) await visit(flock, only);
+      if (preview || firstOfSession || Math.random() < CHANCE) await visit(flock, only);
       if (!stopped) schedule(preview ? rand(4000, 8000) : rand(NEXT[0], NEXT[1]));
     };
     schedule(preview ? 1500 : rand(FIRST[0], FIRST[1]));
