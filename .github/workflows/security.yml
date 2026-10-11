@@ -1,0 +1,18 @@
+name: security
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 5 * * 1"
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+jobs:
+  security:
+    # Pin a SHA, never a branch. Keep the `# main` hint: Renovate needs it to know what to bump.
+    uses: Chiibitsu-Labs/security-checks/.github/workflows/security.yml@96ea6fbc218320416795b33a6b763aa1c43a83ab # main
+    with:
+      codeql: true
