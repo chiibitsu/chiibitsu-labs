@@ -1,0 +1,16 @@
+name: security
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 5 * * 1"
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+jobs:
+  security:
+    uses: Chiibitsu-Labs/security-checks/.github/workflows/security.yml@add-security-workflow
+    with:
+      codeql: true
