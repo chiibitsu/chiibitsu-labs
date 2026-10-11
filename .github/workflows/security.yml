@@ -12,6 +12,6 @@ permissions:
   actions: read
 jobs:
   security:
-    uses: Chiibitsu-Labs/security-checks/.github/workflows/security.yml@add-security-workflow
+    uses: Chiibitsu-Labs/security-checks/.github/workflows/security.yml@main
     with:
       codeql: true
