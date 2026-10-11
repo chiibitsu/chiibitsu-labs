@@ -6,6 +6,7 @@ import { LitWords } from "./parts";
 import { SceneFrame } from "./SceneFrame";
 import { seg, useNarrow } from "./scroll";
 import { setAudience } from "../AudienceSwitch";
+import { AikiriText } from "@/components/AikiriText";
 
 const dim = (on: boolean) => `dim${on ? " on" : ""}`;
 const both = ["companies", "solo"] as const;
@@ -67,7 +68,7 @@ export function ProofScene({
               </div>
             );
           })}
-          <p className={`caption ${dim(p > 0.8)}`}>{note}</p>
+          <p className={`caption ${dim(p > 0.8)}`}><AikiriText text={note} where="proof_note" /></p>
         </>
       )}
     </SceneFrame>
@@ -119,7 +120,7 @@ export function RecordScene({ id, heading, note, figures }: { id?: string; headi
             <LitWords parts={[{ t: heading }]} f={0.3 + p * 2.5} />
           </h2>
           <Figures figures={figures} p={p} four />
-          <p className={`caption ${dim(p > 0.7)}`}>{note}</p>
+          <p className={`caption ${dim(p > 0.7)}`}><AikiriText text={note} where="proof_note" /></p>
         </>
       )}
     </SceneFrame>

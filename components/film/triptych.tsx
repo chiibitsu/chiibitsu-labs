@@ -3,6 +3,7 @@
 import { LitWords } from "./parts";
 import { SceneFrame } from "./SceneFrame";
 import { seg } from "./scroll";
+import { AikiriText } from "@/components/AikiriText";
 
 const st = (fill: string, stroke?: string) => ({ fill, ...(stroke ? { stroke } : {}) });
 const draw = (f: number) => ({ pathLength: 1, strokeDasharray: 1, strokeDashoffset: 1 - f });
@@ -87,7 +88,7 @@ export function TriptychScene({ id, label, items, line }: { id?: string; label: 
                   <div key={it.title} className={`tri-item${fs[i] > 0 ? " lit" : ""}${i === lit - 1 ? " active" : ""}`}>
                     <Art f={fs[i]} />
                     <div className="chain-t">{it.title}</div>
-                    <div className="chain-b">{it.body}</div>
+                    <div className="chain-b"><AikiriText text={it.body} where="film_trust" /></div>
                   </div>
                 );
               })}

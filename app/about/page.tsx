@@ -12,6 +12,7 @@ import { about as c } from "@/lib/about";
 import { film } from "@/lib/film";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
   title: c.meta.title,
   description: c.meta.description,
 };

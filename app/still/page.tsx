@@ -8,6 +8,7 @@ import { Molecule } from "@/components/Molecule";
 import { TrackedLink } from "@/components/TrackedLink";
 import { content as c } from "@/lib/content";
 import { proof } from "@/lib/proof";
+import { AikiriText } from "@/components/AikiriText";
 
 const both = ["companies", "solo"] as const;
 const Ill = () => <span className="ill">Illustrative</span>;
@@ -93,7 +94,7 @@ export default function StillHome() {
               <div key={it.title} className="change">
                 <Art />
                 <div className="card-title">{it.title}</div>
-                <div className="body">{it.body}</div>
+                <div className="body"><AikiriText text={it.body} where="still_trust" /></div>
               </div>
             );
           })}
@@ -121,7 +122,7 @@ export default function StillHome() {
             </div>
           </div>
         ))}
-        <p className="caption">{proof.scene.note}</p>
+        <p className="caption"><AikiriText text={proof.scene.note} where="still_note" /></p>
       </section>
 
       <section id="run" className="run">

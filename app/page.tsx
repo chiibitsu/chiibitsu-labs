@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import { AudienceSwitch } from "@/components/AudienceSwitch";
+import { JsonLd } from "@/components/JsonLd";
+import { homeGraph } from "@/lib/identity";
 import { DayLayer } from "@/components/film/DayLayer";
 import { SceneBeacon } from "@/components/SceneBeacon";
 import { FilmBar } from "@/components/film/FilmBar";
@@ -19,10 +22,14 @@ const both = ["companies", "solo"] as const;
 // working with us (the path), who we've built with, the record (four counts), the invitation.
 // Behind them runs "A day with the ghost team". After the film: the proof-of-work table and the footer.
 // After the film: the proof-of-work table, Publication and Papers (three "Coming soon" cards each), For investors, the footer.
+// Home is its own canonical; set here, not in the layout, so other pages never inherit "/".
+export const metadata: Metadata = { alternates: { canonical: "/" } };
+
 export default function Home() {
   const a = c.audiences;
   return (
     <>
+      <JsonLd data={homeGraph} />
       <FilmProgress />
       <SceneBeacon />
       <FilmBar nav={c.nav} cta={c.cta} location="nav" />

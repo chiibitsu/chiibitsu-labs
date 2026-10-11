@@ -7,6 +7,7 @@ import { Molecule } from "@/components/Molecule";
 import { TrackedLink } from "@/components/TrackedLink";
 import { content as home } from "@/lib/content";
 import { investor as c } from "@/lib/investor";
+import { AikiriText } from "@/components/AikiriText";
 
 export const metadata: Metadata = {
   title: c.meta.title,
@@ -53,7 +54,7 @@ export default function Investor() {
         <svg className="underline-draw" viewBox="0 0 420 18" width="420" height="18" aria-hidden="true">
           <path style={{ stroke: "var(--accent)" }} className="draw" d="M4 12 C80 4 180 16 260 8 S380 6 416 10" fill="none" strokeWidth="3" strokeLinecap="round" />
         </svg>
-        <p className="hero-sub">{c.hero.sub}</p>
+        <p className="hero-sub"><AikiriText text={c.hero.sub} where="investor_hero" /></p>
         <div className="hero-cta">
           <TrackedLink href={c.hero.cta.href} className="btn big" event="cta_click" eventProps={{ location: "ir_hero" }}>
             {c.hero.cta.label}
@@ -66,7 +67,7 @@ export default function Investor() {
         {c.pillars.map((p) => (
           <div key={p.eyebrow} className="pillar">
             <div className="eyebrow" style={{ lineHeight: 1.4 }}>{p.eyebrow}</div>
-            <div className="card-title">{p.title}</div>
+            <div className="card-title"><AikiriText text={p.title} where="investor_pillar" /></div>
             <div className="body">{p.body}</div>
           </div>
         ))}
