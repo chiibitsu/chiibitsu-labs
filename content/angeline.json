@@ -14,6 +14,10 @@
       "href": "/about"
     },
     {
+      "label": "Team",
+      "href": "/team"
+    },
+    {
       "label": "Founder",
       "href": "/angeline"
     }
@@ -30,8 +34,7 @@
     "line": "I map how your business really runs, put AI to work in it, and hand it over to your team.",
     "facts": [
       "Founder, Chiibitsu Labs",
-      "12+ years leading teams",
-      "Manila, working worldwide"
+      "12+ years leading teams"
     ],
     "photoAlt": "Chii, founder of Chiibitsu Labs"
   },
@@ -172,7 +175,7 @@
     "hEnd": " for everything, let’s look at why."
   },
   "footer": {
-    "left": "Chiibitsu Labs · Based in Manila, working worldwide",
+    "left": "Chiibitsu Labs",
     "middle": "More human, by design"
   }
 }

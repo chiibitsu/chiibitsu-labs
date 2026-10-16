@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "title": "The team · Chiibitsu Labs",
+    "description": "Who is behind Chiibitsu Labs, where to find us, and how to check that we are registered."
+  },
+  "back": "← Back to the home page",
+  "hero": {
+    "eyebrow": "The team",
+    "h1": "Who you are working with.",
+    "sub": "A small team of people, a partner venue, and an AI team that does the heavy lifting. Here is who is who, where to find us, and how to check that we are real."
+  },
+  "people": {
+    "heading": "People",
+    "items": [
+      {
+        "name": "Angeline \"Chii\" Viray",
+        "role": "Founder & Chief Architect",
+        "tags": ["Behavioral science", "Systems architecture", "Emerging tech", "UX"],
+        "body": "Maps how a business really runs, puts AI to work in it, and hands it over to the team.",
+        "link": "About the founder →",
+        "href": "/angeline",
+        "external": false
+      },
+      {
+        "name": "Tristan Macabuag",
+        "role": "Head of Business Development",
+        "tags": [],
+        "body": "Finds the businesses we can help and starts the conversation. Will lead our partners as that program grows.",
+        "link": "LinkedIn ↗",
+        "href": "https://www.linkedin.com/in/tristan-m-303a53181/",
+        "external": true
+      }
+    ],
+    "ghost": {
+      "title": "The ghost team",
+      "body": "A Chief AI Officer and six AI specialists. All of them are AI, and we label them that way. Chii decides and cross-checks their work."
+    },
+    "advisors": {
+      "title": "Advisors",
+      "body": "A few advisors who prefer to stay private. They advise Chii. They do not speak for the company."
+    }
+  },
+  "partners": {
+    "heading": "Partners",
+    "items": [
+      {
+        "name": "HAIVE",
+        "body": "An AI co-working and learning hub in Makati. The partner venue for our AI @ Work classes.",
+        "named": true,
+        "consent": {
+          "by": "HAIVE's CEO",
+          "how": "Agreed on a call with HAIVE's CEO and counsel, as told by Chii.",
+          "on": "2026-10-16"
+        }
+      }
+    ],
+    "more": {
+      "body": "Affiliates and ambassadors will join this list.",
+      "link": "See careers →",
+      "href": "/careers"
+    }
+  },
+  "where": {
+    "heading": "Where to find us",
+    "rows": [
+      { "k": "Office and workshop venue", "v": "HAIVE, 19/F Multinational Bancorporation Centre, 6805 Ayala Avenue, Makati City" },
+      { "k": "Visits", "v": "By appointment. Write to labs@chiibitsu.com first." }
+    ]
+  },
+  "registration": {
+    "heading": "Registration",
+    "rows": [
+      { "k": "Business name", "v": "CHIIBITSULABS BUSINESS CONSULTANCY" },
+      { "k": "Owner", "v": "Angeline S. Viray" },
+      { "k": "DTI business name no.", "v": "8362592 (national scope)" },
+      { "k": "DTI valid", "v": "July 21, 2026 to July 21, 2031" },
+      { "k": "BIR", "v": "Registered July 21, 2026, for management consultancy activities" }
+    ],
+    "note": "Search the exact business name on the DTI site to confirm it. We do not publish tax numbers or home addresses. A client or a bank that needs a copy of the certificates can ask at labs@chiibitsu.com.",
+    "link": "Check it on the DTI site ↗",
+    "href": "https://bnrs.dti.gov.ph/search"
+  },
+  "verify": {
+    "heading": "Not sure a message is from us?",
+    "body": "Check any link, email, number or handle against our official list.",
+    "link": "Is this really us? →",
+    "href": "/verify"
+  },
+  "join": {
+    "heading": "Join us",
+    "body": "Looking for work, or to partner with us?",
+    "link": "See careers →",
+    "href": "/careers"
+  },
+  "footer": {
+    "left": "Chiibitsu Labs",
+    "middle": "More human, by design"
+  }
+}

@@ -63,7 +63,7 @@
     {
       "eyebrow": "02 · How we prove it",
       "title": "We run on it first.",
-      "body": "One founder and an AI team, with the numbers published every week."
+      "body": "Two humans and an AI team, with the numbers published every week."
     },
     {
       "eyebrow": "03 · The long bet",
@@ -167,7 +167,7 @@
         "items": [
           {
             "title": "The AI team",
-            "body": "Our own company run by one founder and an AI team.",
+            "body": "Our own company run by two humans and an AI team.",
             "status": "[next milestone, date]",
             "href": null,
             "illustrative": true
@@ -279,7 +279,7 @@
   },
   "team": {
     "heading": "The team",
-    "line": "One human. One ghost team.",
+    "line": "Two humans. One ghost team.",
     "founder": {
       "name": "Angeline S. Viray",
       "role": "Founder. Decides, and cross-checks the AI team.",
@@ -329,7 +329,7 @@
     "disclaimer": "Company updates only. Nothing on this page is an offer to sell securities."
   },
   "footer": {
-    "left": "Chiibitsu Labs · Based in Manila, working worldwide",
+    "left": "Chiibitsu Labs",
     "middle": "More human, by design"
   }
 }
