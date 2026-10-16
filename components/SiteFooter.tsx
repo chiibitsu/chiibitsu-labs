@@ -14,7 +14,7 @@ export function SiteFooter({ left, middle }: { left: string; middle: string; upd
       <div>{middle}</div>
       <div>Updated {built}</div>
       <div className="foot-legal">
-        <FounderLink>{about.legal.text}</FounderLink> · <a href={mailto(emails.hello)}>{about.legal.email}</a> · <a href="/privacy">Privacy</a>
+        <FounderLink>{about.legal.text}</FounderLink> · <a href={mailto(emails.hello)}>{about.legal.email}</a> · <a href="/team">Team</a> · <a href="/careers">Careers</a> · <a href="/privacy">Privacy</a>
       </div>
     </footer>
   );

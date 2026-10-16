@@ -19,6 +19,11 @@ export const emails = {
     subject: "Hello from chiibitsu.com",
     body: "Hi Chii,\n\nI found you through chiibitsu.com and wanted to ask about:\n\n\nMy name, company and role:\n\nThanks,\n",
   },
+  careers: {
+    email,
+    subject: "Careers at Chiibitsu Labs",
+    body: "Hi Chii,\n\nThe kind of work I'd like to do with you:\n\nWhat I have built or run:\n\nWhere to see it:\n\nMy name and where I'm based:\n\nThanks,\n",
+  },
   privacy: {
     email,
     subject: "Privacy request",

@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "title": "Careers · Chiibitsu Labs",
+    "description": "Work with Chiibitsu Labs as a partner, affiliate or ambassador. No openings are listed right now, and we are always glad to hear from you."
+  },
+  "back": "← Back to the home page",
+  "hero": {
+    "eyebrow": "Careers",
+    "h1a": "Come build ",
+    "h1b": "with us.",
+    "sub": "We help businesses put AI to work, and hand it over to their people. If you notice how people and systems really behave, we would like to meet you.",
+    "cta": "labs@chiibitsu.com"
+  },
+  "roles": {
+    "heading": "What we're looking for",
+    "items": [],
+    "empty": {
+      "title": "No openings right now.",
+      "body": "Partners, affiliates and ambassadors will be listed here first.",
+      "tag": "Check back soon"
+    }
+  },
+  "outro": "Don't see a role that fits? Write to us anyway. We're always interested in unusual paths.",
+  "footer": {
+    "left": "Chiibitsu Labs · Based in Manila, working worldwide",
+    "middle": "More human, by design"
+  }
+}

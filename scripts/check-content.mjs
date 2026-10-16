@@ -14,6 +14,8 @@ const ledger = load("ledger");
 const network = load("network");
 const check = load("check");
 const official = load("official");
+const team = load("team");
+const careers = load("careers");
 const stillAbout = JSON.parse(fs.readFileSync(new URL("../content/still/about.json", import.meta.url), "utf8"));
 const problems = [];
 
@@ -51,6 +53,8 @@ walk(ledger, "ledger");
 walk(network, "network");
 walk(check, "check");
 walk(official, "official");
+walk(team, "team");
+walk(careers, "careers");
 walk(filmContent, "film");
 walk(stillAbout, "stillAbout");
 
@@ -95,6 +99,19 @@ for (const [name, d] of [["home", data], ["investor", investor]]) {
   const clients = /\b(Amplifi|Merg|Oasis Home|Paris Brocante|Rapide|Lica Group|Hertz|Decoworks|Canadian Kitchen|ABC Design|Marivic|Lhiza|Bunny|Mells|Danielle|Jason Ramirez|Pam Ramirez|Melissa Menes|David Lee|HAIVE)\b/i;
   const hit = all.match(clients);
   if (hit) problems.push(`clients: "${hit[0]}" is a client name; clients stay anonymous until they countersign`);
+}
+// A partner is named on /team only with a consent line on record, as clients are on /proof (Chii, 2026-09-30).
+// Any other client name, and any private number (tax number, passport, bank account), stays off /team and /careers.
+{
+  for (const p of team.partners.items) {
+    if (p.named === true && !(p.consent?.by && p.consent?.how && p.consent?.on)) problems.push(`team.partners: ${p.name} is named without a consent record (by, how, on)`);
+  }
+  const rendered = JSON.stringify([team.hero, team.people, team.where, team.registration, team.verify, team.join, careers]);
+  const others = /\b(Amplifi|Merg|Oasis Home|Paris Brocante|Rapide|Lica Group|Hertz|Decoworks|Canadian Kitchen|ABC Design|Marivic|Lhiza|Bunny|Mells|Danielle|Jason Ramirez|Pam Ramirez|Melissa Menes|David Lee|Nico|Manikad)\b/i;
+  const hit = rendered.match(others);
+  if (hit) problems.push(`team: "${hit[0]}" is a client or a private person and stays off /team and /careers`);
+  if (/\b\d{3}-\d{3}-\d{3}\b|\bTIN\b|passport|\b\d{5}-\d{4}-\d{3}\b/i.test(rendered)) problems.push("team: no tax number, passport or bank number on the site");
+  if (/Calamba|Nuvali|Acacia|Cembo|Taguig/i.test(rendered)) problems.push("team: no home address on the site");
 }
 if (!/securities/i.test(investor.room.disclaimer)) problems.push("investor: the securities disclaimer is missing");
 if (investor.hero.cta.label !== "Request the data room →") problems.push("investor: CTA must be 'Request the data room →'");
