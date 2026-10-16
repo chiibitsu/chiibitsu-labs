@@ -3870,3 +3870,6 @@ a.cr-row:focus-visible .cr-go {
     grid-column: 2 / 4;
   }
 }
+
+.tm-anchor { scroll-margin-top: 24px; }
+.tm-ghost + .tm-ghost { margin-top: 16px; }

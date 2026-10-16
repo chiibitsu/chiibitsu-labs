@@ -56,6 +56,10 @@ export default function Team() {
           <h3 className="tm-name">{c.people.ghost.title}</h3>
           <p className="body">{c.people.ghost.body}</p>
         </article>
+        <article className="tm-card tm-ghost">
+          <h3 className="tm-name">{c.people.advisors.title}</h3>
+          <p className="body">{c.people.advisors.body}</p>
+        </article>
 
         <h2>{c.partners.heading}</h2>
         <div className="tm-people">
@@ -81,7 +85,7 @@ export default function Team() {
           ))}
         </dl>
 
-        <h2>{c.registration.heading}</h2>
+        <h2 id="registration" className="tm-anchor">{c.registration.heading}</h2>
         <p className="body">{about.legal.text}.</p>
         <dl className="ledger-facts">
           {c.registration.rows.map((r) => (
@@ -92,6 +96,7 @@ export default function Team() {
           ))}
         </dl>
         <p className="caption">{c.registration.note}</p>
+        <a className="tm-go" href={c.registration.href} target="_blank" rel="noopener noreferrer">{c.registration.link}</a>
 
         <div className="tm-pair">
           <section>

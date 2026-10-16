@@ -34,6 +34,10 @@
     "ghost": {
       "title": "The ghost team",
       "body": "A Chief AI Officer and six AI specialists. All of them are AI, and we label them that way. Chii decides and cross-checks their work."
+    },
+    "advisors": {
+      "title": "Advisors",
+      "body": "A few advisors who prefer to stay private. They advise Chii. They do not speak for the company."
     }
   },
   "partners": {
@@ -45,7 +49,7 @@
         "named": true,
         "consent": {
           "by": "HAIVE's CEO",
-          "how": "A verbal yes on a call with HAIVE's counsel, as reported by Chii. Not yet in writing.",
+          "how": "Agreed on a call with HAIVE's CEO and counsel, as told by Chii.",
           "on": "2026-10-16"
         }
       }
@@ -59,9 +63,8 @@
   "where": {
     "heading": "Where to find us",
     "rows": [
-      { "k": "Office", "v": "A co-working desk at HAIVE, 19/F Multinational Bancorporation Centre, 6805 Ayala Avenue, Makati City" },
-      { "k": "Visits", "v": "Meetings by appointment. Write to labs@chiibitsu.com first." },
-      { "k": "Reach", "v": "Based in Manila, working worldwide" }
+      { "k": "Office and workshop venue", "v": "HAIVE, 19/F Multinational Bancorporation Centre, 6805 Ayala Avenue, Makati City" },
+      { "k": "Visits", "v": "By appointment. Write to labs@chiibitsu.com first." }
     ]
   },
   "registration": {
@@ -73,7 +76,9 @@
       { "k": "DTI valid", "v": "July 21, 2026 to July 21, 2031" },
       { "k": "BIR", "v": "Registered July 21, 2026, for management consultancy activities" }
     ],
-    "note": "You can confirm the business name with the Department of Trade and Industry (DTI). We do not publish tax numbers or home addresses. A client or a bank that needs a copy of the certificates can ask at labs@chiibitsu.com."
+    "note": "Search the exact business name on the DTI site to confirm it. We do not publish tax numbers or home addresses. A client or a bank that needs a copy of the certificates can ask at labs@chiibitsu.com.",
+    "link": "Check it on the DTI site ↗",
+    "href": "https://bnrs.dti.gov.ph/search"
   },
   "verify": {
     "heading": "Not sure a message is from us?",
@@ -88,7 +93,7 @@
     "href": "/careers"
   },
   "footer": {
-    "left": "Chiibitsu Labs · Based in Manila, working worldwide",
+    "left": "Chiibitsu Labs",
     "middle": "More human, by design"
   }
 }
