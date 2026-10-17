@@ -3,6 +3,7 @@
 import fs from "node:fs";
 import { domainToASCII } from "node:url";
 import { checkOfficial, privatePhoneOwner, phoneKey } from "../lib/verifyUs.ts";
+import { parseAlert, formatAlert, makeLimiter, sendTelegram } from "../lib/verifyAlert.ts";
 
 const list = JSON.parse(fs.readFileSync(new URL("../content/official.json", import.meta.url), "utf8")).list;
 const cyrillicI = "chііbitsu.com"; // two Cyrillic і
@@ -87,6 +88,27 @@ if ((await privatePhoneOwner("+63 900 000 0002", testList)) !== null) problems.p
 const raw = fs.readFileSync(new URL("../content/official.json", import.meta.url), "utf8");
 const listed = new Set(list.phones.map((p) => phoneKey(p.value)));
 for (const m of raw.match(/\+?\d[\d\s-]{9,}\d/g) ?? []) if (!listed.has(phoneKey(m))) problems.push(`a number appears in official.json in the clear: ${m.slice(0, 4)}…`);
+
+// The Telegram alert: validated input, one clean message, honest limits, and silent when not configured.
+{
+  const ok = parseAlert({ input: "  labs@chiibitsu.co\nFAKE LINE ", kind: "email", verdict: "lookalike" });
+  if (!ok || ok.input !== "labs@chiibitsu.co FAKE LINE") problems.push("alert input not cleaned of line breaks");
+  if (parseAlert({ input: "x", kind: "bogus", verdict: "official" })) problems.push("alert accepted an unknown kind");
+  if (parseAlert({ input: "x", kind: "email", verdict: "bogus" })) problems.push("alert accepted an unknown verdict");
+  if (parseAlert({ input: "   ", kind: "email", verdict: "official" })) problems.push("alert accepted an empty input");
+  if (parseAlert({ input: "a".repeat(900), kind: "text", verdict: "unrecognized" })?.input.length !== 300) problems.push("alert input not capped at 300");
+  const msg = ok ? formatAlert(ok, new Date("2026-10-17T06:03:00Z")) : "";
+  if (!msg.startsWith("🔴 Verify check: lookalike (email)\n") || !msg.endsWith("17 Oct, 14:03 Manila")) problems.push(`alert text wrong: ${JSON.stringify(msg)}`);
+  const allow = makeLimiter();
+  const t0 = 1_000_000;
+  const passed = [0, 1, 2, 3, 4, 5].map((i) => allow("1.1.1.1", t0 + i));
+  if (passed.filter(Boolean).length !== 5 || !allow("2.2.2.2", t0 + 10) || !allow("1.1.1.1", t0 + 61_000)) problems.push("rate limit not 5 a minute per address");
+  if ((await sendTelegram("hi", {})) !== "off") problems.push("alert should be off with no keys");
+  let seen = null;
+  const fake = async (url, init) => { seen = { url, body: JSON.parse(init.body) }; return { ok: true }; };
+  if ((await sendTelegram("hello", { token: "T", chat: "42" }, fake)) !== "sent" || seen?.url !== "https://api.telegram.org/botT/sendMessage" || seen.body.chat_id !== "42" || seen.body.text !== "hello" || "parse_mode" in seen.body) problems.push("telegram request shape wrong");
+  if ((await sendTelegram("x", { token: "T", chat: "1" }, async () => { throw new Error("down"); })) !== "failed") problems.push("a Telegram outage should not throw");
+}
 
 if (problems.length) {
   console.error(`verify check failed:\n  ${problems.join("\n  ")}`);

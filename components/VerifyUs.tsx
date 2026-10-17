@@ -11,7 +11,8 @@ const m = official.modal;
 const stamp = (d: Date) => `${d.toISOString().slice(0, 19).replace("T", " ")} UTC`;
 
 // Paste an email, link, handle, number or wallet address; the answer opens as a card that is easy to screenshot.
-// The text is checked on the device. Only the kind of answer goes to analytics, never what was pasted.
+// The text is checked on the device. Only the kind of answer goes to analytics. What was pasted, and the answer, also go as a private
+// alert to the team (see /api/verify-alert) so impersonation shows up at once; the page and the privacy policy say so.
 export function VerifyUs() {
   const dialog = useRef<HTMLDialogElement>(null);
   const field = useRef<HTMLInputElement>(null);
@@ -22,7 +23,7 @@ export function VerifyUs() {
     if (result && dialog.current && !dialog.current.open) dialog.current.showModal();
   }, [result]);
 
-  async function run(raw: string) {
+  async function run(raw: string, notify = true) {
     const list = official.list as unknown as OfficialList;
     let check = checkOfficial(raw, list);
     if (check.kind === "phone" && check.verdict === "unconfirmed") {
@@ -31,6 +32,14 @@ export function VerifyUs() {
     }
     setResult({ check, at: new Date() });
     trackEvent("verify_us", { result: check.verdict, kind: check.kind });
+    if (notify && raw.trim()) {
+      void fetch("/api/verify-alert", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ input: raw.trim().slice(0, 300), kind: check.kind, verdict: check.verdict }),
+        keepalive: true,
+      }).catch(() => {});
+    }
   }
 
   function close(focus = false) {
@@ -61,7 +70,7 @@ export function VerifyUs() {
         <div className="net-chips">
           <span className="caption">{c.examplesLabel}</span>
           {c.examples.map((ex) => (
-            <button key={ex} type="button" className="net-example" onClick={() => { setText(ex); void run(ex); }}>{ex}</button>
+            <button key={ex} type="button" className="net-example" onClick={() => { setText(ex); void run(ex, false); }}>{ex}</button>
           ))}
         </div>
       </form>

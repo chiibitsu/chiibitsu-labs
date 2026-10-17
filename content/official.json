@@ -6,7 +6,7 @@
   "hero": {
     "eyebrow": "Chiibitsu Labs",
     "h1": "Is this really us?",
-    "sub": "Someone may use our name to reach you. Paste an email address, link, handle or number, and this page checks it against the channels we list as official. Nothing you type leaves your device."
+    "sub": "Someone may use our name to reach you. Paste an email address, link, handle or number, and this page checks it against the channels we list as official. The check runs on your device. When it finishes, we get a private alert with what you entered and the result, so we can spot anyone using our name."
   },
   "check": {
     "heading": "Check",
