@@ -3,7 +3,7 @@
 import fs from "node:fs";
 import { domainToASCII } from "node:url";
 import { checkOfficial, privatePhoneOwner, phoneKey } from "../lib/verifyUs.ts";
-import { parseAlert, formatAlert, makeLimiter, sendTelegram } from "../lib/verifyAlert.ts";
+import { parseAlert, formatAlert, makeLimiter, sendTelegram, parseLedgerAlert, formatLedgerAlert } from "../lib/verifyAlert.ts";
 
 const list = JSON.parse(fs.readFileSync(new URL("../content/official.json", import.meta.url), "utf8")).list;
 const cyrillicI = "chііbitsu.com"; // two Cyrillic і
@@ -108,6 +108,19 @@ for (const m of raw.match(/\+?\d[\d\s-]{9,}\d/g) ?? []) if (!listed.has(phoneKey
   const fake = async (url, init) => { seen = { url, body: JSON.parse(init.body) }; return { ok: true }; };
   if ((await sendTelegram("hello", { token: "T", chat: "42" }, fake)) !== "sent" || seen?.url !== "https://api.telegram.org/botT/sendMessage" || seen.body.chat_id !== "42" || seen.body.text !== "hello" || "parse_mode" in seen.body) problems.push("telegram request shape wrong");
   if ((await sendTelegram("x", { token: "T", chat: "1" }, async () => { throw new Error("down"); })) !== "failed") problems.push("a Telegram outage should not throw");
+}
+
+// The file-check alert: a valid fingerprint only, a block number only when found, and a clean message.
+{
+  const h = "a".repeat(64);
+  const found = parseLedgerAlert({ source: "ledger", hash: h, via: "file", result: "found", block: 3 });
+  if (!found || found.block !== 3) problems.push("ledger alert: found with block not parsed");
+  if (parseLedgerAlert({ hash: "xyz", via: "file", result: "found" })) problems.push("ledger alert accepted a bad hash");
+  if (parseLedgerAlert({ hash: h, via: "upload", result: "found" })) problems.push("ledger alert accepted a bad via");
+  if (parseLedgerAlert({ hash: h, via: "hash", result: "found", block: -1 })) problems.push("ledger alert accepted a bad block");
+  if ("block" in (parseLedgerAlert({ hash: h, via: "hash", result: "not_found", block: 2 }) ?? {})) problems.push("ledger alert kept a block on not found");
+  const m = found ? formatLedgerAlert(found, new Date("2026-10-17T06:03:00Z")) : "";
+  if (m !== `🟢 File check: found in block 3 (a file)\n${h}\n17 Oct, 14:03 Manila`) problems.push(`ledger alert text wrong: ${JSON.stringify(m)}`);
 }
 
 if (problems.length) {

@@ -6,7 +6,7 @@
   "hero": {
     "eyebrow": "The Aikiri Network",
     "h1": "Check a file.",
-    "sub": "Drop a file or paste a hash. Your device works out the file's fingerprint, and nothing is uploaded. The page then looks for that fingerprint in the public ledger."
+    "sub": "Drop a file or paste a hash. Your device works out the file's fingerprint, and nothing is uploaded. The page then looks for that fingerprint in the public ledger. We log the fingerprint and the result, never the file."
   },
   "check": {
     "heading": "Check",

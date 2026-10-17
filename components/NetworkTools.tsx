@@ -21,7 +21,8 @@ const how = { block: "This is a block's own hash.", root: "This is a hash sealed
 const stamp = (d: Date) => `${d.toISOString().slice(0, 19).replace("T", " ")} UTC`;
 
 // Hash a file on the device, or take a pasted hash, then look it up in the public ledger. The answer opens as a card
-// that is easy to screenshot. No hash or file name is sent to analytics.
+// that is easy to screenshot. No hash or file name is sent to analytics. The hash and the result (never the file or its
+// name) also go as a private alert to the team, through /api/verify-alert; the page and the privacy policy say so.
 export function NetworkTools() {
   const blocks = useRef<Block[] | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -41,7 +42,16 @@ export function NetworkTools() {
     if (focus) field.current?.focus();
   }
 
-  async function look(hash: string, via: "file" | "hash") {
+  async function look(hash: string, via: "file" | "hash", notify = true) {
+    const alert = (result: "found" | "not_found" | "error", block?: number) => {
+      if (!notify) return;
+      void fetch("/api/verify-alert", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ source: "ledger", hash, via, result, block }),
+        keepalive: true,
+      }).catch(() => {});
+    };
     setBusy("Looking in the ledger…");
     const at = new Date();
     try {
@@ -54,9 +64,11 @@ export function NetworkTools() {
         setResult({ kind: "none", hash, blocks: blocks.current.length, at });
       }
       trackEvent("ledger_check", { result: match ? "found" : "not_found", via });
+      alert(match ? "found" : "not_found", match?.block.index);
     } catch (e) {
       setResult({ kind: "error", message: `The ledger could not be read just now (${e instanceof Error ? e.message : "error"}). Try again in a minute.`, at });
       trackEvent("ledger_check", { result: "error", via });
+      alert("error");
     } finally {
       setBusy("");
     }
@@ -77,11 +89,11 @@ export function NetworkTools() {
     }
   }
 
-  async function onCheck(raw: string) {
+  async function onCheck(raw: string, notify = true) {
     setNote("");
     const hash = normalizeHash(raw);
     if (!isHash(hash)) return setNote(c.bad);
-    await look(hash, "hash");
+    await look(hash, "hash", notify);
   }
 
   return (
@@ -103,7 +115,7 @@ export function NetworkTools() {
           <input ref={field} id="net-hash-in" value={text} onChange={(e) => setText(e.target.value)} placeholder={c.hashPlaceholder} spellCheck={false} autoComplete="off" aria-label={c.hashLabel} />
           <button type="submit" className="btn" disabled={!!busy}>{c.button}</button>
         </div>
-        <button type="button" className="net-example" onClick={() => { setText(EXAMPLE_HASH); void onCheck(EXAMPLE_HASH); }}>{c.example}</button>
+        <button type="button" className="net-example" onClick={() => { setText(EXAMPLE_HASH); void onCheck(EXAMPLE_HASH, false); }}>{c.example}</button>
       </form>
 
       <div aria-live="polite" className="net-out">
