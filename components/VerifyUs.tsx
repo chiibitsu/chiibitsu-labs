@@ -32,7 +32,8 @@ export function VerifyUs() {
     }
     setResult({ check, at: new Date() });
     trackEvent("verify_us", { result: check.verdict, kind: check.kind });
-    if (notify && raw.trim()) {
+    // "Unrecognized" is text that is not an email, link, handle, number or wallet: noise, and the likeliest to be something personal.
+    if (notify && raw.trim() && check.verdict !== "unrecognized") {
       void fetch("/api/verify-alert", {
         method: "POST",
         headers: { "content-type": "application/json" },
