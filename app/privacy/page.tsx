@@ -46,14 +46,13 @@ export default function Privacy() {
             use this to identify you personally.
           </li>
           <li>
-            <strong>What you check on the Verify page</strong>: the email, link, handle or number you enter, and the result. The check runs on your device,
-            then we get a private alert with both, sent through Telegram, so we can spot anyone using our name.
+            <strong>Verify page checks</strong>: what you enter and the result.
           </li>
           <li>
             <strong>What you send us</strong>, such as your name, email address and message when you write to us.
           </li>
         </ul>
-        <p className="body">There are no forms on this site apart from the Verify box, and we do not ask for sensitive information.</p>
+        <p className="body">The only form on this site is the Verify box, and we do not ask for sensitive information.</p>
         <p className="body">
           The file checker on the Network page works out a file&apos;s fingerprint on your own device, and the file is never uploaded. To look the fingerprint up, your
           browser reads public ledger files from GitHub, which sees your IP address as it would on any visit to its site.
@@ -64,7 +63,7 @@ export default function Privacy() {
           <li>To understand how the site is used and improve it.</li>
           <li>To understand which organizations are interested in our services.</li>
           <li>To reply to you and provide the services you ask for.</li>
-          <li>To spot people using our name to reach others, from what is checked on the Verify page.</li>
+          <li>To detect and prevent impersonation of our business.</li>
           <li>To keep the site secure and meet our legal obligations.</li>
         </ul>
 
@@ -82,7 +81,7 @@ export default function Privacy() {
 
         <h2>Who we share it with</h2>
         <p className="body">
-          We use service providers for website hosting, analytics, private alerts and business information. They process information on our behalf and under contract.
+          We use service providers for website hosting, analytics, notifications and business information. They process information on our behalf and under contract.
         </p>
         <p className="body">
           We partner with Microsoft Clarity to capture how you use and interact with our website through behavioral metrics, heatmaps and session
