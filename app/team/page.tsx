@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Mark } from "@/components/Mark";
+import { MailText } from "@/components/MailText";
 import { SiteFooter } from "@/components/SiteFooter";
+import { emails } from "@/lib/emails";
 import { about } from "@/lib/about";
 import teamJson from "@/content/team.json";
 
@@ -80,7 +82,7 @@ export default function Team() {
           {c.where.rows.map((r) => (
             <div key={r.k} className="ledger-row">
               <dt className="caption">{r.k}</dt>
-              <dd>{r.v}</dd>
+              <dd><MailText text={r.v} mail={emails.visit} /></dd>
             </div>
           ))}
         </dl>
@@ -95,7 +97,7 @@ export default function Team() {
             </div>
           ))}
         </dl>
-        <p className="caption">{c.registration.note}</p>
+        <p className="caption"><MailText text={c.registration.note} mail={emails.certificates} /></p>
         <a className="tm-go" href={c.registration.href} target="_blank" rel="noopener noreferrer">{c.registration.link}</a>
 
         <div className="tm-pair">

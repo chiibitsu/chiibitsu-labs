@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { MailText } from "@/components/MailText";
 import { trackEvent } from "@/lib/analytics";
+import { emails } from "@/lib/emails";
 import { checkOfficial, privatePhoneOwner, type Check, type OfficialList } from "@/lib/verifyUs";
 import official from "@/content/official.json";
 
@@ -93,7 +95,9 @@ export function VerifyUs() {
               </p>
             )}
             {result.check.detail && <p className="body">{result.check.detail}</p>}
-            <p className="body">{verdict.action}</p>
+            <p className="body">
+              <MailText text={verdict.action} mail={{ ...emails.verify, body: emails.verify.body.replace("{input}", result.check.input || "") }} />
+            </p>
             <p className="caption net-proof">{m.checked} {stamp(result.at)} · {m.site}</p>
             <div className="net-actions">
               <button type="button" className="btn" onClick={() => close(true)}>{m.again}</button>
