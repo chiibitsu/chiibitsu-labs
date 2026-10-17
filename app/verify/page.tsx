@@ -2,7 +2,9 @@ import { createHash } from "node:crypto";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Mark } from "@/components/Mark";
+import { MailText } from "@/components/MailText";
 import { SiteFooter } from "@/components/SiteFooter";
+import { emails } from "@/lib/emails";
 import { VerifyUs } from "@/components/VerifyUs";
 import officialJson from "@/content/official.json";
 
@@ -58,7 +60,7 @@ export default function Verify() {
           {rows.map((r) => (
             <div key={`${r.k}-${r.v}`} className="ledger-row">
               <dt className="caption">{r.k}</dt>
-              <dd>{r.v}<span className="caption"> · {r.owner}</span></dd>
+              <dd><MailText text={r.v} mail={emails.hello} /><span className="caption"> · {r.owner}</span></dd>
             </div>
           ))}
         </dl>
