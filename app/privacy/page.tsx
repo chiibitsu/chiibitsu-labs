@@ -46,13 +46,13 @@ export default function Privacy() {
             use this to identify you personally.
           </li>
           <li>
-            <strong>Verify page checks</strong>: what you enter and the result.
+            <strong>Checks on the Verify and Check a file pages</strong>: what you enter and the result. For a file, only its fingerprint, never the file.
           </li>
           <li>
             <strong>What you send us</strong>, such as your name, email address and message when you write to us.
           </li>
         </ul>
-        <p className="body">The only form on this site is the Verify box, and we do not ask for sensitive information.</p>
+        <p className="body">The only forms on this site are the Verify and Check a file boxes, and we do not ask for sensitive information.</p>
         <p className="body">
           The file checker on the Network page works out a file&apos;s fingerprint on your own device, and the file is never uploaded. To look the fingerprint up, your
           browser reads public ledger files from GitHub, which sees your IP address as it would on any visit to its site.

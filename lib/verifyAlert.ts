@@ -17,9 +17,30 @@ export function parseAlert(body: unknown): Alert | null {
   return clean ? { input: clean, kind, verdict } : null;
 }
 
+const manila = (now: Date) =>
+  new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Manila", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false }).format(now);
+
 export function formatAlert(a: Alert, now: Date): string {
-  const when = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Manila", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit", hour12: false }).format(now);
-  return `${VERDICTS[a.verdict]} Verify check: ${a.verdict} (${a.kind})\n${a.input}\n${when} Manila`;
+  return `${VERDICTS[a.verdict]} Verify check: ${a.verdict} (${a.kind})\n${a.input}\n${manila(now)} Manila`;
+}
+
+// The file checker on /network/check: only the fingerprint is ever sent, never the file or its name.
+export type LedgerAlert = { hash: string; via: "file" | "hash"; result: "found" | "not_found" | "error"; block?: number };
+
+export function parseLedgerAlert(body: unknown): LedgerAlert | null {
+  if (!body || typeof body !== "object") return null;
+  const { hash, via, result, block } = body as Record<string, unknown>;
+  if (typeof hash !== "string" || !/^[0-9a-f]{64}$/.test(hash)) return null;
+  if (via !== "file" && via !== "hash") return null;
+  if (result !== "found" && result !== "not_found" && result !== "error") return null;
+  if (block !== undefined && !(Number.isInteger(block) && (block as number) >= 0 && (block as number) < 1_000_000)) return null;
+  return { hash, via, result, ...(result === "found" && typeof block === "number" ? { block } : {}) };
+}
+
+export function formatLedgerAlert(a: LedgerAlert, now: Date): string {
+  const head =
+    a.result === "found" ? `🟢 File check: found in block ${a.block ?? "?"}` : a.result === "not_found" ? "🟡 File check: not found" : "⚠️ File check: the ledger could not be read";
+  return `${head} (${a.via === "file" ? "a file" : "a pasted hash"})\n${a.hash}\n${manila(now)} Manila`;
 }
 
 // Best-effort limits, kept per server instance: 5 a minute from one address, 120 an hour overall.
