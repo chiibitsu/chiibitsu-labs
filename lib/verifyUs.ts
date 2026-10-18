@@ -11,6 +11,7 @@ export type OfficialList = {
   emails: { value: string; owner: string }[];
   profiles: { platform: string; host: string; path: string; owner: string; hidden?: boolean }[];
   addresses: { value: string; owner: string }[];
+  names?: { value: string; owner: string }[];
   handles: { platform?: string; value: string; owner: string }[];
   phones: { value: string; owner: string }[];
   privatePhones?: { salt: string; iterations: number; items: { hash: string; owner: string }[] };
@@ -171,6 +172,22 @@ export function checkOfficial(rawInput: string, list: OfficialList): Check {
     return hit
       ? make("official", "address", hit.owner)
       : make("unconfirmed", "address", "A wallet address that is not one of the two listed.");
+  }
+
+  // A wallet name (ENS or Basename, ending in .eth). One that reads like a listed name is a lookalike.
+  if (/^[^\s@/:]+\.eth$/i.test(input)) {
+    const name = input.toLowerCase();
+    const listed = list.names ?? [];
+    const hit = listed.find((n) => n.value.toLowerCase() === name);
+    if (hit) return make("official", "address", hit.owner);
+    const label = skeleton(name.replace(/\.(base\.)?eth$/, ""));
+    const looks = listed.some((n) => {
+      const ours = skeleton(n.value.toLowerCase().replace(/\.(base\.)?eth$/, ""));
+      return label.includes(ours) || distance(label, ours) <= 2;
+    });
+    return looks
+      ? make("lookalike", "address", `The wallet name ${name} reads like ours but is not the one we list.`)
+      : make("unconfirmed", "address", "A wallet name that is not one we list.");
   }
 
   // An email address.

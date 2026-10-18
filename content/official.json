@@ -133,6 +133,12 @@
         "owner": "Owner of the Aikiri ledger contract"
       }
     ],
+    "names": [
+      {
+        "value": "aikiri.base.eth",
+        "owner": "Basename of the owner of the Aikiri ledger contract"
+      }
+    ],
     "handles": [
       {
         "platform": "Telegram",
