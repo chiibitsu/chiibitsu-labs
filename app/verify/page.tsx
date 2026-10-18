@@ -30,7 +30,7 @@ const hash = (list: Record<string, unknown>) => createHash("sha256").update(cano
 // /verify: is this email, link, handle, number or wallet really ours? The list is public; the check runs on the device.
 export default function Verify() {
   const fingerprint = hash({
-    domains: L.domains, emails: L.emails, profiles: L.profiles, addresses: L.addresses, handles: L.handles, phones: L.phones,
+    domains: L.domains, emails: L.emails, profiles: L.profiles, addresses: L.addresses, names: L.names, handles: L.handles, phones: L.phones,
     privatePhones: (L.privatePhones.items as { hash: string }[]).map((i) => i.hash),
   });
   const rows: { k: string; v: string; owner: string }[] = [
@@ -40,6 +40,7 @@ export default function Verify() {
     ...L.handles.map((h) => ({ k: h.platform, v: h.platform === "Messenger" ? h.value : `@${h.value}`, owner: h.owner })),
     ...L.profiles.filter((p) => !("hidden" in p && p.hidden)).map((p) => ({ k: p.platform, v: `${p.host}${p.path}`, owner: p.owner })),
     ...L.addresses.map((a) => ({ k: "Wallet", v: a.value, owner: a.owner })),
+    ...L.names.map((n) => ({ k: "Wallet name", v: n.value, owner: n.owner })),
   ];
   return (
     <div className="page">

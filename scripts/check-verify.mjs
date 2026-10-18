@@ -8,6 +8,12 @@ import { parseAlert, formatAlert, makeLimiter, sendTelegram, parseLedgerAlert, f
 const list = JSON.parse(fs.readFileSync(new URL("../content/official.json", import.meta.url), "utf8")).list;
 const cyrillicI = "chііbitsu.com"; // two Cyrillic і
 const cases = [
+  ["aikiri.base.eth", "official"],
+  ["Aikiri.Base.ETH", "official"],
+  ["aikiri-network.base.eth", "lookalike"],
+  ["aikiri.eth", "lookalike"],
+  ["aikirii.base.eth", "lookalike"],
+  ["vitalik.eth", "unconfirmed"],
   ["labs@chiibitsu.com", "official"],
   ["Labs@Chiibitsu.com", "official"],
   ["mailto:labs@chiibitsu.com", "official"],

@@ -57,6 +57,11 @@
         "href": "https://basescan.org/address/0xB76B710cDa104DB946A619B1450E02D44cB97194"
       },
       {
+        "k": "Owner name",
+        "v": "aikiri.base.eth",
+        "href": "https://www.base.org/name/aikiri"
+      },
+      {
         "k": "Owner verified",
         "v": "Signed message on Basescan, 2 Oct 2026"
       },
