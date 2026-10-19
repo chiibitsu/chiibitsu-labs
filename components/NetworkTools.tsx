@@ -201,9 +201,10 @@ function Found({ r }: { r: Extract<Result, { kind: "found" }> }) {
       <h3 id="net-modal-title" className="net-verdict">{m.found} {b.index}.</h3>
       <p className="body">{how[r.match.how]}{r.match.kind ? ` Kind: ${r.match.kind}.` : ""}</p>
       {r.reveal !== "none" && r.reveal !== "error" && r.reveal.match && <p className="body"><strong>{describeReveal(r.reveal)}</strong></p>}
-      <p className="caption">
+      {/* Only a sealed document (a root) has parties; a block's own hash or a block's combined hash has none to hide. */}
+      {r.match.how === "root" && <p className="caption">
         {r.reveal === "none" ? m.privateNote : r.reveal === "error" ? m.revealError : r.reveal.match ? m.revealNote : m.revealNone}
-      </p>
+      </p>}
       <dl className="ledger-facts">
         <div className="ledger-row"><dt className="caption">Issuer</dt><dd>{m.issuer}</dd></div>
         <div className="ledger-row"><dt className="caption">Block</dt><dd>{b.index}</dd></div>

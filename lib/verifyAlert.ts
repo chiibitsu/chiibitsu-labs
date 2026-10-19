@@ -49,10 +49,11 @@ export function makeLimiter(perHour = 120) {
   const perIp = new Map<string, number[]>();
   let all: number[] = [];
   return (ip: string, now: number): boolean => {
-    all = all.filter((t) => now - t < 3_600_000);
+    const capped = Number.isFinite(perHour);
+    if (capped) all = all.filter((t) => now - t < 3_600_000);
     const mine = (perIp.get(ip) ?? []).filter((t) => now - t < 60_000);
-    if (all.length >= perHour || mine.length >= 5) return false;
-    all.push(now);
+    if ((capped && all.length >= perHour) || mine.length >= 5) return false;
+    if (capped) all.push(now);
     mine.push(now);
     perIp.set(ip, mine);
     if (perIp.size > 5000) perIp.clear();
