@@ -89,7 +89,7 @@ The trade-off, accepted: whoever holds the store's token can read every record. 
 | `ISSUER_STORE_TOKEN` | Its REST token (read and write) |
 | `ISSUER_SEAL_SECRET` | The bearer the sealing side sends to `/api/issuer/seal` |
 
-With the first two unset, both endpoints answer 503. The check page then still shows the ledger record and says the issuer could not be asked.
+With the first two unset, both endpoints answer 503 to otherwise valid requests. Validation (400) and, for the seal, the bearer check (401) come first, so outsiders learn nothing about how the server is set up. The check page then still shows the ledger record and says the issuer could not be asked.
 
 ## Tests
 
