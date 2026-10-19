@@ -3,7 +3,7 @@
 // Runs the TypeScript directly (Node strips the types). Test names only, never a real client.
 import { createHash } from "node:crypto";
 import {
-  describeReveal, handleReveal, handleSeal, memoryStore, restStore, revealDigest, revealRequestFor, sameHex, REVEAL_PREFIX,
+  describeReveal, handleReveal, handleSeal, memoryStore, requestReveal, restStore, revealDigest, revealRequestFor, sameHex, REVEAL_PREFIX,
 } from "../lib/issuer.ts";
 
 const problems = [];
@@ -82,6 +82,22 @@ for (const body of [{ sha256: publicHash }, { sha256: publicHash, reveal: "" }, 
   if ((await handleReveal({ sha256: publicHash, reveal: secretReveal }, null)).status !== 503) problems.push("reveal with no store did not say so");
 }
 
+// The page's issuer call gives up on time, so a slow issuer never holds back the ledger result.
+{
+  // Never answers; gives up only if the caller aborts. The guard keeps Node running (timeout signals do not) and catches a hang.
+  const hang = (url, init) => new Promise((_, reject) => { init?.signal?.addEventListener("abort", () => reject(init.signal.reason)); });
+  let guard;
+  const r = await Promise.race([
+    requestReveal({ sha256: publicHash, reveal: secretReveal }, hang, 50),
+    new Promise((resolve) => { guard = setTimeout(() => resolve("hung"), 2000); }),
+  ]);
+  clearTimeout(guard);
+  if (r !== "error") problems.push(`a hanging issuer was not cut off: ${JSON.stringify(r)}`);
+  const ok = await requestReveal({ sha256: publicHash, reveal: secretReveal }, async () => ({ ok: true, json: async () => ({ match: false }) }));
+  if (JSON.stringify(ok) !== JSON.stringify({ match: false })) problems.push(`requestReveal lost a clean answer: ${JSON.stringify(ok)}`);
+  if ((await requestReveal({ sha256: publicHash, reveal: secretReveal }, async () => ({ ok: false }))) !== "error") problems.push("requestReveal treated a failed answer as clean");
+}
+
 if (!sameHex("ab", "ab") || sameHex("ab", "ac") || sameHex("ab", "abc")) problems.push("sameHex wrong");
 
 // The REST store speaks the Upstash command shape and keeps the token server-side.
@@ -90,7 +106,7 @@ if (!sameHex("ab", "ab") || sameHex("ab", "ac") || sameHex("ab", "abc")) problem
   const db = new Map();
   const fake = async (url, init) => {
     const cmd = JSON.parse(init.body);
-    calls.push({ url, auth: init.headers.authorization, cmd });
+    calls.push({ url, auth: init.headers.authorization, cmd, signal: init.signal });
     let result = null;
     if (cmd[0] === "GET") result = db.get(cmd[1]) ?? null;
     if (cmd[0] === "SET") result = db.has(cmd[1]) && cmd[3] === "NX" ? null : (db.set(cmd[1], cmd[2]), "OK");
@@ -104,6 +120,7 @@ if (!sameHex("ab", "ab") || sameHex("ab", "ac") || sameHex("ab", "abc")) problem
   if (!w1 || w2 || got?.kind !== "K") problems.push("rest store: write-once or read wrong");
   if (calls[0].url !== "https://store.example" || calls[0].auth !== "Bearer token-not-real" || calls[0].cmd[0] !== "SET" || calls[0].cmd[3] !== "NX") problems.push(`rest store request shape wrong: ${JSON.stringify(calls[0])}`);
   if ((await rs.get("d".repeat(64))) !== null) problems.push("rest store: unknown key not null");
+  if (!(calls[0].signal instanceof AbortSignal)) problems.push("rest store: no time limit on the store call");
   db.set(`issuer:record:${"e".repeat(64)}`, JSON.stringify({ kind: "k" }));
   db.set(`issuer:record:${"a".repeat(64)}`, "not json");
   if ((await rs.get("e".repeat(64))) !== null || (await rs.get("a".repeat(64))) !== null) problems.push("rest store: a damaged record was not treated as none");

@@ -6,7 +6,7 @@ import {
   EXAMPLE_HASH, MAX_FILE_BYTES, findMatch, isHash, loadBlocks, loadWitness, normalizeHash, sha256Hex, when,
   type Block, type Match, type Witness,
 } from "@/lib/ledgerCheck";
-import { ISSUER_REVEAL_PATH, describeReveal, revealRequestFor, type RevealAnswer } from "@/lib/issuer";
+import { describeReveal, requestReveal, revealRequestFor, type RevealAnswer } from "@/lib/issuer";
 import check from "@/content/check.json";
 
 const c = check.check;
@@ -60,12 +60,7 @@ export function NetworkTools() {
   async function ask(file: Uint8Array<ArrayBuffer> | null, hash: string): Promise<Reveal> {
     const req = await revealRequestFor(file, hash);
     if (!req) return "none";
-    try {
-      const r = await fetch(ISSUER_REVEAL_PATH, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(req), cache: "no-store" });
-      return r.ok ? ((await r.json()) as RevealAnswer) : "error";
-    } catch {
-      return "error";
-    }
+    return requestReveal(req);
   }
 
   async function look(hash: string, via: "file" | "hash", notify = true, file: Uint8Array<ArrayBuffer> | null = null) {

@@ -49,7 +49,7 @@ content-type: application/json
 | Store not configured | 503 | `{"error": …}` |
 | Store unreachable | 502 | `{"error": …}` |
 
-The limit is per address only, with no overall cap, so one sender cannot lock others out. The digests are compared in constant time.
+The limit is per address only, with no overall cap, so one sender cannot lock others out. The page waits at most 8 seconds for an answer and the route at most 4 seconds for the store; past that the page shows the ledger record without the parties. The digests are compared in constant time.
 
 ### Seal-time write (private)
 

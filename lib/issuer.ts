@@ -8,6 +8,9 @@
 
 export const REVEAL_PREFIX = "chiibitsu-reveal\n";
 export const ISSUER_REVEAL_PATH = "/api/issuer/reveal";
+// The reveal is optional: past this, the page shows the ledger record without it. The store gets less, so the route answers first.
+export const REVEAL_TIMEOUT_MS = 8000;
+export const STORE_TIMEOUT_MS = 4000;
 
 export type IssuerRecord = { kind: string; parties: string[]; reveal: string };
 export type RevealRequest = { sha256: string; reveal: string };
@@ -46,6 +49,18 @@ export async function revealRequestFor(file: Uint8Array<ArrayBuffer> | null, pub
   if (!file || !isHex64(publicHash)) return null;
   if ((await sha256Bytes(file)) !== publicHash) return null;
   return { sha256: publicHash, reveal: await revealDigest(file) };
+}
+
+// The page's call to the issuer. Never throws and never hangs: anything but a clean answer in time is "error".
+export async function requestReveal(req: RevealRequest, doFetch: typeof fetch = fetch, ms = REVEAL_TIMEOUT_MS): Promise<RevealAnswer | "error"> {
+  try {
+    const r = await doFetch(ISSUER_REVEAL_PATH, {
+      method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(req), cache: "no-store", signal: AbortSignal.timeout(ms),
+    });
+    return r.ok ? ((await r.json()) as RevealAnswer) : "error";
+  } catch {
+    return "error";
+  }
 }
 
 // Same length, every character compared, so the time taken does not say how much of a digest was right.
@@ -119,7 +134,7 @@ export function memoryStore(): RecordStore {
 export function restStore(url: string | undefined, token: string | undefined, doFetch: typeof fetch = fetch): RecordStore | null {
   if (!url || !token) return null;
   const run = async (cmd: string[]): Promise<unknown> => {
-    const r = await doFetch(url, { method: "POST", headers: { authorization: `Bearer ${token}`, "content-type": "application/json" }, body: JSON.stringify(cmd), cache: "no-store" });
+    const r = await doFetch(url, { method: "POST", headers: { authorization: `Bearer ${token}`, "content-type": "application/json" }, body: JSON.stringify(cmd), cache: "no-store", signal: AbortSignal.timeout(STORE_TIMEOUT_MS) });
     if (!r.ok) throw new Error(`store ${r.status}`);
     return ((await r.json()) as { result?: unknown }).result ?? null;
   };
