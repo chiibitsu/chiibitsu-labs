@@ -4,7 +4,8 @@ import { makeLimiter } from "@/lib/verifyAlert";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const allow = makeLimiter();
+// Per address only: an overall cap would let one sender lock everyone out of their reveal.
+const allow = makeLimiter(Infinity);
 
 // The issuer's answer for /network/check: who a sealed file is between, only to someone holding the original. See lib/issuer.ts.
 export async function POST(req: Request) {

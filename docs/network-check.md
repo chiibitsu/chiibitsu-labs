@@ -44,9 +44,12 @@ content-type: application/json
 | Digest matches | 200 | `{"match": true, "kind": "Blueprint Agreement", "parties": ["Chiibitsu Labs", "Client Co"]}` |
 | Wrong digest, unknown fingerprint, or the public fingerprint sent as the digest | 200 | `{"match": false}`, the same body in all three cases |
 | Either field missing or not 64 lowercase hex | 400 | `{"error": …}` |
+| More than 5 requests a minute from one address (per server instance) | 429 | `{"error": …}` |
+| Body over 500 bytes | 413 | empty |
 | Store not configured | 503 | `{"error": …}` |
+| Store unreachable | 502 | `{"error": …}` |
 
-The endpoint allows 5 requests a minute from one address and 120 an hour overall, per server instance (`makeLimiter` in `lib/verifyAlert.ts`). The digests are compared in constant time.
+The limit is per address only, with no overall cap, so one sender cannot lock others out. The digests are compared in constant time.
 
 ### Seal-time write (private)
 
@@ -68,7 +71,7 @@ content-type: application/json
 | `kind` | 1 to 80 characters, no line breaks. Shown as "the {kind}". |
 | `parties` | 2 to 10 names, each 1 to 120 characters, no line breaks, in display order. |
 
-Answers: `201 {"stored": true}`. The same record again gets `200 {"stored": true, "already": true}`. A *different* record for a fingerprint already stored gets `409`, because records are written once. Other answers: `401` on a wrong or missing bearer, `400` on a bad field, `503` when the store is not configured.
+Answers: `201 {"stored": true}`. The same record again gets `200 {"stored": true, "already": true}`. A *different* record for a fingerprint already stored gets `409`, because records are written once. Other answers: `401` on a wrong or missing bearer (the `Bearer` scheme is required, in any case), `400` on a bad field, `413` on a body over 4000 bytes, `503` when the store is not configured, `502` when it is unreachable. There is no rate limit: one would let anyone without the secret block real seals.
 
 Only the sealing side calls this. Never call it from a browser.
 
