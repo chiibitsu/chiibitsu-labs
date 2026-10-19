@@ -6,7 +6,7 @@
   "hero": {
     "eyebrow": "The Aikiri Network",
     "h1": "Check a file.",
-    "sub": "Drop a file or paste a hash. Your device works out the file's fingerprint, and nothing is uploaded. The page then looks for that fingerprint in the public ledger. We log the fingerprint and the result, never the file."
+    "sub": "Drop a file or paste a hash. Your device works out the file's fingerprint, and the file is never uploaded. The page then looks for that fingerprint in the public ledger. A hash shows when a file was sealed and by whom, never who it is between. Only the original file shows that."
   },
   "check": {
     "heading": "Check",
@@ -25,6 +25,7 @@
     "items": [
       "A fingerprint (hash) is a short code worked out from a file. Change one byte of the file and the code changes completely.",
       "Found means this exact file's fingerprint was sealed in a block, so the file existed in this exact form when the block was made. It does not say the file is good or true.",
+      "Private by default. A pasted hash or a link shows the issuer, the time and the ledger record. Dropping the original file also shows what it is and who it is between: your device sends the issuer a second fingerprint, never the file, and the issuer answers only if it matches the one stored when the file was sealed. A printed, scanned or re-saved copy has different bytes, so it shows nothing more.",
       "Not found means no block holds it. The ledger holds only what Chiibitsu Labs has sealed, and a file that was edited after sealing will not match."
     ]
   },
@@ -36,7 +37,12 @@
     "site": "chiibitsu.com/network/check",
     "close": "Close",
     "again": "Check another",
-    "blocks": "blocks checked"
+    "blocks": "blocks checked",
+    "issuer": "Chiibitsu Labs",
+    "privateNote": "Who this is between stays private. Drop the original file to see it.",
+    "revealNote": "Shown because this is the original file. A copy shows nothing more.",
+    "revealNone": "The issuer has nothing more to show for this file.",
+    "revealError": "The issuer could not be asked just now. The ledger record above still stands."
   },
   "back": {
     "label": "← Back to the Aikiri Network",

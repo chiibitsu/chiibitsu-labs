@@ -55,7 +55,9 @@ export default function Privacy() {
         <p className="body">The only forms on this site are the Verify and Check a file boxes, and we do not ask for sensitive information.</p>
         <p className="body">
           The file checker on the Network page works out a file&apos;s fingerprint on your own device, and the file is never uploaded. To look the fingerprint up, your
-          browser reads public ledger files from GitHub, which sees your IP address as it would on any visit to its site.
+          browser reads public ledger files from GitHub, which sees your IP address as it would on any visit to its site. When a dropped file matches a
+          sealed fingerprint, your browser also sends us a second fingerprint of it, never the file, so we can show who the document is between. We
+          store that second fingerprint, with the document type and the parties, only for documents we sealed.
         </p>
 
         <h2>How we use it</h2>

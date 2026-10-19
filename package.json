@@ -12,7 +12,8 @@
     "check:content": "node scripts/check-content.mjs",
     "check:layout": "node scripts/check-layout.mjs",
     "check:verify": "node --no-warnings --experimental-strip-types scripts/check-verify.mjs",
-    "gates": "npm run lint && npm run typecheck && npm run check:content && npm run check:verify && npm run build"
+    "check:issuer": "node --no-warnings --experimental-strip-types scripts/check-issuer.mjs",
+    "gates": "npm run lint && npm run typecheck && npm run check:content && npm run check:verify && npm run check:issuer && npm run build"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
