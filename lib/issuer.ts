@@ -1,12 +1,12 @@
 // The reveal protocol for /network/check. A public fingerprint says only that a file was sealed and when. Who it is
 // between is answered by the file's issuer, and only to someone holding the original file:
 //   1. the browser hashes the file: SHA-256(bytes), compared with the public fingerprint, nothing sent;
-//   2. on a match only, it works out the reveal digest: SHA-256("chiibitsu-reveal\n" + bytes), never published;
+//   2. on a match only, it works out the reveal digest: HMAC-SHA256(key "chiibitsu-reveal", bytes), never published;
 //   3. it sends {sha256, reveal} to the issuer, which answers {kind, parties} only when reveal equals the stored one.
 // Chiibitsu Labs is its own issuer: /api/issuer/seal stores the record at seal time, /api/issuer/reveal answers.
 // No Node imports here: the page and the routes share this file, and scripts/check-issuer.mjs tests it.
 
-export const REVEAL_PREFIX = "chiibitsu-reveal\n";
+export const REVEAL_KEY = "chiibitsu-reveal";
 export const ISSUER_REVEAL_PATH = "/api/issuer/reveal";
 // The reveal is optional: past this, the page shows the ledger record without it. The store gets less, so the route answers first.
 export const REVEAL_TIMEOUT_MS = 8000;
@@ -35,13 +35,11 @@ export async function sha256Bytes(bytes: Uint8Array<ArrayBuffer>): Promise<strin
   return hex(await crypto.subtle.digest("SHA-256", bytes));
 }
 
-// The second fingerprint. Never shown, never logged, never written to the ledger.
+// The second fingerprint. Never shown, never logged, never written to the ledger. An HMAC rather than a hash of
+// prefix + bytes, so a 250 MB file is never copied into a second buffer just to put a prefix in front of it.
 export async function revealDigest(bytes: Uint8Array<ArrayBuffer>): Promise<string> {
-  const prefix = new TextEncoder().encode(REVEAL_PREFIX);
-  const all = new Uint8Array(prefix.length + bytes.length);
-  all.set(prefix);
-  all.set(bytes, prefix.length);
-  return sha256Bytes(all);
+  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(REVEAL_KEY), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  return hex(await crypto.subtle.sign("HMAC", key, bytes));
 }
 
 // What the page sends, or null when it must send nothing: no file (a pasted hash or a link), or a file that is not the one sealed.

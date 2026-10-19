@@ -21,7 +21,7 @@ The page opens with that fingerprint filled in and checked. Uppercase and a `0x`
 Two fingerprints of the same file:
 
 - **Public fingerprint**: `SHA-256(bytes)`. It is in the ledger and in every link.
-- **Reveal digest**: `SHA-256("chiibitsu-reveal\n" + bytes)`, a fixed 17-byte UTF-8 prefix followed by the file bytes. It is never published, shown or logged.
+- **Reveal digest**: `HMAC-SHA256(key = "chiibitsu-reveal", message = file bytes)`, lowercase hex. The key is the 16 UTF-8 bytes of that string, with no newline. It is never published, shown or logged. In Node: `createHmac("sha256", "chiibitsu-reveal").update(bytes).digest("hex")`. An HMAC rather than a hash of a prefix plus the bytes, so the browser never copies a large file into a second buffer.
 
 1. The browser hashes the dropped file and looks the public fingerprint up in the ledger. Nothing is sent.
 2. Only when the file matched, it works out the reveal digest.

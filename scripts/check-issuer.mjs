@@ -1,9 +1,9 @@
 // Gate: the reveal protocol on /network/check. A hash alone reveals no party; the original file does; a wrong file and
 // the public hash sent as the reveal digest both reveal nothing; the seal-time record is guarded and written once.
 // Runs the TypeScript directly (Node strips the types). Test names only, never a real client.
-import { createHash } from "node:crypto";
+import { createHash, createHmac } from "node:crypto";
 import {
-  describeReveal, handleReveal, handleSeal, memoryStore, requestReveal, restStore, revealDigest, revealRequestFor, sameHex, REVEAL_PREFIX,
+  describeReveal, handleReveal, handleSeal, memoryStore, requestReveal, restStore, revealDigest, revealRequestFor, sameHex, REVEAL_KEY,
 } from "../lib/issuer.ts";
 
 const problems = [];
@@ -13,7 +13,7 @@ const sha = (b) => createHash("sha256").update(b).digest("hex");
 const original = enc.encode("%PDF-1.7 Blueprint Agreement, test copy\n");
 const resaved = enc.encode("%PDF-1.7 Blueprint Agreement, test copy \n"); // one byte different: a re-saved or rescanned copy
 const publicHash = sha(original);
-const secretReveal = sha(Buffer.concat([Buffer.from(REVEAL_PREFIX), Buffer.from(original)]));
+const secretReveal = createHmac("sha256", REVEAL_KEY).update(original).digest("hex");
 const SECRET = "test-seal-secret-not-real";
 const record = { sha256: publicHash, kind: "Blueprint Agreement", parties: ["Chiibitsu Labs", "Test Client Co"], reveal: secretReveal };
 
@@ -24,7 +24,8 @@ if (sealed.status !== 201) problems.push(`seal: wanted 201, got ${sealed.status}
 const hasParty = (body) => JSON.stringify(body ?? null).includes("Test Client Co") || JSON.stringify(body ?? null).includes("parties");
 
 // The browser's second fingerprint is the documented one.
-if ((await revealDigest(original)) !== secretReveal) problems.push("revealDigest is not SHA-256(prefix + bytes)");
+if ((await revealDigest(original)) !== secretReveal) problems.push("revealDigest is not HMAC-SHA256(key, bytes)");
+if (REVEAL_KEY !== "chiibitsu-reveal") problems.push("the reveal key changed: every stored record would stop matching");
 
 // 1. Hash only: the page builds no reveal request, and the issuer gives nothing for a hash alone.
 if ((await revealRequestFor(null, publicHash)) !== null) problems.push("hash only: the page would ask the issuer without a file");
