@@ -83,10 +83,12 @@ They live in a Redis database reached over Upstash's REST API (`restStore` in `l
 
 The trade-off, accepted: whoever holds the store's token can read every record. Mitigations: the token lives only in Vercel's environment, records can be deleted, and the public fingerprint alone unlocks nothing.
 
+Set by connecting the Upstash for Redis database `chiibitsu-issuer` to this project in Vercel (Storage) with the prefix `ISSUER`. The other `ISSUER_KV_*`/`ISSUER_REDIS_URL` variables it creates are unused.
+
 | Vercel environment variable | What |
 |---|---|
-| `ISSUER_STORE_URL` | The database's REST URL |
-| `ISSUER_STORE_TOKEN` | Its REST token (read and write) |
+| `ISSUER_KV_REST_API_URL` | The database's REST URL |
+| `ISSUER_KV_REST_API_TOKEN` | Its REST token (read and write) |
 | `ISSUER_SEAL_SECRET` | The bearer the sealing side sends to `/api/issuer/seal` |
 
 With the first two unset, both endpoints answer 503 to otherwise valid requests. Validation (400) and, for the seal, the bearer check (401) come first, so outsiders learn nothing about how the server is set up. The check page then still shows the ledger record and says the issuer could not be asked.

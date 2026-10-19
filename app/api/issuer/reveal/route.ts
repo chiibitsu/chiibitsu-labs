@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   let body: unknown = null;
   try { body = JSON.parse(raw); } catch { /* not json */ }
   try {
-    const r = await handleReveal(body, restStore(process.env.ISSUER_STORE_URL, process.env.ISSUER_STORE_TOKEN));
+    const r = await handleReveal(body, restStore(process.env.ISSUER_KV_REST_API_URL, process.env.ISSUER_KV_REST_API_TOKEN));
     return Response.json(r.body, { status: r.status, headers: { "cache-control": "no-store" } });
   } catch {
     return Response.json({ error: "The issuer could not be reached." }, { status: 502 });
