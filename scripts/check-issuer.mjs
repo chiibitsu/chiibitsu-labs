@@ -68,6 +68,8 @@ for (const body of [{ sha256: publicHash }, { sha256: publicHash, reveal: "" }, 
 {
   if ((await handleSeal(null, record, SECRET, memoryStore())).status !== 401) problems.push("seal without a bearer was not refused");
   if ((await handleSeal("Bearer wrong", record, SECRET, memoryStore())).status !== 401) problems.push("seal with a wrong bearer was not refused");
+  if ((await handleSeal(SECRET, record, SECRET, memoryStore())).status !== 401) problems.push("seal with the bare secret and no Bearer scheme was not refused");
+  if ((await handleSeal(`bearer ${SECRET}`, record, SECRET, memoryStore())).status !== 201) problems.push("the Bearer scheme should be case-insensitive");
   if ((await handleSeal(`Bearer ${SECRET}`, record, undefined, memoryStore())).status !== 401) problems.push("seal with no secret configured was not refused");
   if ((await handleSeal(`Bearer ${SECRET}`, record, SECRET, null)).status !== 503) problems.push("seal with no store did not say so");
   for (const bad of [{ ...record, parties: ["Only One"] }, { ...record, kind: "" }, { ...record, kind: "x\ny" }, { ...record, parties: ["A", "B\u2028C"] }, { ...record, reveal: "XYZ" }]) {
@@ -102,6 +104,11 @@ if (!sameHex("ab", "ab") || sameHex("ab", "ac") || sameHex("ab", "abc")) problem
   if (!w1 || w2 || got?.kind !== "K") problems.push("rest store: write-once or read wrong");
   if (calls[0].url !== "https://store.example" || calls[0].auth !== "Bearer token-not-real" || calls[0].cmd[0] !== "SET" || calls[0].cmd[3] !== "NX") problems.push(`rest store request shape wrong: ${JSON.stringify(calls[0])}`);
   if ((await rs.get("d".repeat(64))) !== null) problems.push("rest store: unknown key not null");
+  db.set(`issuer:record:${"e".repeat(64)}`, JSON.stringify({ kind: "k" }));
+  db.set(`issuer:record:${"a".repeat(64)}`, "not json");
+  if ((await rs.get("e".repeat(64))) !== null || (await rs.get("a".repeat(64))) !== null) problems.push("rest store: a damaged record was not treated as none");
+  const damaged = await handleReveal({ sha256: "e".repeat(64), reveal: secretReveal }, rs);
+  if (damaged.status !== 200 || damaged.body.match !== false) problems.push(`a damaged record should answer match:false, got ${damaged.status}`);
 }
 
 if (problems.length) {

@@ -74,7 +74,9 @@ Only the sealing side calls this. Never call it from a browser.
 
 ## Where the names live
 
-They live in a Redis database reached over Upstash's REST API (`restStore` in `lib/issuer.ts`), server-side only, under the key `issuer:record:<sha256>`. Party names are stored only for documents Chiibitsu Labs sealed. They never go into the public ledger, the page, analytics or the Telegram alert.
+They live in a Redis database reached over Upstash's REST API (`restStore` in `lib/issuer.ts`), server-side only, under the key `issuer:record:<sha256>`. The code sends each command as a JSON array POSTed to the REST URL (`["SET", key, value, "NX"]`, `["GET", key]`) and reads `{"result": …}`. That shape comes from memory of Upstash's documentation and is tested only against a fake. **Run one seal against the real database before relying on it.** Party names are stored only for documents Chiibitsu Labs sealed. They never go into the public ledger, the Telegram alert or analytics events. The result card and the hash field are marked `data-clarity-mask="true"` so Clarity's session recordings do not capture them. That attribute also comes from memory of Clarity's documentation: **open one recording of a reveal and confirm the sentence is masked.**
+
+**Not private: the fingerprint in a link.** Clarity, Apollo and Vercel Analytics see page URLs, so a `?sha=` link's fingerprint reaches them along with the visitor. The fingerprint is public in the ledger anyway, and the Telegram alert already records every checked hash. The parties are never in a URL.
 
 The trade-off, accepted: whoever holds the store's token can read every record. Mitigations: the token lives only in Vercel's environment, records can be deleted, and the public fingerprint alone unlocks nothing.
 
@@ -93,5 +95,6 @@ With the first two unset, both endpoints answer 503. The check page then still s
 - a hash alone reveals no party;
 - the original file reveals the parties;
 - a wrong file, and the public hash sent as the reveal digest, reveal nothing;
-- the seal write is guarded by its bearer and written once;
+- the seal write is guarded by its bearer, which must carry the `Bearer` scheme, and is written once;
+- a damaged stored record reveals nothing;
 - the REST store's request shape is correct.

@@ -24,7 +24,8 @@ const how = { block: "This is a block's own hash.", root: "This is a hash sealed
 const stamp = (d: Date) => `${d.toISOString().slice(0, 19).replace("T", " ")} UTC`;
 
 // Hash a file on the device, or take a pasted hash, then look it up in the public ledger. The answer opens as a card
-// that is easy to screenshot. No hash or file name is sent to analytics. The hash and the result (never the file or its
+// that is easy to screenshot. No hash or file name is sent as an analytics event, and the card and the hash field are
+// masked from Clarity's session recordings (data-clarity-mask), so a revealed party never reaches a recording. The hash and the result (never the file or its
 // name) also go as a private alert to the team, through /api/verify-alert; the page and the privacy policy say so.
 // Private by default: a hash shows when and by whom, never who it is between. Only a dropped original file asks the
 // issuer, by a second fingerprint (lib/issuer.ts). /network/check?sha=<hex> opens with that fingerprint checked.
@@ -135,7 +136,7 @@ export function NetworkTools() {
         <span className="caption">{c.dropNote}</span>
       </label>
 
-      <form className="net-hash" onSubmit={(e) => { e.preventDefault(); void onCheck(text); }}>
+      <form className="net-hash" data-clarity-mask="true" onSubmit={(e) => { e.preventDefault(); void onCheck(text); }}>
         <label htmlFor="net-hash-in" className="caption">{c.or}</label>
         <div className="net-hash-row">
           <input ref={field} id="net-hash-in" value={text} onChange={(e) => setText(e.target.value)} placeholder={c.hashPlaceholder} spellCheck={false} autoComplete="off" aria-label={c.hashLabel} />
@@ -157,7 +158,7 @@ export function NetworkTools() {
         onClose={() => setResult(null)}
       >
         {result && (
-          <div className="net-card">
+          <div className="net-card" data-clarity-mask="true">
             {result.kind === "error" && (
               <>
                 <h3 id="net-modal-title" className="net-verdict">Could not check.</h3>

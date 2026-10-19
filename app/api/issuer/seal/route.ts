@@ -1,10 +1,16 @@
 import { handleSeal, restStore } from "@/lib/issuer";
+import { makeLimiter } from "@/lib/verifyAlert";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 // Called at seal time by the sealing step, never by a browser: stores {kind, parties, reveal} for one fingerprint. See lib/issuer.ts.
+const allow = makeLimiter();
+
 export async function PUT(req: Request) {
+  const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0].trim();
+  if (!allow(ip, Date.now())) return new Response(null, { status: 429 });
+  if (Number(req.headers.get("content-length") ?? 0) > 4000) return new Response(null, { status: 413 });
   const raw = await req.text();
   if (raw.length > 4000) return new Response(null, { status: 413 });
   let body: unknown = null;

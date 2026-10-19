@@ -10,6 +10,7 @@ const allow = makeLimiter();
 export async function POST(req: Request) {
   const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0].trim();
   if (!allow(ip, Date.now())) return Response.json({ error: "Too many checks. Try again in a minute." }, { status: 429 });
+  if (Number(req.headers.get("content-length") ?? 0) > 500) return new Response(null, { status: 413 });
   const raw = await req.text();
   if (raw.length > 500) return new Response(null, { status: 413 });
   let body: unknown = null;

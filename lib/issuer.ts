@@ -87,10 +87,16 @@ export async function handleReveal(body: unknown, store: RecordStore | null): Pr
   return { status: 200, body: answer };
 }
 
+// Both sides hashed first, so the comparison is always 64 characters and says nothing about the secret's length.
+async function sameSecret(given: string, secret: string): Promise<boolean> {
+  const h = (s: string) => sha256Bytes(new TextEncoder().encode(s));
+  return sameHex(await h(given), await h(secret));
+}
+
 // PUT /api/issuer/seal, bearer ISSUER_SEAL_SECRET. Write-once: the same record again is fine, a different one is refused.
 export async function handleSeal(auth: string | null, body: unknown, secret: string | undefined, store: RecordStore | null): Promise<Reply> {
-  const given = (auth ?? "").replace(/^Bearer /, "");
-  if (!secret || !sameHex(given, secret)) return { status: 401, body: { error: "no" } };
+  const given = /^Bearer (.+)$/i.exec(auth ?? "")?.[1];
+  if (!secret || !given || !(await sameSecret(given, secret))) return { status: 401, body: { error: "no" } };
   if (!store) return { status: 503, body: { error: "The issuer is not set up." } };
   const r = parseSealRecord(body);
   if (!r) return { status: 400, body: { error: "Send {sha256, kind, parties, reveal}: two hex digests that differ, a kind, and 2 to 10 parties." } };
@@ -121,7 +127,12 @@ export function restStore(url: string | undefined, token: string | undefined, do
   return {
     async get(sha256) {
       const v = await run(["GET", key(sha256)]);
-      return typeof v === "string" ? (JSON.parse(v) as IssuerRecord) : null;
+      if (typeof v !== "string") return null;
+      let r: unknown = null;
+      try { r = JSON.parse(v); } catch { return null; }
+      // A damaged record reveals nothing rather than failing the request.
+      const ok = parseSealRecord({ sha256, ...(r as object) });
+      return ok ? { kind: ok.kind, parties: ok.parties, reveal: ok.reveal } : null;
     },
     async putNew(sha256, record) {
       return (await run(["SET", key(sha256), JSON.stringify(record), "NX"])) === "OK";
