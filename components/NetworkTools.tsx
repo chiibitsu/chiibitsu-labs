@@ -6,14 +6,17 @@ import {
   EXAMPLE_HASH, MAX_FILE_BYTES, findMatch, isHash, loadBlocks, loadWitness, normalizeHash, sha256Hex, when,
   type Block, type Match, type Witness,
 } from "@/lib/ledgerCheck";
+import { describeReveal, requestReveal, revealRequestFor, type RevealAnswer } from "@/lib/issuer";
 import check from "@/content/check.json";
 
 const c = check.check;
 const m = check.modal;
 const explorer = (tx: string) => `https://basescan.org/tx/${tx}`;
 
+// reveal: what the issuer said about a dropped original file. "none" for a pasted hash or a link, which never asks.
+type Reveal = RevealAnswer | "none" | "error";
 type Result =
-  | { kind: "found"; hash: string; match: Match; witness: Witness; at: Date }
+  | { kind: "found"; hash: string; match: Match; witness: Witness; reveal: Reveal; at: Date }
   | { kind: "none"; hash: string; blocks: number; at: Date }
   | { kind: "error"; message: string; at: Date };
 
@@ -21,8 +24,11 @@ const how = { block: "This is a block's own hash.", root: "This is a hash sealed
 const stamp = (d: Date) => `${d.toISOString().slice(0, 19).replace("T", " ")} UTC`;
 
 // Hash a file on the device, or take a pasted hash, then look it up in the public ledger. The answer opens as a card
-// that is easy to screenshot. No hash or file name is sent to analytics. The hash and the result (never the file or its
+// that is easy to screenshot. No hash or file name is sent as an analytics event, and the card and the hash field are
+// masked from Clarity's session recordings (data-clarity-mask), so a revealed party never reaches a recording. The hash and the result (never the file or its
 // name) also go as a private alert to the team, through /api/verify-alert; the page and the privacy policy say so.
+// Private by default: a hash shows when and by whom, never who it is between. Only a dropped original file asks the
+// issuer, by a second fingerprint (lib/issuer.ts). /network/check?sha=<hex> opens with that fingerprint checked.
 export function NetworkTools() {
   const blocks = useRef<Block[] | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -34,6 +40,15 @@ export function NetworkTools() {
   const [result, setResult] = useState<Result | null>(null);
 
   useEffect(() => {
+    const sha = normalizeHash(new URLSearchParams(window.location.search).get("sha") ?? "");
+    if (!isHash(sha)) return;
+    // After mount, and cancelled on unmount, so a development double-mount checks once.
+    const t = setTimeout(() => { setText(sha); void look(sha, "hash"); }, 0);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (result && dialog.current && !dialog.current.open) dialog.current.showModal();
   }, [result]);
 
@@ -42,7 +57,13 @@ export function NetworkTools() {
     if (focus) field.current?.focus();
   }
 
-  async function look(hash: string, via: "file" | "hash", notify = true) {
+  async function ask(file: Uint8Array<ArrayBuffer> | null, hash: string): Promise<Reveal> {
+    const req = await revealRequestFor(file, hash);
+    if (!req) return "none";
+    return requestReveal(req);
+  }
+
+  async function look(hash: string, via: "file" | "hash", notify = true, file: Uint8Array<ArrayBuffer> | null = null) {
     const alert = (result: "found" | "not_found" | "error", block?: number) => {
       if (!notify) return;
       void fetch("/api/verify-alert", {
@@ -58,8 +79,8 @@ export function NetworkTools() {
       blocks.current ??= await loadBlocks();
       const match = findMatch(blocks.current, hash);
       if (match) {
-        const witness = await loadWitness(match.block.index);
-        setResult({ kind: "found", hash, match, witness, at });
+        const [witness, reveal] = await Promise.all([loadWitness(match.block.index), ask(file, hash)]);
+        setResult({ kind: "found", hash, match, witness, reveal, at });
       } else {
         setResult({ kind: "none", hash, blocks: blocks.current.length, at });
       }
@@ -80,9 +101,10 @@ export function NetworkTools() {
     if (file.size > MAX_FILE_BYTES) return setNote(c.big);
     setBusy("Working out the fingerprint on your device…");
     try {
-      const hash = await sha256Hex(await file.arrayBuffer());
+      const buf = await file.arrayBuffer();
+      const hash = await sha256Hex(buf);
       setText(hash);
-      await look(hash, "file");
+      await look(hash, "file", true, new Uint8Array(buf));
     } catch {
       setBusy("");
       setNote("That file could not be read.");
@@ -109,7 +131,7 @@ export function NetworkTools() {
         <span className="caption">{c.dropNote}</span>
       </label>
 
-      <form className="net-hash" onSubmit={(e) => { e.preventDefault(); void onCheck(text); }}>
+      <form className="net-hash" data-clarity-mask="true" onSubmit={(e) => { e.preventDefault(); void onCheck(text); }}>
         <label htmlFor="net-hash-in" className="caption">{c.or}</label>
         <div className="net-hash-row">
           <input ref={field} id="net-hash-in" value={text} onChange={(e) => setText(e.target.value)} placeholder={c.hashPlaceholder} spellCheck={false} autoComplete="off" aria-label={c.hashLabel} />
@@ -131,7 +153,7 @@ export function NetworkTools() {
         onClose={() => setResult(null)}
       >
         {result && (
-          <div className="net-card">
+          <div className="net-card" data-clarity-mask="true">
             {result.kind === "error" && (
               <>
                 <h3 id="net-modal-title" className="net-verdict">Could not check.</h3>
@@ -173,7 +195,13 @@ function Found({ r }: { r: Extract<Result, { kind: "found" }> }) {
     <>
       <h3 id="net-modal-title" className="net-verdict">{m.found} {b.index}.</h3>
       <p className="body">{how[r.match.how]}{r.match.kind ? ` Kind: ${r.match.kind}.` : ""}</p>
+      {r.reveal !== "none" && r.reveal !== "error" && r.reveal.match && <p className="body"><strong>{describeReveal(r.reveal)}</strong></p>}
+      {/* Only a sealed document (a root) has parties; a block's own hash or a block's combined hash has none to hide. */}
+      {r.match.how === "root" && <p className="caption">
+        {r.reveal === "none" ? m.privateNote : r.reveal === "error" ? m.revealError : r.reveal.match ? m.revealNote : m.revealNone}
+      </p>}
       <dl className="ledger-facts">
+        <div className="ledger-row"><dt className="caption">Issuer</dt><dd>{m.issuer}</dd></div>
         <div className="ledger-row"><dt className="caption">Block</dt><dd>{b.index}</dd></div>
         <div className="ledger-row"><dt className="caption">Sealed</dt><dd>{t.local}{t.utc ? ` · ${t.utc}` : ""}</dd></div>
         <div className="ledger-row">

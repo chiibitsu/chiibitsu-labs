@@ -1,0 +1,20 @@
+import { handleSeal, restStore } from "@/lib/issuer";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+// Called at seal time by the sealing step, never by a browser: stores {kind, parties, reveal} for one fingerprint. See lib/issuer.ts.
+// No rate limit: it would let anyone without the secret block real seals. The bearer is a long random secret.
+export async function PUT(req: Request) {
+  if (Number(req.headers.get("content-length") ?? 0) > 4000) return new Response(null, { status: 413 });
+  const raw = await req.text();
+  if (raw.length > 4000) return new Response(null, { status: 413 });
+  let body: unknown = null;
+  try { body = JSON.parse(raw); } catch { /* not json */ }
+  try {
+    const r = await handleSeal(req.headers.get("authorization"), body, process.env.ISSUER_SEAL_SECRET, restStore(process.env.ISSUER_KV_REST_API_URL, process.env.ISSUER_KV_REST_API_TOKEN));
+    return Response.json(r.body, { status: r.status, headers: { "cache-control": "no-store" } });
+  } catch {
+    return Response.json({ error: "The store could not be reached." }, { status: 502 });
+  }
+}

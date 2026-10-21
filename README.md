@@ -45,6 +45,7 @@ BASE=http://localhost:3000 npm run check:layout   # against a running build
 - **Theme:** day by default. Night runs 18:00 to 06:00 on the reader's own clock (`lib/boot.ts`). No location is read. `?theme=day|night` overrides it for review.
 - **Audience:** "For companies" or "For solo founders", also `?for=companies|solo`.
 - **Analytics:** Vercel Web Analytics. Custom events: `cta_click` (with `location`), `audience_switch`, `metric_click`, `papers_click`. Clicks on placeholder links carry `placeholder: true`.
+- `/network/check` is private by default: a hash shows when and by whom, only the original file shows who it is between. Link format, reveal protocol and the seal-time record: `docs/network-check.md`.
 - `/audit` is a placeholder route for "Request a workflow audit →". It does not say whether the audit is free, paid or by application.
 
 Placeholder tracking: `ops/site-placeholders.md` in chiibitsu/vibeOS.

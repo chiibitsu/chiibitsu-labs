@@ -43,16 +43,17 @@ export function formatLedgerAlert(a: LedgerAlert, now: Date): string {
   return `${head} (${a.via === "file" ? "a file" : "a pasted hash"})\n${a.hash}\n${manila(now)} Manila`;
 }
 
-// Best-effort limits, kept per server instance: 5 a minute from one address, 120 an hour overall.
+// Best-effort limits, kept per server instance: 5 a minute from one address, 120 an hour overall by default.
 // The Telegram bot itself is the last line of defense; Telegram throttles a flooding bot.
-export function makeLimiter() {
+export function makeLimiter(perHour = 120) {
   const perIp = new Map<string, number[]>();
   let all: number[] = [];
   return (ip: string, now: number): boolean => {
-    all = all.filter((t) => now - t < 3_600_000);
+    const capped = Number.isFinite(perHour);
+    if (capped) all = all.filter((t) => now - t < 3_600_000);
     const mine = (perIp.get(ip) ?? []).filter((t) => now - t < 60_000);
-    if (all.length >= 120 || mine.length >= 5) return false;
-    all.push(now);
+    if ((capped && all.length >= perHour) || mine.length >= 5) return false;
+    if (capped) all.push(now);
     mine.push(now);
     perIp.set(ip, mine);
     if (perIp.size > 5000) perIp.clear();
