@@ -12,7 +12,7 @@ export function SiteFooter({ left, middle }: { left: string; middle: string; upd
       <div>{middle}</div>
       <div>Updated {built}</div>
       <div className="foot-legal">
-        <a href="/team">Team</a> · <a href="/careers">Careers</a> · <a href="/team#registration">Registration</a> · <a href="/verify">Verify</a> · <a href="/privacy">Privacy</a> · <a href={mailto(emails.hello)}>labs@chiibitsu.com</a>
+        <a href="https://chibie.chiibitsu.com">Chibie</a> · <a href="/team">Team</a> · <a href="/careers">Careers</a> · <a href="/team#registration">Registration</a> · <a href="/verify">Verify</a> · <a href="/privacy">Privacy</a> · <a href={mailto(emails.hello)}>labs@chiibitsu.com</a>
       </div>
     </footer>
   );
