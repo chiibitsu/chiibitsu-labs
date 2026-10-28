@@ -13,6 +13,6 @@ permissions:
 jobs:
   security:
     # Pin a SHA, never a branch. Keep the `# main` hint: Renovate needs it to know what to bump.
-    uses: Chiibitsu-Labs/security-checks/.github/workflows/security.yml@96ea6fbc218320416795b33a6b763aa1c43a83ab # main
+    uses: Chiibitsu-Labs/security-checks/.github/workflows/security.yml@58a85e8aa928eb43c92ccea810637d77b38a0908 # main
     with:
       codeql: true
