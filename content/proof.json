@@ -100,35 +100,35 @@
   },
   "record": {
     "heading": "The record",
-    "note": "Counted by written rules, as of 30 Sep 2026. The counts change when the work does.",
+    "note": "Counted by written rules, as of 7 Nov 2026. The counts change when the work does.",
     "figures": [
       {
-        "value": "7 of 9",
+        "value": "8 of 10",
         "label": "clients still use what we built, a month or more on",
         "illustrative": false,
-        "measuredOn": "2026-09-30",
-        "source": "Chii, stated 2026-09-30"
+        "measuredOn": "2026-11-07",
+        "source": "Chii, stated 2026-11-07"
       },
       {
         "value": "58",
         "label": "people trained in AI at Work in 2026: 52 in Use Case Labs and online workshops, 6 in private sessions",
         "illustrative": false,
-        "measuredOn": "2026-09-30",
-        "source": "Chii, stated 2026-09-30"
+        "measuredOn": "2026-11-07",
+        "source": "Chii, stated 2026-11-07"
       },
       {
         "value": "5 of 8",
         "label": "went from AI beginner to running AI on their own work, in private sessions formal and informal",
         "illustrative": false,
-        "measuredOn": "2026-09-30",
-        "source": "Chii, stated 2026-09-30"
+        "measuredOn": "2026-11-07",
+        "source": "Chii, stated 2026-11-07"
       },
       {
-        "value": "22 + 9",
+        "value": "32 + 10",
         "label": "workflows running on AI: ours, and our clients'",
         "illustrative": false,
-        "measuredOn": "2026-09-30",
-        "source": "Chii, stated 2026-09-30"
+        "measuredOn": "2026-11-07",
+        "source": "Chii, stated 2026-11-07"
       }
     ]
   }
