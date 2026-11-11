@@ -5,7 +5,7 @@ import { Lovebirds } from "@/components/Lovebirds";
 import { ThemeClock } from "@/components/ThemeClock";
 import { bootScript } from "@/lib/boot";
 import { content } from "@/lib/content";
-import { caveat, plexMono, spectral } from "./fonts";
+import { caveat, plexMono, spectral, spectralBook } from "./fonts";
 import "./globals.css";
 
 // Microsoft Clarity: recordings, scroll maps, time on page and events. Apollo: which company a visit comes from.
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="day" data-aud="companies" className={`${spectral.variable} ${plexMono.variable} ${caveat.variable}`} suppressHydrationWarning>
+    <html lang="en" data-theme="day" data-aud="companies" className={`${spectral.variable} ${spectralBook.variable} ${plexMono.variable} ${caveat.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
         <script dangerouslySetInnerHTML={{ __html: clarityScript }} />
