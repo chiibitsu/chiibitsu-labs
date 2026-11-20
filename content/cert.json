@@ -6,14 +6,14 @@
   "eyebrow": "The Aikiri Network",
   "placeholder": "Placeholder. This is sample data while the certificate record is being agreed. It is not a real certificate.",
   "checkingH1": "Checking…",
-  "checking": "Checking the ledger…",
+  "checking": "Checking the Aikiri Network ledger…",
   "valid": {
     "h1": "This certificate is valid.",
-    "body": "Issued by Chiibitsu Labs. This record has not changed since it was sealed on {date}.",
+    "body": "Issued by Chiibitsu Labs, not a government body. This record has not changed since it was sealed on {date}.",
     "rows": {
       "holder": "Issued to",
       "course": "Course",
-      "completedOn": "Completed on",
+      "completed": "Completed on",
       "instructor": "Instructor",
       "host": "Hosted by",
       "issuer": "Issued by",
@@ -29,7 +29,7 @@
     "rows": {
       "number": "Certificate",
       "course": "Course",
-      "revokedOn": "Revoked on"
+      "revoked": "Revoked"
     }
   },
   "notFound": {
@@ -38,21 +38,27 @@
   },
   "error": {
     "h1": "Could not check just now.",
-    "body": "The public ledger could not be read. Try again in a minute. This says nothing about the certificate either way."
+    "body": "The Aikiri Network ledger could not be read just now."
   },
   "honest": {
     "heading": "What this page shows",
     "items": [
       "Only what Chiibitsu Labs issued. A Chiibitsu Labs certificate says a person finished a Chiibitsu Labs course.",
       "It is not a government certification, licence or accredited qualification.",
-      "Valid means this exact record is sealed on the public Aikiri ledger and has not been revoked. It does not say what the person can do today.",
-      "The certificate's details travel inside its link and stay on your device. Your browser works out the record's fingerprint and looks only that up in the public ledger.",
+      "Valid means this exact record is sealed on the Aikiri Network ledger and has not been revoked. It does not say what the person can do today.",
+      "The certificate's details travel inside its link and stay on your device. Your browser works out the record's fingerprint and looks only that up in the Aikiri Network ledger.",
       "One certificate at a time: the one whose link you have. There is no list or search of certificates."
     ]
   },
   "links": {
-    "check": { "label": "Check a file instead →", "href": "/network/check" },
-    "back": { "label": "← Back to the Aikiri Network", "href": "/network" }
+    "check": {
+      "label": "Check a file instead →",
+      "href": "/network/check"
+    },
+    "back": {
+      "label": "← Back to the Aikiri Network",
+      "href": "/network"
+    }
   },
   "footer": {
     "left": "Chiibitsu Labs",

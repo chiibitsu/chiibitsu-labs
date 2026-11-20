@@ -65,10 +65,12 @@ try {
   if (connect.length) problems.push(`/network/cert: connect-src allows ${connect.join(" ")}`);
   // Every inline script carries the nonce, so the enforced policy blocks nothing Next.js needs.
   // Any case, any quoting: <SCRIPT SRC=x>, src='x' and src=x all count.
-  const attr = (tag, name) => tag.match(new RegExp(`\\s${name}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s>]+))`, "i"))?.slice(1).find((v) => v !== undefined);
+  const SRC_ATTR = /\ssrc\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i;
+  const NONCE_ATTR = /\snonce\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i;
+  const attr = (tag, re) => tag.match(re)?.slice(1).find((v) => v !== undefined);
   for (const tag of html.match(/<script\b[^>]*>/gi) ?? []) {
-    const src = attr(tag, "src");
-    if (src === undefined && nonce && attr(tag, "nonce") !== nonce) problems.push(`/network/cert: an inline script without the nonce: ${tag.slice(0, 80)}`);
+    const src = attr(tag, SRC_ATTR);
+    if (src === undefined && nonce && attr(tag, NONCE_ATTR) !== nonce) problems.push(`/network/cert: an inline script without the nonce: ${tag.slice(0, 80)}`);
     if (src && /^(https?:)?\/\//.test(src)) problems.push(`/network/cert: a script from another origin: ${src}`);
   }
   if (/Sample Participant/.test(html)) problems.push("/network/cert: a holder name is in the server HTML");
