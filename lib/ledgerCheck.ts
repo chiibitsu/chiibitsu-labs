@@ -5,7 +5,7 @@ export const LEDGER_RAW = "https://raw.githubusercontent.com/chiibitsu/aikiri-ne
 export const MAX_FILE_BYTES = 250 * 1024 * 1024;
 export const EXAMPLE_HASH = "73715608c05be3f134036de0f5a1606b348098e2bebf34c8102680be08650ea8"; // block 0, the genesis block
 
-const pad = (n: number) => String(n).padStart(6, "0");
+export const pad = (n: number) => String(n).padStart(6, "0");
 
 export type Block = {
   index: number;
@@ -40,10 +40,11 @@ export async function loadBlocks(): Promise<Block[]> {
   const head = (await getText(`${LEDGER_RAW}/HEAD`)).trim().split(/\s+/)[0];
   const last = parseInt(head, 10);
   if (!Number.isInteger(last) || last < 0 || last > 100000) throw new Error("the ledger index could not be read");
-  const blocks = await Promise.all(
-    Array.from({ length: last + 1 }, async (_, i) => JSON.parse(await getText(`${LEDGER_RAW}/blocks/${pad(i)}.json`)) as Block),
-  );
-  return blocks;
+  return Promise.all(Array.from({ length: last + 1 }, (_, i) => loadBlock(i)));
+}
+
+export async function loadBlock(index: number): Promise<Block> {
+  return JSON.parse(await getText(`${LEDGER_RAW}/blocks/${pad(index)}.json`)) as Block;
 }
 
 export function findMatch(blocks: Block[], hash: string): Match | null {

@@ -46,6 +46,7 @@ BASE=http://localhost:3000 npm run check:layout   # against a running build
 - **Audience:** "For companies" or "For solo founders", also `?for=companies|solo`.
 - **Analytics:** Vercel Web Analytics. Custom events: `cta_click` (with `location`), `audience_switch`, `metric_click`, `papers_click`. Clicks on placeholder links carry `placeholder: true`.
 - `/network/check` is private by default: a hash shows when and by whom, only the original file shows who it is between. Link format, reveal protocol and the seal-time record: `docs/network-check.md`.
+- `/network/cert#<payload>` checks one course certificate in the browser. It has its own root layout with no trackers (`app/(cert)/`), and an enforced CSP (`proxy.ts`). Every other page lives in `app/(site)/`. See `docs/network-cert.md`.
 - `/audit` is a placeholder route for "Request a workflow audit →". It does not say whether the audit is free, paid or by application.
 
 Placeholder tracking: `ops/site-placeholders.md` in chiibitsu/vibeOS.

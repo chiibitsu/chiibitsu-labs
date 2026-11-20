@@ -1,27 +1,31 @@
 {
   "meta": {
     "title": "Check a certificate · Chiibitsu Labs",
-    "description": "Check a Chiibitsu Labs course certificate by its number. Shows whether it is valid, revoked or not found."
+    "description": "Check a Chiibitsu Labs course certificate from its link. Shows whether it is valid, revoked or not found."
   },
   "eyebrow": "The Aikiri Network",
   "placeholder": "Placeholder. This is sample data while the certificate record is being agreed. It is not a real certificate.",
+  "checkingH1": "Checking…",
+  "checking": "Checking the ledger…",
   "valid": {
     "h1": "This certificate is valid.",
-    "body": "Chiibitsu Labs issued this certificate, and has not revoked it. Its record is sealed on the Aikiri Network, so the date it was sealed cannot be changed after the fact.",
+    "body": "Issued by Chiibitsu Labs. This record has not changed since it was sealed on {date}.",
     "rows": {
-      "number": "Certificate",
       "holder": "Issued to",
       "course": "Course",
+      "completedOn": "Completed on",
+      "instructor": "Instructor",
+      "host": "Hosted by",
       "issuer": "Issued by",
-      "issuedOn": "Issued on",
+      "number": "Certificate",
+      "block": "Block",
       "sealed": "Sealed",
-      "block": "Block"
-    },
-    "issuer": "Chiibitsu Labs"
+      "fingerprint": "Fingerprint"
+    }
   },
   "revoked": {
     "h1": "This certificate was revoked.",
-    "body": "Chiibitsu Labs issued this certificate and later revoked it. It no longer counts as proof that the course was completed.",
+    "body": "Chiibitsu Labs issued this certificate and revoked it on {date}. It no longer counts as proof that the course was completed.",
     "rows": {
       "number": "Certificate",
       "course": "Course",
@@ -29,19 +33,21 @@
     }
   },
   "notFound": {
-    "h1": "No certificate with this number.",
-    "body": "Chiibitsu Labs has no certificate with this number. Check it against the certificate, character by character. If it still is not found, this page cannot vouch for it.",
-    "rows": {
-      "number": "Number checked"
-    }
+    "h1": "No certificate in this link.",
+    "body": "This link does not match any certificate Chiibitsu Labs has sealed. Open the link exactly as it appears on the certificate: a link that was cut short, or changed by even one character, will not match."
+  },
+  "error": {
+    "h1": "Could not check just now.",
+    "body": "The public ledger could not be read. Try again in a minute. This says nothing about the certificate either way."
   },
   "honest": {
     "heading": "What this page shows",
     "items": [
       "Only what Chiibitsu Labs issued. A Chiibitsu Labs certificate says a person finished a Chiibitsu Labs course.",
       "It is not a government certification, licence or accredited qualification.",
-      "Valid means the record exists, is not revoked, and is sealed on the public Aikiri ledger. It does not say what the person can do today.",
-      "One certificate at a time: the one whose number you have. There is no list or search of certificates."
+      "Valid means this exact record is sealed on the public Aikiri ledger and has not been revoked. It does not say what the person can do today.",
+      "The certificate's details travel inside its link and stay on your device. Your browser works out the record's fingerprint and looks only that up in the public ledger.",
+      "One certificate at a time: the one whose link you have. There is no list or search of certificates."
     ]
   },
   "links": {

@@ -5,8 +5,8 @@ import { Lovebirds } from "@/components/Lovebirds";
 import { ThemeClock } from "@/components/ThemeClock";
 import { bootScript } from "@/lib/boot";
 import { content } from "@/lib/content";
-import { caveat, plexMono, spectral } from "./fonts";
-import "./globals.css";
+import { caveat, plexMono, spectral } from "../fonts";
+import "../globals.css";
 
 // Microsoft Clarity: recordings, scroll maps, time on page and events. Apollo: which company a visit comes from.
 // Both are named on /privacy. Each runs once per page load from the head.

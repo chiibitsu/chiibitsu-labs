@@ -13,7 +13,8 @@
     "check:layout": "node scripts/check-layout.mjs",
     "check:verify": "node --no-warnings --experimental-strip-types scripts/check-verify.mjs",
     "check:issuer": "node --no-warnings --experimental-strip-types scripts/check-issuer.mjs",
-    "gates": "npm run lint && npm run typecheck && npm run check:content && npm run check:verify && npm run check:issuer && npm run build"
+    "gates": "npm run lint && npm run typecheck && npm run check:content && npm run check:verify && npm run check:issuer && npm run build && npm run check:cert",
+    "check:cert": "node scripts/check-cert.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

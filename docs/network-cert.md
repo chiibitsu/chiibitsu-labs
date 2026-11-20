@@ -1,72 +1,91 @@
-# /network/cert/&lt;number&gt;: check a certificate
+# /network/cert#&lt;payload&gt;: check a certificate
 
-Status: page shell and three states built against **placeholder data**. The data contract is being agreed by the Site PM and the Network PM. Nothing here defines it.
+Status: built to the agreed **shape** of the certificate contract (Site PM and Network PM, 2026-11-20). The exact field names, canonical bytes, Merkle rule and file layout come in `docs/certificates.md` in the aikiri-network repo, with golden test vectors. Everything this page guesses is marked `⟨contract⟩` in `lib/certCheck.ts`.
 
 ## The story
 
-**Who looks a certificate up.** Mostly someone who was *handed* one: an employer reading a CV, a client deciding whether to hire, a school or programme checking a claim. Sometimes the holder, making sure their link works before they share it.
+**Who looks a certificate up.** Mostly someone who was *handed* one: an employer reading a CV, a client deciding whether to hire, a programme checking a claim. Sometimes the holder, making sure their link works before they share it.
 
-**Why.** A certificate is a PDF or an image, and anyone can make one. The visitor wants one answer, fast: *did Chiibitsu Labs really issue this, and does it still stand?* They do not want to learn what a ledger is to get it.
+**Why.** A certificate is a PDF or an image, and anyone can make one. The visitor wants one answer, fast: *did Chiibitsu Labs really issue this, and does it still stand?* They should not have to learn what a ledger is to get it.
 
-**How they arrive.** From the link or QR code on the certificate, which carries its number: `chiibitsu.com/network/cert/<number>`. No form, no account.
+**How they arrive.** From the link or QR code on the certificate. No form, no account.
 
-**What they leave with.** One of three plain answers, a screenshot-able record, and an honest line on what the certificate is and is not.
+**What they leave with.** One of three plain answers, a record they can screenshot, and an honest line on what the certificate is and is not.
 
-> As someone who was handed a Chiibitsu Labs certificate, I open its link and see at once whether Chiibitsu Labs issued it and has not revoked it, so I can trust it or set it aside, without being told anything about anyone else.
+> As someone who was handed a Chiibitsu Labs certificate, I open its link and see at once whether Chiibitsu Labs issued it and has not revoked it, so I can trust it or set it aside, without anyone learning what I looked at or who it names.
 
-## Mini-spec
+## How it works
 
-### The three states
+1. The link is `https://www.chiibitsu.com/network/cert#<payload>`. The payload is the issuer record, base64url-encoded: version, a random certificate number of at least 128 bits, holder, course, completion date, issuer, instructor, and an optional generic `host`. There is no venue field. **The record lives only in the fragment, which browsers never send to a server.**
+2. The browser decodes the record and works out its fingerprint: SHA-256 over the canonical bytes.
+3. It fetches `ledger/certs/<fingerprint>.json` from the public ledger (the `LEDGER_RAW` the check page already uses). That file holds only the Merkle path, the root and the block index.
+4. It walks the path up to the root and checks that `blocks/<index>.json` holds that root. The Base and Bitcoin rows then come from `loadWitness`, the same reader /network/check uses.
+5. If `ledger/certs/revoked/<fingerprint>.json` exists, the state is Revoked, with its date.
 
-| State | Headline | Shows | Never shows |
+There is no server route, no store and no rate limit. The fragment stays in the address bar, so refresh and copy-link keep working for the holder.
+
+## The states
+
+| State | When | Headline | Shows |
 |---|---|---|---|
-| **Valid** | "This certificate is valid." | Number, issued to (holder's name), course, issued by Chiibitsu Labs, issued on, ledger block, sealed date and time, Base (with the transaction link), Bitcoin stamp | Anything about other certificates |
-| **Revoked** | "This certificate was revoked." | Number, course, revoked on | The holder's name (see open questions) |
-| **Not found** | "No certificate with this number." | The number that was checked (only if it is shaped like one), and what to try | Anything else from the URL: a malformed number is not echoed, so the page cannot be made to print someone's sentence |
+| **Valid** | The proof checks out to a block, and there is no revocation | "This certificate is valid." Then: "Issued by Chiibitsu Labs. This record has not changed since it was sealed on &lt;date&gt;." | Issued to, course, completed on, instructor, "Hosted by" only when the link carries a host, issued by, certificate number, block, sealed, Base, Bitcoin, fingerprint |
+| **Revoked** | As valid, and a revocation file exists | "This certificate was revoked." | Certificate number, course, revoked on. Not the holder's name (see open questions). |
+| **Not found** | Bad payload, no proof file, or a proof that does not reach the block | "No certificate in this link." | Nothing from the link: no text from the URL is ever echoed |
+| **Could not check** | The ledger could not be read | "Could not check just now." | That this says nothing either way |
 
-Every state also shows **What this page shows**: only what Chiibitsu Labs issued; not a government certification, licence or accredited qualification; what "valid" does and does not mean; one certificate at a time, no list or search. `npm run check:content` fails if the first two lines go missing.
+Every state also shows **What this page shows**: only what Chiibitsu Labs issued; not a government certification, licence or accredited qualification; what "valid" does and does not mean; the details stay on your device; one certificate at a time. `npm run check:content` fails if the first two lines go missing, or if the cert copy ever says "certified", "legally", "proven" or "venue".
 
-### Rules
+## Locked down
 
-- **One in, one out.** The page takes one number and shows at most one certificate. No list, search, ranges, or next/previous links.
-- **Personal data only for the one looked up.** The holder's name appears only on a valid certificate's page. It is never in the page title, description or link preview (metadata is the same for every number), and the page is `noindex, nofollow`. The record is masked from Clarity session recordings (`data-clarity-mask`).
-- **Same witness as /network/check.** The Base and Bitcoin rows are one shared component (`components/WitnessRows.tsx`), and the Bitcoin sentence is one function (`bitcoinLine` in `lib/ledgerCheck.ts`). A live adapter fills them with `loadWitness(block)`, exactly as the check page does.
-- **Honest about samples.** Placeholder records carry `placeholder: true`. The page then shows an "Illustrative" label and says it is not a real certificate, and the block row reads "Placeholder".
-- **No venue partner named.** Not in copy, metadata or code.
+- **Its own root layout with no third-party scripts.** The site moved into the route group `app/(site)/` (its URLs are unchanged). `/network/cert` lives in `app/(cert)/`, whose layout loads no Clarity, Apollo, Vercel Analytics or Speed Insights. Moving between the two layouts is a full page load, which Next.js does on its own.
+- **An enforced Content-Security-Policy, on this route only** (`proxy.ts`). Scripts: `'self'` plus a fresh nonce per request, with `'strict-dynamic'`. Connections: `'self'` and `https://raw.githubusercontent.com`. Styles keep `'unsafe-inline'`, as the site's policy does. The rest of the site stays report-only (`next.config.ts`).
+  - *Measured, not assumed:* a production build loaded in Chromium with the policy enforced, using the two samples, a tampered link, junk and an empty fragment. **Zero `securitypolicyviolation` events.** The page hydrated and reached the right state every time. The only outside host requested was raw.githubusercontent.com. Next.js put the nonce on its own inline `self.__next_f` scripts, and the theme script carries it from `x-nonce`. Plain `script-src 'self'` would have blocked those scripts, so the nonce is needed.
+  - The nonce means the page renders per request; it cannot be static.
+- **Nothing from the fragment leaves the device** except its fingerprint, to the public ledger. The cert route does not import analytics, `trackEvent` or `/api/verify-alert`. Ledger fetches use `referrerPolicy: no-referrer`, and the page sends `Referrer-Policy: no-referrer`. The record is also marked `data-clarity-mask`, as a second line of defence should Clarity ever reach this page.
+- **`npm run check:cert`** (part of `npm run gates`) starts the built app and fails if:
+  - `/network/cert`'s HTML contains clarity.ms, apollo.io or a Vercel analytics or insights script;
+  - its CSP is not enforced, has no nonce, or allows another origin for scripts or connections;
+  - any inline script lacks the nonce;
+  - the cert route's source imports analytics or calls the verify alert.
 
-### Where things live
+  It also checks that /network/check still loads Clarity, so the test can tell the difference.
+- `noindex, nofollow`, the same title and description for every certificate, and not in the sitemap.
+
+## Samples (placeholder data, not real)
+
+Previews and local builds only. On production every link checks against the real ledger.
+
+- Valid, with "Example Host": `/network/cert#eyJ2ZXJzaW9uIjoxLCJudW1iZXIiOiJTQU1QTEUtVkFMSUQtMDAwMDAwMDAwMDAwIiwiaG9sZGVyIjoiU2FtcGxlIFBhcnRpY2lwYW50IiwiY291cnNlIjoiU2FtcGxlIENvdXJzZSIsImNvbXBsZXRlZE9uIjoiMjAyNi0wMS0wMSIsImlzc3VlciI6IkNoaWliaXRzdSBMYWJzIiwiaW5zdHJ1Y3RvciI6IlNhbXBsZSBJbnN0cnVjdG9yIiwiaG9zdCI6IkV4YW1wbGUgSG9zdCJ9`
+- Revoked: `/network/cert#eyJ2ZXJzaW9uIjoxLCJudW1iZXIiOiJTQU1QTEUtUkVWT0tFRC0wMDAwMDAwMDAwIiwiaG9sZGVyIjoiU2FtcGxlIFBhcnRpY2lwYW50IiwiY291cnNlIjoiU2FtcGxlIENvdXJzZSIsImNvbXBsZXRlZE9uIjoiMjAyNi0wMS0wMSIsImlzc3VlciI6IkNoaWliaXRzdSBMYWJzIiwiaW5zdHJ1Y3RvciI6IlNhbXBsZSBJbnN0cnVjdG9yIn0`
+
+Their proofs are built in `placeholderLedger` with the same Merkle rule the check uses, so a sample runs the whole check. Changing one character of a sample link gives "No certificate in this link."
+
+## Where things live
 
 | What | Where |
 |---|---|
-| Page | `app/network/cert/[id]/page.tsx` (server-rendered) |
+| Page and its layout | `app/(cert)/network/cert/page.tsx`, `app/(cert)/layout.tsx` |
+| The check, in the browser | `components/CertCheck.tsx` |
+| Decoding, Merkle check, ledger adapter, samples | `lib/certCheck.ts` |
+| Shared Base and Bitcoin rows | `components/WitnessRows.tsx`, `bitcoinLine` in `lib/ledgerCheck.ts` |
+| Enforced CSP | `proxy.ts` |
 | Copy | `content/cert.json` |
-| View model and adapter | `lib/certCheck.ts`: `CertView`, `CertSource`, `certSource` (today `placeholderSource`) |
-| Shared witness rows | `components/WitnessRows.tsx` |
+| Gate | `scripts/check-cert.mjs` |
 
-### Placeholder numbers (sample data, not real)
+## When the contract lands
 
-Previews and local builds only. On production (`VERCEL_ENV=production`) every number is "not found" until the contract's adapter lands, so a sample can never read "valid" on chiibitsu.com.
+Replace each `⟨contract⟩` guess, then run the golden vectors through `decodePayload`, `pathRoot` and `checkCertificate`:
 
-- `/network/cert/PLACEHOLDER-VALID`: the valid state
-- `/network/cert/PLACEHOLDER-REVOKED`: the revoked state
-- any other number: not found
-
-## What the contract needs to answer
-
-The page needs these from the agreed record. Where the contract says otherwise, the adapter maps it; the page does not guess.
-
-1. **The number's format.** Today the page accepts 1 to 64 letters, digits and hyphens, case-insensitive. Numbers should not be sequential or guessable, or "one at a time" is a list in disguise.
-2. **Where the record is read from**, and whether that lookup is rate-limited. The page itself does not stop someone trying many numbers.
-3. **Valid:** holder's display name, course title, issue date, and the ledger block (and root) that seals it.
-4. **Revoked:** the revocation date, and whether revocation is itself sealed on the ledger (then the page can show its witness too).
-5. **Dates:** which time zone the issue and revocation dates are in.
+1. The field names, and how `version` changes them.
+2. The canonical bytes. Today they are taken to be exactly the decoded payload.
+3. The Merkle parent rule. Today it is SHA-256 of left‖right, raw bytes, with no domain-separation prefix.
+4. The proof and revocation JSON, and whether the root is the block's `merkle_root` or one of its `roots`.
+5. Whether the issuer field must equal "Chiibitsu Labs" for the page to say "valid".
+6. Which time zone dates are in.
 
 ## Open questions for Chii
 
-- **The number in the URL reaches analytics.** Vercel Analytics, Clarity and Apollo run on every page and record the URL, so `/network/cert/<number>` reaches them. The number points to one person, but only through Chiibitsu Labs' own records, and the holder chose to share the link. Not changed here: scrubbing it means editing the site-wide trackers, which is its own decision.
-- **Not found answers HTTP 200**, like /network/check. The page is for people and is `noindex`. If machines (an applicant-tracking system, say) will check certificates, the contract should add a small JSON answer with proper status codes rather than have them read this page.
-
-- **Revoked: show the holder's name or not?** Built without it (least disclosure). A taste and privacy call, so it is yours.
-- **A "something looks wrong" contact line.** Not added: no address was given to use.
-- **Copy voice.** `canon/voice.md` in vibeOS could not be read in this session, so the copy follows the existing `/network/check` voice. Needs a pass against canon.
-- **Not in the sitemap** on purpose: certificate pages are reached by their own link only.
+- **Revoked: show the holder's name or not?** It is built without the name, to show as little as possible. The visitor already holds the link, but the page does not repeat the name. A taste and privacy call, so it is yours.
+- **A "something looks wrong" contact line.** Not added.
+- **Copy voice.** `canon/voice.md` in vibeOS could not be read in this session, so the copy follows /network/check and the Site PM's wording. It needs a pass against canon.
+- **The 404 page** for unknown URLs is now Next.js's default, since the site has two root layouts. A branded one would need `global-not-found.js`, which is still experimental. Before this change there was no custom 404 either.

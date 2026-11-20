@@ -57,6 +57,7 @@ walk(cert, "cert");
 // /network/cert says plainly what it is and is not (Site PM brief, 2026-11-20).
 if (!cert.honest.items.some((i) => /only what Chiibitsu Labs issued/i.test(i))) problems.push("cert.honest: must say the page shows only what Chiibitsu Labs issued");
 if (!cert.honest.items.some((i) => /not a government certification/i.test(i))) problems.push("cert.honest: must say it is not a government certification");
+if (/\bcertified\b|legally|\bproven\b|\bvenue\b/i.test(JSON.stringify(cert))) problems.push('cert: never "certified", "legally", "proven" or a venue');
 walk(official, "official");
 walk(team, "team");
 walk(careers, "careers");
