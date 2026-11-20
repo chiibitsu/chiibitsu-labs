@@ -22,7 +22,7 @@ Status: page shell and three states built against **placeholder data**. The data
 |---|---|---|---|
 | **Valid** | "This certificate is valid." | Number, issued to (holder's name), course, issued by Chiibitsu Labs, issued on, ledger block, sealed date and time, Base (with the transaction link), Bitcoin stamp | Anything about other certificates |
 | **Revoked** | "This certificate was revoked." | Number, course, revoked on | The holder's name (see open questions) |
-| **Not found** | "No certificate with this number." | The number that was checked, and what to try | Whether the number was malformed or simply unknown: both get the same answer |
+| **Not found** | "No certificate with this number." | The number that was checked (only if it is shaped like one), and what to try | Anything else from the URL: a malformed number is not echoed, so the page cannot be made to print someone's sentence |
 
 Every state also shows **What this page shows**: only what Chiibitsu Labs issued; not a government certification, licence or accredited qualification; what "valid" does and does not mean; one certificate at a time, no list or search. `npm run check:content` fails if the first two lines go missing.
 
@@ -45,6 +45,8 @@ Every state also shows **What this page shows**: only what Chiibitsu Labs issued
 
 ### Placeholder numbers (sample data, not real)
 
+Previews and local builds only. On production (`VERCEL_ENV=production`) every number is "not found" until the contract's adapter lands, so a sample can never read "valid" on chiibitsu.com.
+
 - `/network/cert/PLACEHOLDER-VALID`: the valid state
 - `/network/cert/PLACEHOLDER-REVOKED`: the revoked state
 - any other number: not found
@@ -60,6 +62,9 @@ The page needs these from the agreed record. Where the contract says otherwise, 
 5. **Dates:** which time zone the issue and revocation dates are in.
 
 ## Open questions for Chii
+
+- **The number in the URL reaches analytics.** Vercel Analytics, Clarity and Apollo run on every page and record the URL, so `/network/cert/<number>` reaches them. The number points to one person, but only through Chiibitsu Labs' own records, and the holder chose to share the link. Not changed here: scrubbing it means editing the site-wide trackers, which is its own decision.
+- **Not found answers HTTP 200**, like /network/check. The page is for people and is `noindex`. If machines (an applicant-tracking system, say) will check certificates, the contract should add a small JSON answer with proper status codes rather than have them read this page.
 
 - **Revoked: show the holder's name or not?** Built without it (least disclosure). A taste and privacy call, so it is yours.
 - **A "something looks wrong" contact line.** Not added: no address was given to use.

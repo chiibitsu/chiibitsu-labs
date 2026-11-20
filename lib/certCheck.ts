@@ -22,24 +22,21 @@ export type CertSeal = {
 export type CertView =
   | { state: "valid"; number: string; holder: string; course: string; issuedOn: string; seal: CertSeal; placeholder: boolean }
   | { state: "revoked"; number: string; course: string; revokedOn: string; placeholder: boolean }
-  | { state: "not_found"; number: string };
+  | { state: "not_found"; number: string | null }; // null: not a certificate number, so nothing from the URL is echoed
 
 export interface CertSource {
   lookup(number: string): Promise<CertView>;
 }
 
 // Uppercase, trimmed. Letters, digits and hyphens, 1 to 64 characters; anything else is simply not found.
-export const normalizeCertNumber = (raw: string) => {
-  let s = raw;
-  try { s = decodeURIComponent(raw); } catch { /* keep raw */ }
-  return s.trim().toUpperCase();
-};
+// The route param arrives decoded once by Next.js; it is not decoded again, so one number has one spelling.
+export const normalizeCertNumber = (raw: string) => raw.trim().toUpperCase();
 export const isCertNumber = (s: string) => /^[A-Z0-9][A-Z0-9-]{0,63}$/.test(s);
 
 // ---- PLACEHOLDER DATA: not real certificates. Remove when the contract's adapter lands. ----
 const PLACEHOLDER_WITNESS: Witness = {
   base: { tx: null, note: "Placeholder: no Base transaction. The real one comes from the ledger." },
-  bitcoin: { state: "pending", heights: [] },
+  bitcoin: { state: "none", heights: [] },
 };
 const PLACEHOLDERS: Record<string, CertView> = {
   "PLACEHOLDER-VALID": {
@@ -64,11 +61,18 @@ export const PLACEHOLDER_NUMBERS = Object.keys(PLACEHOLDERS);
 export const placeholderSource: CertSource = {
   async lookup(raw) {
     const number = normalizeCertNumber(raw);
-    if (!isCertNumber(number)) return { state: "not_found", number: number.slice(0, 64) };
+    if (!isCertNumber(number)) return { state: "not_found", number: null };
     return PLACEHOLDERS[number] ?? { state: "not_found", number };
   },
 };
 // ---- END PLACEHOLDER DATA ----
 
-// The one place the page gets its source. Swap this for the contract's adapter.
-export const certSource: CertSource = placeholderSource;
+// Until the contract lands, production answers "not found" for every number, so a sample can never show as
+// "valid" on chiibitsu.com. Previews and local builds use the placeholders. Swap this for the contract's adapter.
+const noneSource: CertSource = {
+  async lookup(raw) {
+    const number = normalizeCertNumber(raw);
+    return { state: "not_found", number: isCertNumber(number) ? number : null };
+  },
+};
+export const certSource: CertSource = process.env.VERCEL_ENV === "production" ? noneSource : placeholderSource;

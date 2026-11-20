@@ -58,7 +58,7 @@ function State({ v }: { v: CertView }) {
         <h1>{c.notFound.h1}</h1>
         <p className="body">{c.notFound.body}</p>
         <dl className="ledger-facts">
-          <div className="ledger-row"><dt className="caption">{r.number}</dt><dd>{v.number}</dd></div>
+          {v.number && <div className="ledger-row"><dt className="caption">{r.number}</dt><dd>{v.number}</dd></div>}
         </dl>
       </>
     );
