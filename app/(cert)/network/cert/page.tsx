@@ -39,7 +39,7 @@ export default function Cert() {
         <p className="body"><Link href={c.links.check.href}>{c.links.check.label}</Link></p>
         <Link href={c.links.back.href} className="caption">{c.links.back.label}</Link>
       </main>
-      <SiteFooter left={c.footer.left} middle={c.footer.middle} />
+      <SiteFooter left={c.footer.left} middle={c.footer.middle} stamp={false} />
     </div>
   );
 }

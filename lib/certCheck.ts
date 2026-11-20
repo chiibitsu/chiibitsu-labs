@@ -10,7 +10,7 @@
 // - Nothing from the fragment goes to analytics, /api/verify-alert or any log. This file imports neither.
 // - One link checks one certificate. There is no list, search or enumeration.
 
-import { LEDGER_RAW, loadBlock, loadWitness, sha256Hex, type Block, type Witness } from "@/lib/ledgerCheck";
+import { LEDGER_RAW, NotInLedger, loadBlock, loadWitness, sha256Hex, type Block, type Witness } from "@/lib/ledgerCheck";
 
 // ⟨contract⟩ The issuer record. There is no venue field; host is an optional generic label.
 export type CertRecord = {
@@ -151,8 +151,9 @@ export async function checkCertificate(fragment: string, ledger: CertLedger): Pr
     }
     const witness = await ledger.witness(block.index);
     return { state: "valid", record: decoded.record, fingerprint, block: block.index, sealedAt: block.timestamp, witness, placeholder };
-  } catch {
-    return { state: "error" };
+  } catch (e) {
+    // A proof naming a block that does not exist is a proof that does not reach the ledger: not found.
+    return e instanceof NotInLedger ? { state: "not_found" } : { state: "error" };
   }
 }
 

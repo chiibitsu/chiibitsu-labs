@@ -4,16 +4,36 @@
 import { spawn } from "node:child_process";
 import fs from "node:fs";
 import net from "node:net";
+import path from "node:path";
 
 const problems = [];
 const TRACKERS = [/clarity\.ms/i, /apollo\.io/i, /_vercel\/insights/i, /_vercel\/speed-insights/i, /va\.vercel-scripts\.com/i, /vercel-scripts/i];
 
-// 1. Source: the files that make up the cert route never touch analytics or the verify alert.
-const certFiles = ["app/(cert)/layout.tsx", "app/(cert)/network/cert/page.tsx", "components/CertCheck.tsx", "lib/certCheck.ts", "components/WitnessRows.tsx"];
-for (const f of certFiles) {
-  const s = fs.readFileSync(new URL(`../${f}`, import.meta.url), "utf8").replace(/\/\/.*$/gm, "");
-  if (/@vercel\/(analytics|speed-insights)|lib\/analytics|trackEvent|verify-alert|AikiriText|TrackedLink/.test(s)) problems.push(`${f}: imports analytics or calls the verify alert`);
+// 1. Source: every file the cert route pulls in, following imports from its two entry files, never touches
+// analytics or the verify alert.
+const root = new URL("../", import.meta.url);
+const read = (f) => fs.readFileSync(new URL(f, root), "utf8");
+const resolve = (from, spec) => {
+  const base = spec.startsWith("@/") ? spec.slice(2) : spec.startsWith(".") ? path.posix.join(path.posix.dirname(from), spec) : null;
+  if (!base) return null;
+  return [base, `${base}.ts`, `${base}.tsx`, `${base}/index.ts`].find((f) => /\.(tsx?|json|css)$/.test(f) && fs.existsSync(new URL(f, root))) ?? null;
+};
+const seen = new Set();
+const queue = ["app/(cert)/layout.tsx", "app/(cert)/network/cert/page.tsx", "proxy.ts"];
+while (queue.length) {
+  const f = queue.pop();
+  if (seen.has(f)) continue;
+  seen.add(f);
+  if (!/\.tsx?$/.test(f)) continue;
+  const src = read(f).replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+  if (/@vercel\/(analytics|speed-insights)|trackEvent|verify-alert|clarity\.ms|apollo\.io/i.test(src)) problems.push(`${f}: analytics, a tracker or the verify alert, on the cert route`);
+  for (const [, spec] of src.matchAll(/(?:from|import)\s*\(?\s*["']([^"']+)["']/g)) {
+    if (/^@vercel\/(analytics|speed-insights)/.test(spec)) problems.push(`${f}: imports ${spec}`);
+    const next = resolve(f, spec);
+    if (next) queue.push(next);
+  }
 }
+if (!seen.has("lib/ledgerCheck.ts")) problems.push("check-cert: the import walk did not reach lib/ledgerCheck.ts, so it is not following imports");
 
 // 2. The built page, served for real.
 const port = await new Promise((res) => { const s = net.createServer().listen(0, () => { const p = s.address().port; s.close(() => res(p)); }); });
@@ -39,7 +59,8 @@ try {
   if (!nonce) problems.push("/network/cert: the CSP has no nonce");
   const directive = (name) => (csp.split(";").map((d) => d.trim()).find((d) => d.startsWith(`${name} `)) ?? "").split(/\s+/).slice(1);
   const script = directive("script-src");
-  if (script.some((s) => /^https?:|unsafe-inline|\*/.test(s))) problems.push(`/network/cert: script-src allows more than this site: ${script.join(" ")}`);
+  const extra = script.filter((s) => s !== "'self'" && s !== "'strict-dynamic'" && !/^'nonce-[^']+'$/.test(s));
+  if (extra.length) problems.push(`/network/cert: script-src allows more than this site and its nonce: ${extra.join(" ")}`);
   const connect = directive("connect-src").filter((s) => s !== "'self'" && s !== "https://raw.githubusercontent.com");
   if (connect.length) problems.push(`/network/cert: connect-src allows ${connect.join(" ")}`);
   // Every inline script carries the nonce, so the enforced policy blocks nothing Next.js needs.

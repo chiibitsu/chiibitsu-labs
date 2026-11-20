@@ -30,7 +30,7 @@ There is no server route, no store and no rate limit. The fragment stays in the 
 |---|---|---|---|
 | **Valid** | The proof checks out to a block, and there is no revocation | "This certificate is valid." Then: "Issued by Chiibitsu Labs. This record has not changed since it was sealed on &lt;date&gt;." | Issued to, course, completed on, instructor, "Hosted by" only when the link carries a host, issued by, certificate number, block, sealed, Base, Bitcoin, fingerprint |
 | **Revoked** | As valid, and a revocation file exists | "This certificate was revoked." | Certificate number, course, revoked on. Not the holder's name (see open questions). |
-| **Not found** | Bad payload, no proof file, or a proof that does not reach the block | "No certificate in this link." | Nothing from the link: no text from the URL is ever echoed |
+| **Not found** | Bad payload, no proof file, a proof that does not reach the block, or a block that does not exist | "No certificate in this link." | Nothing from the link: no text from the URL is ever echoed |
 | **Could not check** | The ledger could not be read | "Could not check just now." | That this says nothing either way |
 
 Every state also shows **What this page shows**: only what Chiibitsu Labs issued; not a government certification, licence or accredited qualification; what "valid" does and does not mean; the details stay on your device; one certificate at a time. `npm run check:content` fails if the first two lines go missing, or if the cert copy ever says "certified", "legally", "proven" or "venue".
@@ -46,9 +46,9 @@ Every state also shows **What this page shows**: only what Chiibitsu Labs issued
   - `/network/cert`'s HTML contains clarity.ms, apollo.io or a Vercel analytics or insights script;
   - its CSP is not enforced, has no nonce, or allows another origin for scripts or connections;
   - any inline script lacks the nonce;
-  - the cert route's source imports analytics or calls the verify alert.
+  - anything the cert route imports, walked from its entry files, uses analytics, a tracker host or the verify alert.
 
-  It also checks that /network/check still loads Clarity, so the test can tell the difference.
+  It also checks that /network/check still loads Clarity, so the test can tell the difference. Proven by planting a Clarity script in the cert layout: the gate failed three ways (source, HTML, foreign script), then passed once it was removed.
 - `noindex, nofollow`, the same title and description for every certificate, and not in the sitemap.
 
 ## Samples (placeholder data, not real)
@@ -71,6 +71,7 @@ Their proofs are built in `placeholderLedger` with the same Merkle rule the chec
 | Enforced CSP | `proxy.ts` |
 | Copy | `content/cert.json` |
 | Gate | `scripts/check-cert.mjs` |
+| Unknown URLs, inside the site layout | `app/(site)/[...missing]/page.tsx`, `app/(site)/not-found.tsx` |
 
 ## When the contract lands
 
@@ -88,4 +89,3 @@ Replace each `⟨contract⟩` guess, then run the golden vectors through `decode
 - **Revoked: show the holder's name or not?** It is built without the name, to show as little as possible. The visitor already holds the link, but the page does not repeat the name. A taste and privacy call, so it is yours.
 - **A "something looks wrong" contact line.** Not added.
 - **Copy voice.** `canon/voice.md` in vibeOS could not be read in this session, so the copy follows /network/check and the Site PM's wording. It needs a pass against canon.
-- **The 404 page** for unknown URLs is now Next.js's default, since the site has two root layouts. A branded one would need `global-not-found.js`, which is still experimental. Before this change there was no custom 404 either.

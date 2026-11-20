@@ -30,8 +30,12 @@ export async function sha256Hex(buf: ArrayBuffer): Promise<string> {
   return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+// A ledger file that does not exist (404), as opposed to a ledger that could not be read.
+export class NotInLedger extends Error {}
+
 async function getText(url: string): Promise<string> {
-  const r = await fetch(url, { cache: "no-store" });
+  const r = await fetch(url, { cache: "no-store", referrerPolicy: "no-referrer" });
+  if (r.status === 404) throw new NotInLedger("404");
   if (!r.ok) throw new Error(`${r.status}`);
   return r.text();
 }
@@ -94,7 +98,7 @@ export async function loadWitness(index: number): Promise<Witness> {
   }
   let bitcoin: Witness["bitcoin"] = { state: "none", heights: [] };
   try {
-    const r = await fetch(`${LEDGER_RAW}/proofs/${pad(index)}.hash.ots`, { cache: "no-store" });
+    const r = await fetch(`${LEDGER_RAW}/proofs/${pad(index)}.hash.ots`, { cache: "no-store", referrerPolicy: "no-referrer" });
     if (r.ok) {
       const heights = bitcoinHeights(new Uint8Array(await r.arrayBuffer()));
       bitcoin = heights.length ? { state: "attested", heights } : { state: "pending", heights: [] };

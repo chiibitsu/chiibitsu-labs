@@ -17,14 +17,17 @@ export function CertCheck({ samples }: { samples: boolean }) {
 
   useEffect(() => {
     const ledger = samples ? placeholderLedger(liveLedger) : liveLedger;
-    let live = true;
+    // Each run gets a ticket; only the latest one may set the view, so a slow earlier check never
+    // overwrites a newer link's result. Unmount retires every ticket.
+    let latest = 0;
     const run = () => {
+      const ticket = ++latest;
       setView("checking");
-      void checkCertificate(window.location.hash, ledger).then((v) => { if (live) setView(v); });
+      void checkCertificate(window.location.hash, ledger).then((v) => { if (ticket === latest) setView(v); });
     };
     run();
     window.addEventListener("hashchange", run);
-    return () => { live = false; window.removeEventListener("hashchange", run); };
+    return () => { latest = -1; window.removeEventListener("hashchange", run); };
   }, [samples]);
 
   return (

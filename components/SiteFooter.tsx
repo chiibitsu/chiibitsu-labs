@@ -5,12 +5,13 @@ import { mailto } from "@/lib/mail";
 const built = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "Asia/Manila" }).format(new Date());
 
 // One footer for every page. Links sit below the footer row; the registration details live on /team.
-export function SiteFooter({ left, middle }: { left: string; middle: string; updated?: string }) {
+// A page rendered per request (/network/cert) passes stamp={false}: there "built" would be the server's start time.
+export function SiteFooter({ left, middle, stamp = true }: { left: string; middle: string; updated?: string; stamp?: boolean }) {
   return (
     <footer className="foot">
       <div>{left}</div>
       <div>{middle}</div>
-      <div>Updated {built}</div>
+      <div>{stamp ? `Updated ${built}` : ""}</div>
       <div className="foot-legal">
         <a href="/team">Team</a> · <a href="/careers">Careers</a> · <a href="/team#registration">Registration</a> · <a href="/verify">Verify</a> · <a href="/privacy">Privacy</a> · <a href={mailto(emails.hello)}>labs@chiibitsu.com</a>
       </div>
