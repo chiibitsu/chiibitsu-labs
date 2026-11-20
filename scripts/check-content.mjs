@@ -13,6 +13,7 @@ const proofContent = load("proof");
 const ledger = load("ledger");
 const network = load("network");
 const check = load("check");
+const cert = load("cert");
 const official = load("official");
 const team = load("team");
 const careers = load("careers");
@@ -52,6 +53,10 @@ walk(proofContent, "proof");
 walk(ledger, "ledger");
 walk(network, "network");
 walk(check, "check");
+walk(cert, "cert");
+// /network/cert says plainly what it is and is not (Site PM brief, 2026-11-20).
+if (!cert.honest.items.some((i) => /only what Chiibitsu Labs issued/i.test(i))) problems.push("cert.honest: must say the page shows only what Chiibitsu Labs issued");
+if (!cert.honest.items.some((i) => /not a government certification/i.test(i))) problems.push("cert.honest: must say it is not a government certification");
 walk(official, "official");
 walk(team, "team");
 walk(careers, "careers");

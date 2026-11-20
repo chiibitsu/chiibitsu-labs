@@ -6,12 +6,12 @@ import {
   EXAMPLE_HASH, MAX_FILE_BYTES, findMatch, isHash, loadBlocks, loadWitness, normalizeHash, sha256Hex, when,
   type Block, type Match, type Witness,
 } from "@/lib/ledgerCheck";
+import { WitnessRows } from "@/components/WitnessRows";
 import { describeReveal, requestReveal, revealRequestFor, type RevealAnswer } from "@/lib/issuer";
 import check from "@/content/check.json";
 
 const c = check.check;
 const m = check.modal;
-const explorer = (tx: string) => `https://basescan.org/tx/${tx}`;
 
 // reveal: what the issuer said about a dropped original file. "none" for a pasted hash or a link, which never asks.
 type Reveal = RevealAnswer | "none" | "error";
@@ -183,14 +183,6 @@ export function NetworkTools() {
 function Found({ r }: { r: Extract<Result, { kind: "found" }> }) {
   const b = r.match.block;
   const t = when(b.timestamp);
-  const w = r.witness;
-  const heights = [...new Set(w.bitcoin.heights)].sort((a, b) => a - b);
-  const bitcoin =
-    w.bitcoin.state === "attested"
-      ? `The proof file names Bitcoin block${heights.length > 1 ? "s" : ""} ${heights.join(", ")}. This page reads the file; it does not check it against Bitcoin.`
-      : w.bitcoin.state === "pending"
-        ? "Stamped, awaiting Bitcoin confirmation."
-        : "No Bitcoin stamp yet.";
   return (
     <>
       <h3 id="net-modal-title" className="net-verdict">{m.found} {b.index}.</h3>
@@ -204,11 +196,7 @@ function Found({ r }: { r: Extract<Result, { kind: "found" }> }) {
         <div className="ledger-row"><dt className="caption">Issuer</dt><dd>{m.issuer}</dd></div>
         <div className="ledger-row"><dt className="caption">Block</dt><dd>{b.index}</dd></div>
         <div className="ledger-row"><dt className="caption">Sealed</dt><dd>{t.local}{t.utc ? ` · ${t.utc}` : ""}</dd></div>
-        <div className="ledger-row">
-          <dt className="caption">Base</dt>
-          <dd>{w.base.note}{w.base.tx && <> <a href={explorer(w.base.tx)} target="_blank" rel="noopener noreferrer">See the transaction</a></>}</dd>
-        </div>
-        <div className="ledger-row"><dt className="caption">Bitcoin</dt><dd>{bitcoin}</dd></div>
+        <WitnessRows w={r.witness} />
         <div className="ledger-row"><dt className="caption">Hash</dt><dd>{r.hash}</dd></div>
       </dl>
     </>

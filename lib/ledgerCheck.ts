@@ -110,3 +110,15 @@ export function when(timestamp: string): { local: string; utc: string } {
   const utc = Number.isNaN(d.getTime()) ? "" : `${d.toISOString().slice(0, 19).replace("T", " ")} UTC`;
   return { local: clean.replace("T", " "), utc };
 }
+
+export const explorer = (tx: string) => `https://basescan.org/tx/${tx}`;
+
+// The plain sentence for a block's Bitcoin stamp. Shared by /network/check and /network/cert.
+export function bitcoinLine(w: Witness): string {
+  const heights = [...new Set(w.bitcoin.heights)].sort((a, b) => a - b);
+  return w.bitcoin.state === "attested"
+    ? `The proof file names Bitcoin block${heights.length > 1 ? "s" : ""} ${heights.join(", ")}. This page reads the file; it does not check it against Bitcoin.`
+    : w.bitcoin.state === "pending"
+      ? "Stamped, awaiting Bitcoin confirmation."
+      : "No Bitcoin stamp yet.";
+}
