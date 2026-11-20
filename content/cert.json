@@ -4,7 +4,7 @@
     "description": "Check a Chiibitsu Labs course certificate from its link. Shows whether it is valid, revoked or not found."
   },
   "eyebrow": "The Aikiri Network",
-  "placeholder": "Placeholder. This is sample data while the certificate record is being agreed. It is not a real certificate.",
+  "placeholder": "Placeholder. This is sample data from the certificate format's test vectors, shown on previews only. It is not a real certificate.",
   "checkingH1": "Checking…",
   "checking": "Checking the Aikiri Network ledger…",
   "valid": {

@@ -16,7 +16,10 @@ export function CertCheck({ samples }: { samples: boolean }) {
 
   useEffect(() => {
     // Samples (previews only) load on demand, so production never downloads the fixture.
-    const ledger: Promise<CertLedger> = samples ? import("@/lib/certSamples").then((m) => m.sampleLedger(liveLedger)) : Promise.resolve(liveLedger);
+    // If the samples chunk fails to load (say, after a redeploy), real links still check against the live ledger.
+    const ledger: Promise<CertLedger> = samples
+      ? import("@/lib/certSamples").then((m) => m.sampleLedger(liveLedger), () => liveLedger)
+      : Promise.resolve(liveLedger);
     // Each run gets a ticket; only the latest one may set the view, so a slow earlier check never
     // overwrites a newer link's result. Unmount retires every ticket.
     let latest = 0;

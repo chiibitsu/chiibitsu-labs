@@ -3,7 +3,7 @@
 // Runs the TypeScript directly (Node strips the types; scripts/ts-alias.mjs maps "@/").
 import fs from "node:fs";
 import {
-  bytesToBase64url, canonicalJson, checkCertificate, decodePayload, fingerprintOf, isProof, leafHash, pathRoot,
+  bytesToBase64url, canonicalJson, checkCertificate, decodePayload, fingerprintOf, isProof, leafHash, manilaTime, pathRoot,
 } from "../lib/certCheck.ts";
 import { NotInLedger } from "../lib/ledgerCheck.ts";
 
@@ -109,7 +109,13 @@ expect("tampered path: INVALID", await state(`#${ok.payload}`, vectorLedger({
 expect("proof with an extra field: INVALID", await state(`#${ok.payload}`, vectorLedger({ proofs: { [fpOk]: { ...proofOk, note: "x" } } })), "invalid");
 expect("revocation whose block is not there yet: still VALID", await state(`#${rev.payload}`, vectorLedger({ revoked: { [rev.fingerprint]: { ...R.revoked_files[rev.fingerprint], block: 14 } } })), "valid");
 expect("revocation pointing at a cohort block: still VALID", await state(`#${rev.payload}`, vectorLedger({ revoked: { [rev.fingerprint]: { ...R.revoked_files[rev.fingerprint], block: 12 } } })), "valid");
-expect("revocation file for another fingerprint: still VALID", await state(`#${rev.payload}`, vectorLedger({ revoked: { [rev.fingerprint]: { ...R.revoked_files[rev.fingerprint], fingerprint: fpOk } } })), "valid");
+expect("revocation file for another fingerprint: ERROR, never VALID", await state(`#${rev.payload}`, vectorLedger({ revoked: { [rev.fingerprint]: { ...R.revoked_files[rev.fingerprint], fingerprint: fpOk } } })), "error");
+expect("revocation file with an extra field: ERROR, never VALID", await state(`#${rev.payload}`, vectorLedger({ revoked: { [rev.fingerprint]: { ...R.revoked_files[rev.fingerprint], reason: "x" } } })), "error");
+expect("revocation file unreadable: ERROR, never VALID", await state(`#${rev.payload}`, { ...vectorLedger(), revocation: async () => { throw new SyntaxError("cut off"); } }), "error");
+expect("proof file unreadable: ERROR, never INVALID", await state(`#${ok.payload}`, { ...vectorLedger(), proof: async () => { throw new SyntaxError("cut off"); } }), "error");
+expect("Manila time from a +08:00 block", manilaTime("2026-02-03T10:00:00+08:00"), "2026-02-03 10:00 Manila time");
+expect("Manila time from UTC", manilaTime("2026-02-03T02:00:00Z"), "2026-02-03 10:00 Manila time");
+expect("no offset: shown as written", manilaTime("2026-02-03T10:00:00"), "2026-02-03T10:00:00");
 const broken = { ...vectorLedger(), proof: async () => { throw new Error("503"); } };
 expect("ledger unreadable: ERROR", await state(`#${ok.payload}`, broken), "error");
 

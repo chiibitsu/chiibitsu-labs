@@ -201,10 +201,13 @@ export async function checkCertificate(fragment: string, ledger: CertLedger): Pr
 }
 
 // A revocation counts only once its block is on the ledger and revokes exactly this fingerprint. Until then the
-// certificate is still valid: the revocation is only requested.
+// certificate is still valid: the revocation is only requested. A revocation file that is there but is not a
+// revocation of this fingerprint is a broken ledger, not a verdict: it throws, and the page says it could not check,
+// rather than call a possibly revoked certificate valid.
 async function revokedTime(ledger: CertLedger, fingerprint: string): Promise<string | null> {
   const r = await ledger.revocation(fingerprint);
-  if (!isRevocation(r, fingerprint)) return null;
+  if (r === null) return null;
+  if (!isRevocation(r, fingerprint)) throw new Error("unreadable revocation file");
   try {
     const b = await ledger.block(r.block);
     return rootsAre(b, "revocation", fingerprint) ? b.timestamp : null;
@@ -215,7 +218,9 @@ async function revokedTime(ledger: CertLedger, fingerprint: string): Promise<str
 }
 
 // Block times are shown in Manila time. The blocks carry a +08:00 offset.
+// A timestamp without an offset is shown as written, never read in the visitor's own time zone.
 export function manilaTime(timestamp: string): string {
+  if (!/(Z|[+-]\d{2}:\d{2})$/.test(timestamp)) return timestamp;
   const d = new Date(timestamp.replace(/\.\d+/, ""));
   if (Number.isNaN(d.getTime())) return timestamp;
   const p = Object.fromEntries(
@@ -224,7 +229,7 @@ export function manilaTime(timestamp: string): string {
   );
   return `${p.year}-${p.month}-${p.day} ${p.hour}:${p.minute} Manila time`;
 }
-export const manilaDate = (timestamp: string) => manilaTime(timestamp).slice(0, 10);
+export const manilaDate = (timestamp: string) => manilaTime(timestamp).slice(0, 10); // YYYY-MM-DD either way
 
 // ---- The live ledger ----
 
@@ -232,11 +237,7 @@ async function getJsonOrNull(url: string): Promise<unknown> {
   const r = await fetch(url, { cache: "no-store", referrerPolicy: "no-referrer" });
   if (r.status === 404) return null;
   if (!r.ok) throw new Error(`${r.status}`);
-  try {
-    return await r.json();
-  } catch {
-    return {}; // unreadable JSON is a file that is not a proof
-  }
+  return r.json(); // a cut-off or garbled body throws: "could not check", never "invalid"
 }
 
 export const liveLedger: CertLedger = {

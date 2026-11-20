@@ -5,9 +5,9 @@ import fs from "node:fs";
 const root = new URL("../", import.meta.url);
 export async function resolve(spec, ctx, next) {
   if (spec.startsWith("@/")) {
-    for (const ext of [".ts", ".tsx", ""]) {
+    for (const ext of [".ts", ".tsx", "", "/index.ts", "/index.tsx"]) {
       const url = new URL(spec.slice(2) + ext, root);
-      if (fs.existsSync(url)) return next(url.href, ctx);
+      if (fs.existsSync(url) && fs.statSync(url).isFile()) return next(url.href, ctx);
     }
   }
   return next(spec, ctx);

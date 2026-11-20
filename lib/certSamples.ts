@@ -4,7 +4,7 @@
 // a real block. CertCheck loads this file on demand, only when samples are on.
 
 import vectors from "@/lib/fixtures/cert_cohort.json";
-import { bytesToBase64url, type CertLedger } from "@/lib/certCheck";
+import type { CertLedger } from "@/lib/certCheck";
 import type { Block, Witness } from "@/lib/ledgerCheck";
 
 const r = vectors.records;
@@ -17,10 +17,6 @@ const WITNESS: Witness = {
   base: { tx: null, note: "Placeholder: no Base transaction. The real one comes from the ledger." },
   bitcoin: { state: "none", heights: [] },
 };
-
-// The links to try on a preview: payload = base64url of the canonical bytes, exactly as the vectors give it.
-export const SAMPLE_LINKS = r.examples.map((e) => ({ fingerprint: e.fingerprint, path: `/network/cert#${e.payload}` }));
-export const samplePayloadOk = r.examples.every((e) => bytesToBase64url(new TextEncoder().encode(e.canonical)) === e.payload);
 
 export function sampleLedger(fallback: CertLedger): CertLedger {
   const isSample = async (fp: string) => proofs.has(fp);

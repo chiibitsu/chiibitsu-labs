@@ -73,7 +73,12 @@ try {
     if (src === undefined && nonce && attr(tag, NONCE_ATTR) !== nonce) problems.push(`/network/cert: an inline script without the nonce: ${tag.slice(0, 80)}`);
     if (src && /^(https?:)?\/\//.test(src)) problems.push(`/network/cert: a script from another origin: ${src}`);
   }
-  if (/Sample Participant/.test(html)) problems.push("/network/cert: a holder name is in the server HTML");
+  // The record lives only in the fragment: no sample holder's name, and no payload, may be in the server HTML.
+  const vectors = JSON.parse(fs.readFileSync(new URL("../lib/fixtures/cert_cohort.json", import.meta.url), "utf8")).records.examples;
+  for (const e of vectors) {
+    if (html.includes(e.record.holder) || html.includes(JSON.stringify(e.record.holder).slice(1, -1))) problems.push(`/network/cert: a holder name is in the server HTML: ${e.record.holder}`);
+    if (html.includes(e.payload)) problems.push("/network/cert: a certificate payload is in the server HTML");
+  }
 
   // The test can tell: the rest of the site still loads its trackers.
   const other = await (await fetch(`${base}/network/check`)).text();
