@@ -1,6 +1,6 @@
 # /network/cert#&lt;payload&gt;: check a certificate
 
-Status: built to the certificate format in aikiri-network's `docs/certificates.md` (PR #22, at `562cf19`). That PR's `tests/vectors/cert_cohort.json` is copied into `lib/fixtures/` and every vector passes (`npm run check:cert-logic`). **The merge waits for aikiri-network #22 to merge**, so the format can't move under this page. If the two ever disagree, the doc wins.
+Status: built to the certificate format in aikiri-network's `docs/certificates.md` (PR #22, at `5a65b0b`). That PR's `tests/vectors/cert_cohort.json` is copied into `lib/fixtures/` and every vector passes (`npm run check:cert-logic`). **The merge waits for aikiri-network #22 to merge**, so the format can't move under this page. If the two ever disagree, the doc wins.
 
 ## The story
 
@@ -25,7 +25,8 @@ Status: built to the certificate format in aikiri-network's `docs/certificates.m
 4. It folds the path in an RFC 9162 tree with text prefixes: leaf = SHA-256(`"aikiri-ledger/cert-leaf/v1\n"` ‖ fingerprint's 32 bytes), node = SHA-256(`"aikiri-ledger/cert-node/v1\n"` ‖ left ‖ right). The result must equal `root`.
 5. The proof is a pointer, not evidence. `blocks/<block>.json` must exist, and its roots must be exactly `[{"kind":"cert-cohort","sha256":root}]`.
 6. `ledger/certs/revoked/<fingerprint>.json` (`{block, fingerprint, v}`) counts only if its block exists and its roots are exactly `[{"kind":"revocation","sha256":fingerprint}]`. Until then the certificate stays valid.
-7. Sealed and revoked times are block timestamps, shown in Manila time. `completed` is shown exactly as written. Base and Bitcoin come from `loadWitness`, as on /network/check.
+7. Holder, course, instructor and host are shown inside `<bdi>`, and every hidden character (bidi overrides and isolates, C1 controls, line separators, zero-width and other default-ignorable characters, Hangul fillers, tags) is shown as a visible U+FFFD, so two different records never look the same. ZWJ, ZWNJ, variation selectors and the plain LRM, RLM and ALM marks are kept, since real text needs them. The bytes may carry them, and the doc requires a page to neutralise them. Only the display changes; the hashed bytes never do.
+8. Sealed and revoked times are block timestamps, shown in Manila time. `completed` is shown exactly as written. Base and Bitcoin come from `loadWitness`, as on /network/check.
 
 There is no server route, no store and no rate limit. The fragment stays in the address bar, so refresh and copy-link keep working for the holder.
 
@@ -35,8 +36,8 @@ There is no server route, no store and no rate limit. The fragment stays in the 
 |---|---|---|---|
 | **Valid** | The proof holds, its block seals exactly that root as `cert-cohort`, and no revocation block names it | "This certificate is valid." Then: "Issued by Chiibitsu Labs, not a government body. This record has not changed since it was sealed on &lt;date&gt;." | Issued to, course, completed on, instructor, "Hosted by" only when the link carries a host, issued by, certificate number, block, sealed (Manila time), Base, Bitcoin, fingerprint |
 | **Revoked** | As valid, and a `revocation` block names this fingerprint | "This certificate was revoked." | Certificate number, course, and when it was revoked (the revocation block's time). Not the holder's name: that stays hidden until Chii rules. |
-| **Not found** | A complete record that no sealed cohort holds: no proof file, a proof with `block: null`, a block that isn't there, or a block that seals something else | "No sealed certificate matches this link." | Nothing from the link |
-| **Invalid** | Not a v1 record: malformed, not canonical, not NFC, another issuer, an unknown field. Or a proof that doesn't lead to its root, or sits under another certificate's name | "This link does not check out." | Nothing from the link |
+| **Not found** | A complete record that no sealed cohort holds: no proof file, or a proof whose block is `null`, missing, another cohort's, the root under another kind, or something else | "No sealed certificate matches this link." | Nothing from the link |
+| **Invalid** | Not a v1 record: malformed, not canonical, not NFC, another issuer, an unknown field. Or a proof that doesn't lead to its root (tampered path, swapped root), or sits under another certificate's name (the doc's verify table) | "This link does not check out." | Nothing from the link |
 | **Could not check** | The ledger could not be read | "Could not check just now." | That this says nothing either way |
 
 Every state also shows **What this page shows**: only what Chiibitsu Labs issued; not a government certification, licence or accredited qualification; what "valid" does and does not mean; the details stay on your device; one certificate at a time. `npm run check:content` fails if the first two lines go missing, or if the cert copy ever says "certified", "legally", "proven" or "venue".

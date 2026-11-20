@@ -1,16 +1,24 @@
 // Gate: the certificate check against aikiri-network's golden vectors (lib/fixtures/cert_cohort.json, copied from
-// PR #22 at 562cf19), plus reject cases built from those vectors' own records. Every value is fake.
+// PR #22 at 5a65b0b), plus reject cases built from those vectors' own records. Every value is fake.
 // Runs the TypeScript directly (Node strips the types; scripts/ts-alias.mjs maps "@/").
 import fs from "node:fs";
 import {
-  bytesToBase64url, canonicalJson, checkCertificate, decodePayload, fingerprintOf, isProof, leafHash, manilaTime, pathRoot,
+  bytesToBase64url, canonicalJson, checkCertificate, decodePayload, displayText, fingerprintOf, isProof, leafHash, manilaTime, pathRoot,
 } from "../lib/certCheck.ts";
 import { NotInLedger } from "../lib/ledgerCheck.ts";
 
-const V = JSON.parse(fs.readFileSync(new URL("../lib/fixtures/cert_cohort.json", import.meta.url), "utf8"));
+const raw = fs.readFileSync(new URL("../lib/fixtures/cert_cohort.json", import.meta.url));
+// The copy must stay byte for byte what aikiri-network #22 published (lib/fixtures/README.md).
+const PINNED = "84bd49247446e847f87a2eb25bf717929a901af65f2f92715833c3738e12a464";
+const V = JSON.parse(raw.toString("utf8"));
 const R = V.records;
 const problems = [];
 let checks = 0;
+{
+  const { createHash } = await import("node:crypto");
+  const got = createHash("sha256").update(raw).digest("hex");
+  if (got !== PINNED) problems.push(`lib/fixtures/cert_cohort.json is not the pinned copy: sha256 ${got}`);
+}
 const expect = (name, got, want) => {
   checks++;
   if (JSON.stringify(got) !== JSON.stringify(want)) problems.push(`${name}: got ${JSON.stringify(got)}, want ${JSON.stringify(want)}`);
@@ -51,8 +59,24 @@ const vectorLedger = (over = {}) => ({
   isPlaceholder: async () => false,
 });
 const payloadOf = (fp) => R.examples.find((e) => e.fingerprint === fp).payload;
-for (const [fp, want] of Object.entries(R.expected_with_3_leaf_cohort)) {
-  expect(`verdict ${fp.slice(0, 8)}`, (await checkCertificate(`#${payloadOf(fp)}`, vectorLedger())).state, want.toLowerCase().replace(" ", "_"));
+const verdict = (s) => s.toLowerCase().replace(" ", "_");
+// Every proof of each cohort, against the vectors' blocks.
+for (const [size, verdicts] of Object.entries(R.expected_by_cohort)) {
+  const c = R.cohorts.find((x) => x.size === Number(size));
+  const proofs = Object.fromEntries(c.proofs.map((p) => [p.leaf, p]));
+  for (const [fp, want] of Object.entries(verdicts)) {
+    expect(`cohort of ${size}: verdict ${fp.slice(0, 8)}`, (await checkCertificate(`#${payloadOf(fp)}`, vectorLedger({ proofs }))).state, verdict(want));
+  }
+}
+// reader_cases: one proof altered in each way a reader must catch.
+for (const rc of R.reader_cases) {
+  expect(`reader case "${rc.case}"`, (await checkCertificate(`#${payloadOf(rc.proof.leaf)}`, vectorLedger({ proofs: { [rc.proof.leaf]: rc.proof } }))).state, verdict(rc.expected));
+}
+// revoked_file_cases: a revoked/ file counts only if it names the right revocation block.
+for (const rf of R.revoked_file_cases) {
+  const fp = rf.file.fingerprint;
+  const got = (await checkCertificate(`#${payloadOf(fp)}`, vectorLedger({ revoked: { [fp]: rf.file } }))).state;
+  expect(`revoked file "${rf.case}" ${rf.counts ? "counts" : "does not count"}`, got, rf.counts ? "revoked" : "valid");
 }
 const [ok, rev] = [R.examples[0], R.examples[1]];
 const revoked = await checkCertificate(`#${rev.payload}`, vectorLedger());
@@ -113,6 +137,14 @@ expect("revocation file for another fingerprint: ERROR, never VALID", await stat
 expect("revocation file with an extra field: ERROR, never VALID", await state(`#${rev.payload}`, vectorLedger({ revoked: { [rev.fingerprint]: { ...R.revoked_files[rev.fingerprint], reason: "x" } } })), "error");
 expect("revocation file unreadable: ERROR, never VALID", await state(`#${rev.payload}`, { ...vectorLedger(), revocation: async () => { throw new SyntaxError("cut off"); } }), "error");
 expect("proof file unreadable: ERROR, never INVALID", await state(`#${ok.payload}`, { ...vectorLedger(), proof: async () => { throw new SyntaxError("cut off"); } }), "error");
+expect("a bidi override is allowed in the bytes", decodePayload(`#${recordPayload({ ...ok.record, holder: "Test \u202Eredloh" })}`) !== null, true);
+expect("display marks a right-to-left override", displayText("Test \u202Eredloh"), "Test \uFFFDredloh");
+expect("display marks an isolate", displayText("Ana\u2066 Cruz"), "Ana\uFFFD Cruz");
+expect("display marks zero-width and blank-looking characters", displayText("Juan\u200BCruz Chiibitsu\u3164Labs \uFEFFx\u00ADy\u2060z"), "Juan\uFFFDCruz Chiibitsu\uFFFDLabs \uFFFDx\uFFFDy\uFFFDz");
+expect("display marks tag characters", displayText("a\u{E0041}b"), "a\uFFFDb");
+expect("display keeps RLM, ZWJ and variation selectors", displayText("دورة\u200F 2026 👩\u200D💻 ☺\uFE0F"), "دورة\u200F 2026 👩\u200D💻 ☺\uFE0F");
+expect("display shows a line separator as U+FFFD", displayText("A\u2028B\u0085C"), "A\uFFFDB\uFFFDC");
+expect("display leaves ordinary text alone", displayText("Tëst Hōlder \"Three\" \\ 🎓"), "Tëst Hōlder \"Three\" \\ 🎓");
 expect("Manila time from a +08:00 block", manilaTime("2026-02-03T10:00:00+08:00"), "2026-02-03 10:00 Manila time");
 expect("Manila time from UTC", manilaTime("2026-02-03T02:00:00Z"), "2026-02-03 10:00 Manila time");
 expect("no offset: shown as written", manilaTime("2026-02-03T10:00:00"), "2026-02-03T10:00:00");
@@ -123,4 +155,4 @@ if (problems.length) {
   console.error(`cert logic failed (${problems.length} of ${checks}):\n- ${problems.join("\n- ")}`);
   process.exit(1);
 }
-console.log(`cert logic ok: ${checks} checks. Every golden vector passes (aikiri-network #22 at 562cf19), and every reject case is INVALID or NOT FOUND as the doc says`);
+console.log(`cert logic ok: ${checks} checks. Every golden vector passes (aikiri-network #22 at 5a65b0b), and every reject case is INVALID or NOT FOUND as the doc says`);

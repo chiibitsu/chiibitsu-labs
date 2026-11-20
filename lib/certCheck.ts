@@ -1,7 +1,7 @@
 // /network/cert#<payload>: checks one certificate in the visitor's browser. Nothing from the link leaves the device
 // except its fingerprint, which goes to the Aikiri Network ledger (raw.githubusercontent.com) to fetch the proof.
 //
-// The format is aikiri-network's docs/certificates.md (PR #22, at 562cf19), and lib/fixtures/cert_cohort.json is its
+// The format is aikiri-network's docs/certificates.md (PR #22, at 5a65b0b), and lib/fixtures/cert_cohort.json is its
 // golden vectors. npm run check:cert-logic runs every vector through this file. If the two ever disagree, the doc wins.
 //
 // Privacy:
@@ -216,6 +216,20 @@ async function revokedTime(ledger: CertLedger, fingerprint: string): Promise<str
     throw e;
   }
 }
+
+// Record text may carry invisible or direction-changing characters: aikiri-network's docs/certificates.md allows
+// them in the bytes and requires a page to show them neutralised. For display only, each one is shown as a visible
+// U+FFFD, so two different sealed records never look the same, and the page wraps each value in <bdi>:
+// - bidi embeddings, overrides and isolates (U+202A–U+202E, U+2066–U+2069);
+// - C1 controls and line/paragraph separators (U+0080–U+009F, U+2028, U+2029);
+// - default-ignorable and blank-looking characters: soft hyphen, CGJ, Hangul fillers, Khmer and Mongolian inherent
+//   vowels and vowel separator, zero-width space, word joiner and invisible operators, BOM, interlinear annotation,
+//   shorthand-format and musical format controls, and tag characters.
+// Kept, because real text needs them: ZWNJ and ZWJ (U+200C, U+200D; emoji and Indic scripts), variation selectors
+// (U+FE00–U+FE0F, U+E0100–U+E01EF), and the plain direction marks LRM, RLM and ALM (U+200E, U+200F, U+061C), which
+// order mixed Arabic or Hebrew text and cannot override it. The hashed bytes are never touched.
+const HIDDEN = /[\u00AD\u034F\u115F\u1160\u17B4\u17B5\u180E\u180F\u200B\u202A-\u202E\u2028\u2029\u2060-\u206F\u3164\uFEFF\uFFA0\uFFF0-\uFFFB\u0080-\u009F\u{1BCA0}-\u{1BCA3}\u{1D173}-\u{1D17A}\u{E0000}-\u{E007F}]/gu;
+export const displayText = (s: string) => s.replace(HIDDEN, "\uFFFD");
 
 // Block times are shown in Manila time. The blocks carry a +08:00 offset.
 // A timestamp without an offset is shown as written, never read in the visitor's own time zone.

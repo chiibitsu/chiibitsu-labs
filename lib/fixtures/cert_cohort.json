@@ -305,7 +305,7 @@
  },
  "node_domain": "aikiri-ledger/cert-node/v1\n",
  "records": {
-  "about": "Issuer record format vectors. Every value is fake except the issuer, which format v1 fixes. canonical is the exact UTF-8 bytes hashed (also given as hex); fingerprint = sha256(record_domain + canonical); payload = base64url(canonical), no padding. blocks gives only the fields a reader takes from ledger/blocks/<NNNNNN>.json; real blocks carry more.",
+  "about": "Issuer record format vectors. Every value is fake except the issuer, which format v1 fixes. canonical is the exact UTF-8 bytes hashed (also given as hex); fingerprint = sha256(record_domain + canonical); payload = base64url(canonical), no padding. blocks gives only the fields a reader takes from ledger/blocks/<NNNNNN>.json; real blocks carry more. reader_cases: each proof against blocks, with the verdict a reader must give. revoked_file_cases: whether a revoked/ file counts, given blocks (it counts only if the block it names holds exactly that revocation).",
   "blocks": [
    {
     "index": 10,
@@ -346,6 +346,26 @@
      }
     ],
     "timestamp": "2026-03-01T10:00:00+08:00"
+   },
+   {
+    "index": 14,
+    "roots": [
+     {
+      "kind": "revocation",
+      "sha256": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac"
+     }
+    ],
+    "timestamp": "2026-03-02T10:00:00+08:00"
+   },
+   {
+    "index": 15,
+    "roots": [
+     {
+      "kind": "journal",
+      "sha256": "abababababababababababababababababababababababababababababababab"
+     }
+    ],
+    "timestamp": "2026-03-03T10:00:00+08:00"
    }
   ],
   "cohorts": [
@@ -506,13 +526,233 @@
     }
    }
   ],
-  "expected_with_3_leaf_cohort": {
-   "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d": "VALID",
-   "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e": "REVOKED",
-   "66727f0b41ca4abbf8b63f6fcf9c2bb43680725f6b2ea2e03ce2f6bc8d74582d": "VALID"
+  "expected_by_cohort": {
+   "1": {
+    "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d": "VALID"
+   },
+   "2": {
+    "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d": "VALID",
+    "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e": "REVOKED"
+   },
+   "3": {
+    "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d": "VALID",
+    "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e": "REVOKED",
+    "66727f0b41ca4abbf8b63f6fcf9c2bb43680725f6b2ea2e03ce2f6bc8d74582d": "VALID"
+   }
   },
   "issuer": "Chiibitsu Labs",
+  "reader_cases": [
+   {
+    "case": "valid",
+    "expected": "VALID",
+    "proof": {
+     "block": 12,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "right"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "revoked",
+    "expected": "REVOKED",
+    "proof": {
+     "block": 12,
+     "leaf": "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e",
+     "path": [
+      {
+       "sha256": "405994c6468a757fc0fadfeeaa33bea8d84dbc827a33a409814b70fede00ede5",
+       "side": "left"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "block null",
+    "expected": "NOT FOUND",
+    "proof": {
+     "block": null,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "right"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "block missing",
+    "expected": "NOT FOUND",
+    "proof": {
+     "block": 99,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "right"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "block holds another cohort",
+    "expected": "NOT FOUND",
+    "proof": {
+     "block": 11,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "right"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "block holds the root under another kind",
+    "expected": "NOT FOUND",
+    "proof": {
+     "block": 14,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "right"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "block holds something else",
+    "expected": "NOT FOUND",
+    "proof": {
+     "block": 15,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "right"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "path tampered",
+    "expected": "INVALID",
+    "proof": {
+     "block": 12,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "left"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "wrong root",
+    "expected": "INVALID",
+    "proof": {
+     "block": 12,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "right"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "207eb0c5bf71903a12fdc5b59c3dbcc146e5e11b9c6f067c7c73627c799c9724",
+     "v": 1
+    }
+   }
+  ],
   "record_domain": "aikiri-ledger/cert-record/v1\n",
+  "revoked_file_cases": [
+   {
+    "case": "names the revocation block",
+    "counts": true,
+    "file": {
+     "block": 13,
+     "fingerprint": "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e",
+     "v": 1
+    }
+   },
+   {
+    "case": "names a missing block",
+    "counts": false,
+    "file": {
+     "block": 99,
+     "fingerprint": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "v": 1
+    }
+   },
+   {
+    "case": "names a block that is not its revocation",
+    "counts": false,
+    "file": {
+     "block": 15,
+     "fingerprint": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "v": 1
+    }
+   }
+  ],
   "revoked_files": {
    "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e": {
     "block": 13,

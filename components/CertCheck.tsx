@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { WitnessRows } from "@/components/WitnessRows";
-import { checkCertificate, liveLedger, manilaDate, manilaTime, type CertLedger, type CertView } from "@/lib/certCheck";
+import { checkCertificate, displayText, liveLedger, manilaDate, manilaTime, type CertLedger, type CertView } from "@/lib/certCheck";
 import certJson from "@/content/cert.json";
 
 const c = certJson;
@@ -58,7 +58,7 @@ function State({ v }: { v: CertView | "checking" }) {
         <p className="body">{c.revoked.body.replace("{date}", manilaDate(v.revokedAt))}</p>
         <dl className="ledger-facts">
           <div className="ledger-row"><dt className="caption">{r.number}</dt><dd>{v.record.number}</dd></div>
-          <div className="ledger-row"><dt className="caption">{r.course}</dt><dd>{v.record.course}</dd></div>
+          <div className="ledger-row"><dt className="caption">{r.course}</dt><dd><T s={v.record.course} /></dd></div>
           <div className="ledger-row"><dt className="caption">{r.revoked}</dt><dd>{manilaTime(v.revokedAt)}</dd></div>
         </dl>
       </>
@@ -72,11 +72,11 @@ function State({ v }: { v: CertView | "checking" }) {
       <h1>{c.valid.h1}</h1>
       <p className="body">{c.valid.body.replace("{date}", manilaDate(v.sealedAt))}</p>
       <dl className="ledger-facts">
-        <div className="ledger-row"><dt className="caption">{r.holder}</dt><dd>{rec.holder}</dd></div>
-        <div className="ledger-row"><dt className="caption">{r.course}</dt><dd>{rec.course}</dd></div>
+        <div className="ledger-row"><dt className="caption">{r.holder}</dt><dd><T s={rec.holder} /></dd></div>
+        <div className="ledger-row"><dt className="caption">{r.course}</dt><dd><T s={rec.course} /></dd></div>
         <div className="ledger-row"><dt className="caption">{r.completed}</dt><dd>{rec.completed}</dd></div>
-        <div className="ledger-row"><dt className="caption">{r.instructor}</dt><dd>{rec.instructor}</dd></div>
-        {rec.host && <div className="ledger-row"><dt className="caption">{r.host}</dt><dd>{rec.host}</dd></div>}
+        <div className="ledger-row"><dt className="caption">{r.instructor}</dt><dd><T s={rec.instructor} /></dd></div>
+        {rec.host && <div className="ledger-row"><dt className="caption">{r.host}</dt><dd><T s={rec.host} /></dd></div>}
         <div className="ledger-row"><dt className="caption">{r.issuer}</dt><dd>{rec.issuer}</dd></div>
         <div className="ledger-row"><dt className="caption">{r.number}</dt><dd>{rec.number}</dd></div>
         <div className="ledger-row"><dt className="caption">{r.block}</dt><dd>{v.placeholder ? "Placeholder" : v.block}</dd></div>
@@ -86,4 +86,10 @@ function State({ v }: { v: CertView | "checking" }) {
       </dl>
     </>
   );
+}
+
+// Record text from the link: isolated with <bdi>, hidden characters shown as U+FFFD (displayText in lib/certCheck.ts,
+// as aikiri-network's docs/certificates.md requires; see docs/network-cert.md step 7).
+function T({ s }: { s: string }) {
+  return <bdi>{displayText(s)}</bdi>;
 }
