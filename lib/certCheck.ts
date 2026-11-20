@@ -1,77 +1,76 @@
 // /network/cert#<payload>: checks one certificate in the visitor's browser. Nothing from the link leaves the device
 // except its fingerprint, which goes to the Aikiri Network ledger (raw.githubusercontent.com) to fetch the proof.
 //
-// The format follows the Network PM's answers (2026-11-20). The final word is docs/certificates.md in aikiri-network
-// with its golden vectors (story 1). Two values are not known yet and are marked PENDING: the fingerprint's domain
-// prefix and the cohort root's kind. Until they are set, no real certificate can match, so the page fails closed:
-// every real link reads "No certificate in this link." Set them from the docs, then run the vectors.
+// The format is aikiri-network's docs/certificates.md (PR #22, at 562cf19), and lib/fixtures/cert_cohort.json is its
+// golden vectors. npm run check:cert-logic runs every vector through this file. If the two ever disagree, the doc wins.
 //
-// Privacy, whatever the format:
+// Privacy:
 // - The record (and so the holder's name) lives only in the URL fragment, which browsers never send to a server.
 // - Nothing from the fragment goes to analytics, /api/verify-alert or any log. This file imports neither.
 // - One link checks one certificate. There is no list, search or enumeration.
 
 import { LEDGER_RAW, NotInLedger, loadBlock, loadWitness, sha256Hex, type Block, type Witness } from "@/lib/ledgerCheck";
 
-// PENDING docs/certificates.md: fingerprint = SHA-256(FINGERPRINT_PREFIX ‖ canonical bytes).
-export const FINGERPRINT_PREFIX = "PENDING:docs/certificates.md:fingerprint-prefix";
-// PENDING docs/certificates.md: the kind of a cohort block's roots[0].
-export const COHORT_KIND = "PENDING:docs/certificates.md:cohort-kind";
+export const RECORD_DOMAIN = "aikiri-ledger/cert-record/v1\n";
+export const LEAF_DOMAIN = "aikiri-ledger/cert-leaf/v1\n";
+export const NODE_DOMAIN = "aikiri-ledger/cert-node/v1\n";
 export const ISSUER = "Chiibitsu Labs";
+const MAX_PAYLOAD = 4096;
+const MAX_PATH = 16;
 
-// The issuer record. No venue field; host is an optional generic label, shown only when the link carries it.
+// The issuer record, format v1. No venue field; host only when the certificate names one.
 export type CertRecord = {
-  v: number;
-  number: string; // random, at least 128 bits
+  v: 1;
+  number: string; // 32 to 64 lowercase hex: 128 to 256 random bits, the salt
   holder: string;
   course: string;
-  completed: string; // YYYY-MM-DD, shown as is
-  issuer: string;
+  completed: string; // YYYY-MM-DD, shown exactly as written
+  issuer: typeof ISSUER;
   instructor: string;
   host?: string;
 };
 
-// ledger/certs/<fingerprint>.json
+// ledger/certs/<fingerprint>.json. A pointer, not evidence: the block it names decides.
 export type CertProof = {
-  v: number;
-  leaf: string;
-  path: { side: "L" | "R"; hash: string }[]; // each sibling, and the side it sits on
+  v: 1;
+  leaf: string; // the fingerprint
+  path: { sha256: string; side: "left" | "right" }[];
   root: string;
-  block: number;
+  block: number | null;
 };
 
-// ledger/certs/revoked/<fingerprint>.json. The revocation is sealed in its own block; its time is that block's.
-export type CertRevocation = { v: number; fingerprint: string; block: number };
+// ledger/certs/revoked/<fingerprint>.json. Counts only if the block it names is a revocation of this fingerprint.
+export type CertRevocation = { v: 1; fingerprint: string; block: number };
 
 export type CertView =
   | { state: "valid"; record: CertRecord; fingerprint: string; block: number; sealedAt: string; witness: Witness; placeholder: boolean }
   | { state: "revoked"; record: CertRecord; revokedAt: string; placeholder: boolean }
-  | { state: "not_found" }
-  | { state: "error" }; // the ledger could not be read: not the same as "not found"
+  | { state: "not_found" } // a well-formed record that no sealed cohort holds (yet)
+  | { state: "invalid" } // not a v1 record, or a proof that does not hold
+  | { state: "error" }; // the ledger could not be read: says nothing either way
 
 export interface CertLedger {
-  proof(fingerprint: string): Promise<CertProof | null>;
-  revocation(fingerprint: string): Promise<CertRevocation | null>;
-  block(index: number): Promise<Block>;
+  proof(fingerprint: string): Promise<unknown>; // null when there is no file
+  revocation(fingerprint: string): Promise<unknown>; // null when there is no file
+  block(index: number): Promise<Block>; // throws NotInLedger when the block is not there
   witness(index: number): Promise<Witness>;
   isPlaceholder(fingerprint: string): Promise<boolean>;
 }
 
 const HEX64 = /^[0-9a-f]{64}$/;
-const MAX_FRAGMENT = 4096;
-const FIELDS = ["completed", "course", "holder", "host", "instructor", "issuer", "number", "v"];
+const isObject = (v: unknown): v is Record<string, unknown> => !!v && typeof v === "object" && !Array.isArray(v);
+const sameKeys = (o: Record<string, unknown>, keys: string[]) => {
+  const k = Object.keys(o).sort();
+  return k.length === keys.length && [...keys].sort().every((x, i) => x === k[i]);
+};
 
-// ---- Decoding the link ----
+// ---- The link payload ----
 
 export function base64urlToBytes(s: string): Uint8Array<ArrayBuffer> | null {
-  // Unpadded base64url only: no "=", no "+" or "/".
-  if (!/^[A-Za-z0-9_-]+$/.test(s) || s.length % 4 === 1) return null;
-  const b64 = s.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((s.length + 3) % 4);
+  if (!/^[A-Za-z0-9_-]*$/.test(s) || s.length % 4 === 1) return null; // no "=" padding, nothing outside the alphabet
   try {
-    const bin = atob(b64);
-    const out = new Uint8Array(bin.length);
-    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-    return out;
+    const bin = atob(s.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((s.length + 3) % 4));
+    return Uint8Array.from(bin, (ch) => ch.charCodeAt(0));
   } catch {
     return null;
   }
@@ -83,57 +82,61 @@ export function bytesToBase64url(bytes: Uint8Array): string {
   return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-// Canonical form: sorted keys, no whitespace, UTF-8, NFC strings, integers only (no floats).
-// Escaping is JSON.stringify's; the golden vectors confirm or correct it.
-export function canonicalJson(value: unknown): string {
-  if (typeof value === "string") return JSON.stringify(value);
-  if (typeof value === "number") {
-    if (!Number.isSafeInteger(value)) throw new Error("not an integer");
-    return String(value);
-  }
-  if (value && typeof value === "object" && !Array.isArray(value)) {
-    const o = value as Record<string, unknown>;
-    return `{${Object.keys(o).sort().map((k) => `${JSON.stringify(k)}:${canonicalJson(o[k])}`).join(",")}}`;
-  }
-  throw new Error("unsupported value");
+// Canonical bytes: keys sorted, no whitespace, UTF-8, only " and \ escaped. Given the record rules (no control
+// characters, no lone surrogates), that is exactly JSON.stringify of the key-sorted object, through TextEncoder.
+export function canonicalJson(record: Record<string, unknown>): string {
+  return JSON.stringify(Object.fromEntries(Object.keys(record).sort().map((k) => [k, record[k]])));
 }
-export const canonicalBytes = (r: CertRecord) => new TextEncoder().encode(canonicalJson(r));
+export const canonicalBytes = (record: CertRecord) => new TextEncoder().encode(canonicalJson(record));
 
-const text = (v: unknown, max = 200): v is string =>
-  typeof v === "string" && v.trim().length > 0 && v.length <= max && v === v.normalize("NFC") && !/[\u0000-\u001f\u007f]/.test(v);
+// A text field: 1 to 200 code points, already NFC, no control characters, no lone surrogates.
+const LONE_SURROGATE = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/;
+const CONTROL = /[\u0000-\u001f\u007f]/;
+const textField = (v: unknown): v is string =>
+  typeof v === "string" && [...v].length >= 1 && [...v].length <= 200 && !CONTROL.test(v) && !LONE_SURROGATE.test(v) && v === v.normalize("NFC");
 
-// Decodes a payload, and rejects it unless its bytes are already canonical: a re-encoded or edited link is not
-// the record that was sealed, even if it says the same thing.
+const realDate = (s: string) => {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+  if (!m) return false;
+  const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+  return d.getUTCFullYear() === +m[1] && d.getUTCMonth() === +m[2] - 1 && d.getUTCDate() === +m[3];
+};
+
+// A v1 record, by the format's rules, issuer included.
+export function isRecord(r: unknown): r is CertRecord {
+  if (!isObject(r)) return false;
+  const required = ["v", "number", "holder", "course", "completed", "issuer", "instructor"];
+  if (!sameKeys(r, "host" in r ? [...required, "host"] : required)) return false;
+  if (r.v !== 1) return false;
+  if (typeof r.number !== "string" || !/^[0-9a-f]{32,64}$/.test(r.number)) return false;
+  if (!["holder", "course", "instructor", "issuer"].every((k) => textField(r[k]))) return false;
+  if ("host" in r && !textField(r.host)) return false;
+  if (typeof r.completed !== "string" || !realDate(r.completed)) return false;
+  return r.issuer === ISSUER;
+}
+
+// Decodes a link's payload. Refused (null) unless it is a v1 record AND re-encoding it gives back exactly the same
+// bytes and the same payload: one valid payload per record.
 export function decodePayload(fragment: string): { bytes: Uint8Array<ArrayBuffer>; record: CertRecord } | null {
-  const raw = fragment.replace(/^#/, "");
-  if (!raw || raw.length > MAX_FRAGMENT) return null;
-  const bytes = base64urlToBytes(raw);
-  if (!bytes) return null;
-  let r: Record<string, unknown>;
-  let str: string;
+  const payload = fragment.replace(/^#/, "");
+  if (!payload || payload.length > MAX_PAYLOAD) return null;
+  const bytes = base64urlToBytes(payload);
+  if (!bytes || bytesToBase64url(bytes) !== payload) return null;
+  let text: string;
+  let parsed: unknown;
   try {
-    str = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
-    r = JSON.parse(str);
+    text = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+    parsed = JSON.parse(text);
   } catch {
     return null;
   }
-  if (!r || typeof r !== "object" || Array.isArray(r)) return null;
-  if (Object.keys(r).some((k) => !FIELDS.includes(k))) return null;
-  if (!Number.isSafeInteger(r.v)) return null;
-  if (typeof r.number !== "string" || !/^[A-Za-z0-9_-]{22,128}$/.test(r.number)) return null; // 22 base64url characters = 132 bits
-  for (const k of ["holder", "course", "issuer", "instructor"]) if (!text(r[k])) return null;
-  if (typeof r.completed !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(r.completed)) return null;
-  if ("host" in r && !text(r.host)) return null;
-  try {
-    if (canonicalJson(r) !== str) return null;
-  } catch {
-    return null;
-  }
-  return { bytes, record: r as unknown as CertRecord };
+  if (!isRecord(parsed) || canonicalJson(parsed) !== text) return null;
+  return { bytes, record: parsed };
 }
 
-// ---- Fingerprint and Merkle path (RFC 6962 style) ----
+// ---- Fingerprint and Merkle tree (RFC 9162 shape, text domain prefixes) ----
 
+const enc = new TextEncoder();
 const hexToBytes = (h: string) => Uint8Array.from(h.match(/../g) ?? [], (b) => parseInt(b, 16));
 const concat = (...parts: Uint8Array[]) => {
   const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));
@@ -142,59 +145,76 @@ const concat = (...parts: Uint8Array[]) => {
   return out;
 };
 
-export const fingerprintOf = (bytes: Uint8Array) => sha256Hex(concat(new TextEncoder().encode(FINGERPRINT_PREFIX), bytes).buffer);
-// PENDING docs/certificates.md: what goes after 0x00. Taken here to be the fingerprint's 32 raw bytes.
-export const leafHash = (fingerprint: string) => sha256Hex(concat(Uint8Array.of(0), hexToBytes(fingerprint)).buffer);
-export const nodeHash = (left: string, right: string) => sha256Hex(concat(Uint8Array.of(1), hexToBytes(left), hexToBytes(right)).buffer);
+export const fingerprintOf = (canonical: Uint8Array) => sha256Hex(concat(enc.encode(RECORD_DOMAIN), canonical).buffer);
+export const leafHash = (fingerprint: string) => sha256Hex(concat(enc.encode(LEAF_DOMAIN), hexToBytes(fingerprint)).buffer);
+export const nodeHash = (left: string, right: string) => sha256Hex(concat(enc.encode(NODE_DOMAIN), hexToBytes(left), hexToBytes(right)).buffer);
 
-export async function pathRoot(leaf: string, path: CertProof["path"]): Promise<string> {
-  let h = leaf;
-  for (const step of path) h = step.side === "L" ? await nodeHash(step.hash, h) : await nodeHash(h, step.hash);
+// From the leaf up: "left" means the sibling sits on the left, so the next hash is node(sibling, current).
+export async function pathRoot(fingerprint: string, path: CertProof["path"]): Promise<string> {
+  let h = await leafHash(fingerprint);
+  for (const step of path) h = step.side === "left" ? await nodeHash(step.sha256, h) : await nodeHash(h, step.sha256);
   return h;
 }
 
-const validProof = (p: unknown): p is CertProof => {
-  const q = p as CertProof;
-  return !!q && Number.isSafeInteger(q.v) && Number.isInteger(q.block) && q.block >= 0 && HEX64.test(q.leaf) && HEX64.test(q.root) &&
-    Array.isArray(q.path) && q.path.length <= 64 && q.path.every((s) => (s?.side === "L" || s?.side === "R") && HEX64.test(s.hash));
-};
-const validRevocation = (r: unknown, fingerprint: string): r is CertRevocation => {
-  const q = r as CertRevocation;
-  return !!q && Number.isSafeInteger(q.v) && q.fingerprint === fingerprint && Number.isInteger(q.block) && q.block >= 0;
-};
+// Closed schema: exactly these five fields.
+export function isProof(p: unknown): p is CertProof {
+  if (!isObject(p) || !sameKeys(p, ["v", "leaf", "path", "root", "block"])) return false;
+  if (p.v !== 1 || typeof p.leaf !== "string" || !HEX64.test(p.leaf) || typeof p.root !== "string" || !HEX64.test(p.root)) return false;
+  if (!(p.block === null || (Number.isSafeInteger(p.block) && (p.block as number) >= 0))) return false;
+  return Array.isArray(p.path) && p.path.length <= MAX_PATH &&
+    p.path.every((s) => isObject(s) && sameKeys(s, ["sha256", "side"]) && typeof s.sha256 === "string" && HEX64.test(s.sha256) && (s.side === "left" || s.side === "right"));
+}
 
-// The cohort block's first root must be this root, of the cohort kind.
-const cohortHolds = (b: Block, root: string) => b.roots?.[0]?.sha256 === root && b.roots[0].kind === COHORT_KIND;
+const isRevocation = (r: unknown, fingerprint: string): r is CertRevocation =>
+  isObject(r) && sameKeys(r, ["v", "fingerprint", "block"]) && r.v === 1 && r.fingerprint === fingerprint && Number.isSafeInteger(r.block) && (r.block as number) >= 0;
+
+// A block's roots must be exactly this one root.
+const rootsAre = (b: Block, kind: string, sha256: string) =>
+  Array.isArray(b.roots) && b.roots.length === 1 && isObject(b.roots[0]) && sameKeys(b.roots[0], ["kind", "sha256"]) &&
+  b.roots[0].kind === kind && b.roots[0].sha256 === sha256;
 
 // ---- The check ----
 
 export async function checkCertificate(fragment: string, ledger: CertLedger): Promise<CertView> {
   const decoded = decodePayload(fragment);
-  if (!decoded || decoded.record.issuer !== ISSUER) return { state: "not_found" };
+  if (!decoded) return { state: "invalid" };
   try {
     const fingerprint = await fingerprintOf(decoded.bytes);
-    const [proof, revocation] = await Promise.all([ledger.proof(fingerprint), ledger.revocation(fingerprint)]);
-    if (!validProof(proof)) return { state: "not_found" };
-    const leaf = await leafHash(fingerprint);
-    if (proof.leaf !== leaf) return { state: "not_found" };
-    const [block, root] = await Promise.all([ledger.block(proof.block), pathRoot(leaf, proof.path)]);
-    if (root !== proof.root || !cohortHolds(block, root)) return { state: "not_found" };
+    const proof = await ledger.proof(fingerprint);
+    if (proof === null) return { state: "not_found" };
+    // A proof that is not a proof, sits under another certificate's name, or does not lead to its root.
+    if (!isProof(proof) || proof.leaf !== fingerprint) return { state: "invalid" };
+    if ((await pathRoot(fingerprint, proof.path)) !== proof.root) return { state: "invalid" };
+    // A proof is only a pointer. No block, or a block that seals anything else: not found.
+    if (proof.block === null) return { state: "not_found" };
+    const block = await ledger.block(proof.block);
+    if (!rootsAre(block, "cert-cohort", proof.root)) return { state: "not_found" };
+
     const placeholder = await ledger.isPlaceholder(fingerprint);
-    if (revocation) {
-      // A revocation file that does not name this certificate is a broken ledger, not a verdict.
-      if (!validRevocation(revocation, fingerprint)) return { state: "error" };
-      const revokedIn = await ledger.block(revocation.block);
-      return { state: "revoked", record: decoded.record, revokedAt: revokedIn.timestamp, placeholder };
-    }
-    const witness = await ledger.witness(block.index);
-    return { state: "valid", record: decoded.record, fingerprint, block: block.index, sealedAt: block.timestamp, witness, placeholder };
+    const revokedAt = await revokedTime(ledger, fingerprint);
+    if (revokedAt) return { state: "revoked", record: decoded.record, revokedAt, placeholder };
+    const witness = await ledger.witness(proof.block);
+    return { state: "valid", record: decoded.record, fingerprint, block: proof.block, sealedAt: block.timestamp, witness, placeholder };
   } catch (e) {
-    // A proof naming a block that does not exist is a proof that does not reach the ledger: not found.
     return e instanceof NotInLedger ? { state: "not_found" } : { state: "error" };
   }
 }
 
-// Sealed and revoked times come from block timestamps, shown in Manila time.
+// A revocation counts only once its block is on the ledger and revokes exactly this fingerprint. Until then the
+// certificate is still valid: the revocation is only requested.
+async function revokedTime(ledger: CertLedger, fingerprint: string): Promise<string | null> {
+  const r = await ledger.revocation(fingerprint);
+  if (!isRevocation(r, fingerprint)) return null;
+  try {
+    const b = await ledger.block(r.block);
+    return rootsAre(b, "revocation", fingerprint) ? b.timestamp : null;
+  } catch (e) {
+    if (e instanceof NotInLedger) return null;
+    throw e;
+  }
+}
+
+// Block times are shown in Manila time. The blocks carry a +08:00 offset.
 export function manilaTime(timestamp: string): string {
   const d = new Date(timestamp.replace(/\.\d+/, ""));
   if (Number.isNaN(d.getTime())) return timestamp;
@@ -212,89 +232,17 @@ async function getJsonOrNull(url: string): Promise<unknown> {
   const r = await fetch(url, { cache: "no-store", referrerPolicy: "no-referrer" });
   if (r.status === 404) return null;
   if (!r.ok) throw new Error(`${r.status}`);
-  return r.json();
+  try {
+    return await r.json();
+  } catch {
+    return {}; // unreadable JSON is a file that is not a proof
+  }
 }
 
 export const liveLedger: CertLedger = {
-  proof: async (fp) => (await getJsonOrNull(`${LEDGER_RAW}/certs/${fp}.json`)) as CertProof | null,
-  revocation: async (fp) => (await getJsonOrNull(`${LEDGER_RAW}/certs/revoked/${fp}.json`)) as CertRevocation | null,
+  proof: (fp) => getJsonOrNull(`${LEDGER_RAW}/certs/${fp}.json`),
+  revocation: (fp) => getJsonOrNull(`${LEDGER_RAW}/certs/revoked/${fp}.json`),
   block: loadBlock,
   witness: loadWitness,
   isPlaceholder: async () => false,
 };
-
-// ---- PLACEHOLDER DATA: not real certificates. Previews and local builds only; never on production. ----
-// One sample cohort of two certificates with obviously fake names, built with the same hashing the check uses,
-// so a sample runs the whole check. Remove when the golden vectors land.
-
-export const SAMPLE_RECORDS: Record<"valid" | "revoked", CertRecord> = {
-  valid: {
-    v: 1,
-    number: "SAMPLE-VALID-000000000000",
-    holder: "Sample Participant",
-    course: "Sample Course",
-    completed: "2026-01-01",
-    issuer: ISSUER,
-    instructor: "Sample Instructor",
-    host: "Example Host",
-  },
-  revoked: {
-    v: 1,
-    number: "SAMPLE-REVOKED-0000000000",
-    holder: "Sample Participant",
-    course: "Sample Course",
-    completed: "2026-01-01",
-    issuer: ISSUER,
-    instructor: "Sample Instructor",
-  },
-};
-
-export const samplePayload = (r: CertRecord) => bytesToBase64url(canonicalBytes(r));
-
-const SAMPLE_COHORT_BLOCK = 999998; // not real blocks
-const SAMPLE_REVOKE_BLOCK = 999999;
-const SAMPLE_WITNESS: Witness = {
-  base: { tx: null, note: "Placeholder: no Base transaction. The real one comes from the ledger." },
-  bitcoin: { state: "none", heights: [] },
-};
-
-async function sampleCohort() {
-  const fpV = await fingerprintOf(canonicalBytes(SAMPLE_RECORDS.valid));
-  const fpR = await fingerprintOf(canonicalBytes(SAMPLE_RECORDS.revoked));
-  const leafV = await leafHash(fpV);
-  const leafR = await leafHash(fpR);
-  return { fpV, fpR, leafV, leafR, root: await nodeHash(leafV, leafR) };
-}
-
-export function placeholderLedger(fallback: CertLedger): CertLedger {
-  const cohort = sampleCohort();
-  const isSample = async (fp: string) => { const c = await cohort; return fp === c.fpV || fp === c.fpR; };
-  return {
-    async proof(fp) {
-      if (!(await isSample(fp))) return fallback.proof(fp);
-      const c = await cohort;
-      const mine = fp === c.fpV;
-      return {
-        v: 1,
-        leaf: mine ? c.leafV : c.leafR,
-        path: [mine ? { side: "R", hash: c.leafR } : { side: "L", hash: c.leafV }],
-        root: c.root,
-        block: SAMPLE_COHORT_BLOCK,
-      };
-    },
-    async revocation(fp) {
-      if (!(await isSample(fp))) return fallback.revocation(fp);
-      return fp === (await cohort).fpR ? { v: 1, fingerprint: fp, block: SAMPLE_REVOKE_BLOCK } : null;
-    },
-    async block(index) {
-      if (index === SAMPLE_COHORT_BLOCK) {
-        return { index, hash: "0".repeat(64), timestamp: "2026-01-01T00:00:00+08:00", roots: [{ kind: COHORT_KIND, sha256: (await cohort).root }] };
-      }
-      if (index === SAMPLE_REVOKE_BLOCK) return { index, hash: "0".repeat(64), timestamp: "2026-02-01T09:30:00+08:00", roots: [] };
-      return fallback.block(index);
-    },
-    witness: (index) => (index === SAMPLE_COHORT_BLOCK ? Promise.resolve(SAMPLE_WITNESS) : fallback.witness(index)),
-    isPlaceholder: isSample,
-  };
-}
-// ---- END PLACEHOLDER DATA ----

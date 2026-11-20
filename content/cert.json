@@ -33,8 +33,12 @@
     }
   },
   "notFound": {
-    "h1": "No certificate in this link.",
-    "body": "This link does not match any certificate Chiibitsu Labs has sealed. Open the link exactly as it appears on the certificate: a link that was cut short, or changed by even one character, will not match."
+    "h1": "No sealed certificate matches this link.",
+    "body": "The link holds a complete certificate record, but Chiibitsu Labs has not sealed it on the Aikiri Network ledger. If the course ended recently, its cohort may not be sealed yet."
+  },
+  "invalid": {
+    "h1": "This link does not check out.",
+    "body": "This link is not a complete certificate record. Check it was copied in full."
   },
   "error": {
     "h1": "Could not check just now.",

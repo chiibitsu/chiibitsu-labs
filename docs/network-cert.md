@@ -1,6 +1,6 @@
 # /network/cert#&lt;payload&gt;: check a certificate
 
-Status: built to the Network PM's answers (2026-11-20). The final word is `docs/certificates.md` in aikiri-network, with its golden vectors (story 1). Two values are still **PENDING** in `lib/certCheck.ts`: the fingerprint's domain prefix and the cohort root's kind. Until they are set, no real certificate can match, so the page fails closed: every real link reads "No certificate in this link." **The merge waits for the vectors to pass.**
+Status: built to the certificate format in aikiri-network's `docs/certificates.md` (PR #22, at `562cf19`). That PR's `tests/vectors/cert_cohort.json` is copied into `lib/fixtures/` and every vector passes (`npm run check:cert-logic`). **The merge waits for aikiri-network #22 to merge**, so the format can't move under this page. If the two ever disagree, the doc wins.
 
 ## The story
 
@@ -16,12 +16,16 @@ Status: built to the Network PM's answers (2026-11-20). The final word is `docs/
 
 ## How it works
 
-1. The link is `https://www.chiibitsu.com/network/cert#<payload>`. The payload is the issuer record in canonical JSON, base64url without padding. Canonical means: sorted keys, no whitespace, UTF-8, NFC strings, integers only. A payload whose bytes are not already canonical is rejected. Fields: `v`, `number` (random, at least 128 bits), `holder`, `course`, `completed` (`YYYY-MM-DD`), `issuer`, `instructor`, optional `host`. There is no venue field, and any field not on this list is rejected. **The record lives only in the fragment, which browsers never send to a server.**
-2. Fingerprint = SHA-256(domain prefix ‖ canonical bytes). The prefix is PENDING.
-3. The browser fetches `ledger/certs/<fingerprint>.json`, which is `{v, leaf, path:[{side:"L"|"R", hash}], root, block}`. The leaf must be SHA-256(0x00 ‖ fingerprint); exactly what follows 0x00 is PENDING the docs. Each step up the path is SHA-256(0x01 ‖ left ‖ right), RFC 6962 style. The result must equal `root`, which must equal `blocks/<block>.json` `roots[0].sha256`, whose `kind` must be the cohort kind (PENDING).
-4. `issuer` must be exactly "Chiibitsu Labs", or the page says not found.
-5. If `ledger/certs/revoked/<fingerprint>.json` (`{v, fingerprint, block}`) exists and names this fingerprint, the state is Revoked. The revocation date is the timestamp of the block it names.
-6. Sealed and revoked times are block timestamps, shown in Manila time. `completed` is shown exactly as written in the record.
+1. The link is `https://www.chiibitsu.com/network/cert#<payload>`. The payload is the issuer record's canonical bytes in unpadded base64url, at most 4,096 characters. **The record lives only in the fragment, which browsers never send to a server.**
+   - Fields: `v` (1), `number` (32 to 64 lowercase hex: 128 to 256 random bits, the salt), `holder`, `course`, `completed` (a real `YYYY-MM-DD` date), `issuer` (exactly "Chiibitsu Labs"), `instructor`, and `host` only when the certificate names one. No other field, so no venue field.
+   - Text fields: 1 to 200 code points, already NFC, no control characters, no lone surrogates. The page refuses non-NFC text and never normalises it.
+   - Canonical bytes are `JSON.stringify` of the key-sorted record, through `TextEncoder`: plain UTF-8, with non-ASCII not escaped. A payload counts only if re-encoding what it decodes to gives back exactly the same bytes and the same payload.
+2. Fingerprint = SHA-256(`"aikiri-ledger/cert-record/v1\n"` ‖ canonical bytes).
+3. The browser fetches `ledger/certs/<fingerprint>.json`: `{block, leaf, path:[{sha256, side:"left"|"right"}], root, v}`, a closed schema with at most 16 steps. `leaf` must be this fingerprint.
+4. It folds the path in an RFC 9162 tree with text prefixes: leaf = SHA-256(`"aikiri-ledger/cert-leaf/v1\n"` ‖ fingerprint's 32 bytes), node = SHA-256(`"aikiri-ledger/cert-node/v1\n"` ‖ left ‖ right). The result must equal `root`.
+5. The proof is a pointer, not evidence. `blocks/<block>.json` must exist, and its roots must be exactly `[{"kind":"cert-cohort","sha256":root}]`.
+6. `ledger/certs/revoked/<fingerprint>.json` (`{block, fingerprint, v}`) counts only if its block exists and its roots are exactly `[{"kind":"revocation","sha256":fingerprint}]`. Until then the certificate stays valid.
+7. Sealed and revoked times are block timestamps, shown in Manila time. `completed` is shown exactly as written. Base and Bitcoin come from `loadWitness`, as on /network/check.
 
 There is no server route, no store and no rate limit. The fragment stays in the address bar, so refresh and copy-link keep working for the holder.
 
@@ -29,9 +33,10 @@ There is no server route, no store and no rate limit. The fragment stays in the 
 
 | State | When | Headline | Shows |
 |---|---|---|---|
-| **Valid** | The proof checks out to a block, and there is no revocation | "This certificate is valid." Then: "Issued by Chiibitsu Labs, not a government body. This record has not changed since it was sealed on &lt;date&gt;." | Issued to, course, completed on, instructor, "Hosted by" only when the link carries a host, issued by, certificate number, block, sealed, Base, Bitcoin, fingerprint |
-| **Revoked** | As valid, and a revocation file names this fingerprint | "This certificate was revoked." | Certificate number, course, and when it was revoked (the revocation block's time). Not the holder's name: that stays hidden until Chii rules. |
-| **Not found** | Bad payload, no proof file, a proof that does not reach the block, or a block that does not exist | "No certificate in this link." | Nothing from the link: no text from the URL is ever echoed |
+| **Valid** | The proof holds, its block seals exactly that root as `cert-cohort`, and no revocation block names it | "This certificate is valid." Then: "Issued by Chiibitsu Labs, not a government body. This record has not changed since it was sealed on &lt;date&gt;." | Issued to, course, completed on, instructor, "Hosted by" only when the link carries a host, issued by, certificate number, block, sealed (Manila time), Base, Bitcoin, fingerprint |
+| **Revoked** | As valid, and a `revocation` block names this fingerprint | "This certificate was revoked." | Certificate number, course, and when it was revoked (the revocation block's time). Not the holder's name: that stays hidden until Chii rules. |
+| **Not found** | A complete record that no sealed cohort holds: no proof file, a proof with `block: null`, a block that isn't there, or a block that seals something else | "No sealed certificate matches this link." | Nothing from the link |
+| **Invalid** | Not a v1 record: malformed, not canonical, not NFC, another issuer, an unknown field. Or a proof that doesn't lead to its root, or sits under another certificate's name | "This link does not check out." | Nothing from the link |
 | **Could not check** | The ledger could not be read | "Could not check just now." | That this says nothing either way |
 
 Every state also shows **What this page shows**: only what Chiibitsu Labs issued; not a government certification, licence or accredited qualification; what "valid" does and does not mean; the details stay on your device; one certificate at a time. `npm run check:content` fails if the first two lines go missing, or if the cert copy ever says "certified", "legally", "proven" or "venue".
@@ -54,12 +59,11 @@ Every state also shows **What this page shows**: only what Chiibitsu Labs issued
 
 ## Samples (placeholder data, not real)
 
-Previews and local builds only. On production every link checks against the real ledger.
+Previews and local builds only; production never downloads them. The samples are the golden vectors' own records: fake names, the 3-leaf cohort and its revocation, with their block numbers moved to 9999xx so they can't shadow a real block (`lib/certSamples.ts`, loaded on demand).
 
-- Valid, with "Example Host": `/network/cert#eyJjb21wbGV0ZWQiOiIyMDI2LTAxLTAxIiwiY291cnNlIjoiU2FtcGxlIENvdXJzZSIsImhvbGRlciI6IlNhbXBsZSBQYXJ0aWNpcGFudCIsImhvc3QiOiJFeGFtcGxlIEhvc3QiLCJpbnN0cnVjdG9yIjoiU2FtcGxlIEluc3RydWN0b3IiLCJpc3N1ZXIiOiJDaGlpYml0c3UgTGFicyIsIm51bWJlciI6IlNBTVBMRS1WQUxJRC0wMDAwMDAwMDAwMDAiLCJ2IjoxfQ`
-- Revoked: `/network/cert#eyJjb21wbGV0ZWQiOiIyMDI2LTAxLTAxIiwiY291cnNlIjoiU2FtcGxlIENvdXJzZSIsImhvbGRlciI6IlNhbXBsZSBQYXJ0aWNpcGFudCIsImluc3RydWN0b3IiOiJTYW1wbGUgSW5zdHJ1Y3RvciIsImlzc3VlciI6IkNoaWliaXRzdSBMYWJzIiwibnVtYmVyIjoiU0FNUExFLVJFVk9LRUQtMDAwMDAwMDAwMCIsInYiOjF9`
-
-They form one sample cohort of two certificates, built in `placeholderLedger` with the same hashing the check uses, so a sample runs the whole check. `npm run check:cert-logic` (in gates) runs them, plus links that are not canonical, tampered, or from another issuer. Add the golden vectors there. Changing one character of a sample link gives "No certificate in this link."
+- Valid: `/network/cert#eyJjb21wbGV0ZWQiOiIyMDI2LTAxLTMxIiwiY291cnNlIjoiRXhhbXBsZSBDb3Vyc2UiLCJob2xkZXIiOiJUZXN0IEhvbGRlciIsImluc3RydWN0b3IiOiJUZXN0IEluc3RydWN0b3IiLCJpc3N1ZXIiOiJDaGlpYml0c3UgTGFicyIsIm51bWJlciI6IjAwMTEyMjMzNDQ1NTY2Nzc4ODk5YWFiYmNjZGRlZWZmIiwidiI6MX0`
+- Revoked (its record carries "Example Host", which a revoked page does not show): `/network/cert#eyJjb21wbGV0ZWQiOiIyMDI2LTAxLTMxIiwiY291cnNlIjoiRXhhbXBsZSBDb3Vyc2UiLCJob2xkZXIiOiJUZXN0IEhvbGRlciBUd28iLCJob3N0IjoiRXhhbXBsZSBIb3N0IiwiaW5zdHJ1Y3RvciI6IlRlc3QgSW5zdHJ1Y3RvciIsImlzc3VlciI6IkNoaWliaXRzdSBMYWJzIiwibnVtYmVyIjoiZmZlZWRkY2NiYmFhOTk4ODc3NjY1NTQ0MzMyMjExMDAiLCJ2IjoxfQ`
+- Valid, with non-ASCII, quotes, a backslash and an emoji: `/network/cert#eyJjb21wbGV0ZWQiOiIyMDI0LTAyLTI5IiwiY291cnNlIjoiRXhhbXBsZSBDb3Vyc2Ug4oCUIFBhcnQgMSDwn46TIiwiaG9sZGVyIjoiVMOrc3QgSMWNbGRlciBcIlRocmVlXCIgXFwgRXhhbXBsZSIsImluc3RydWN0b3IiOiJUZXN0IEluc3RydWN0b3IiLCJpc3N1ZXIiOiJDaGlpYml0c3UgTGFicyIsIm51bWJlciI6IjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYiLCJ2IjoxfQ`
 
 ## Where things live
 
@@ -67,22 +71,23 @@ They form one sample cohort of two certificates, built in `placeholderLedger` wi
 |---|---|
 | Page and its layout | `app/(cert)/network/cert/page.tsx`, `app/(cert)/layout.tsx` |
 | The check, in the browser | `components/CertCheck.tsx` |
-| Decoding, Merkle check, ledger adapter, samples | `lib/certCheck.ts` |
+| Decoding, Merkle check, ledger adapter | `lib/certCheck.ts` |
+| Preview samples, from the vectors | `lib/certSamples.ts` |
+| The golden vectors (a copy, never edited here) | `lib/fixtures/cert_cohort.json`, `lib/fixtures/README.md` |
+| Vector gate | `scripts/check-cert-logic.mjs` |
 | Shared Base and Bitcoin rows | `components/WitnessRows.tsx`, `bitcoinLine` in `lib/ledgerCheck.ts` |
 | Enforced CSP | `proxy.ts` |
 | Copy | `content/cert.json` |
 | Gate | `scripts/check-cert.mjs` |
 | Unknown URLs, inside the site layout | `app/(site)/[...missing]/page.tsx`, `app/(site)/not-found.tsx` |
 
-## When the vectors land
+## When the format changes
 
-1. Set `FINGERPRINT_PREFIX` and `COHORT_KIND` in `lib/certCheck.ts` from `docs/certificates.md`, and confirm what follows 0x00 in a leaf.
-2. Confirm the canonical JSON's string escaping matches `JSON.stringify`. Where it does not, `canonicalJson` changes.
-3. Add every vector to `scripts/check-cert-logic.mjs`: payload, fingerprint, leaf, path, root and the expected state.
-4. Replace the sample cohort with one built from the vectors, or keep it if it still matches.
+Any change to the format is a protocol version change, made in aikiri-network first. Copy the new `tests/vectors/cert_cohort.json` into `lib/fixtures/` byte for byte, update the commit in `lib/fixtures/README.md`, and make `npm run check:cert-logic` pass again.
 
 ## Open questions for Chii
 
 - **Revoked: show the holder's name or not?** It is built without the name, to show as little as possible. The visitor already holds the link, but the page does not repeat the name. A taste and privacy call, so it is yours.
 - **A "something looks wrong" contact line.** Not added.
+- **The Invalid and Not found lines** are drafts sent to the CMO for a canon check.
 - **Copy voice.** The CMO's `canon/voice.md` fixes are in: one name for the ledger ("the Aikiri Network ledger"), "not a government body" in the valid line, and a shorter error line.

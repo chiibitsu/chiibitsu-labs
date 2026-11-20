@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { WitnessRows } from "@/components/WitnessRows";
-import { checkCertificate, liveLedger, manilaDate, manilaTime, placeholderLedger, type CertView } from "@/lib/certCheck";
+import { checkCertificate, liveLedger, manilaDate, manilaTime, type CertLedger, type CertView } from "@/lib/certCheck";
 import certJson from "@/content/cert.json";
 
 const c = certJson;
@@ -15,14 +15,18 @@ export function CertCheck({ samples }: { samples: boolean }) {
   const [view, setView] = useState<CertView | "checking">("checking");
 
   useEffect(() => {
-    const ledger = samples ? placeholderLedger(liveLedger) : liveLedger;
+    // Samples (previews only) load on demand, so production never downloads the fixture.
+    const ledger: Promise<CertLedger> = samples ? import("@/lib/certSamples").then((m) => m.sampleLedger(liveLedger)) : Promise.resolve(liveLedger);
     // Each run gets a ticket; only the latest one may set the view, so a slow earlier check never
     // overwrites a newer link's result. Unmount retires every ticket.
     let latest = 0;
     const run = () => {
       const ticket = ++latest;
       setView("checking");
-      void checkCertificate(window.location.hash, ledger).then((v) => { if (ticket === latest) setView(v); });
+      void ledger
+        .then((l) => checkCertificate(window.location.hash, l))
+        .catch((): CertView => ({ state: "error" }))
+        .then((v) => { if (ticket === latest) setView(v); });
     };
     run();
     window.addEventListener("hashchange", run);
@@ -40,6 +44,7 @@ function State({ v }: { v: CertView | "checking" }) {
   if (v === "checking") return <><h1>{c.checkingH1}</h1><p className="body">{c.checking}</p></>;
   if (v.state === "error") return <><h1>{c.error.h1}</h1><p className="body">{c.error.body}</p></>;
   if (v.state === "not_found") return <><h1>{c.notFound.h1}</h1><p className="body">{c.notFound.body}</p></>;
+  if (v.state === "invalid") return <><h1>{c.invalid.h1}</h1><p className="body">{c.invalid.body}</p></>;
   const ill = v.placeholder && <p className="body"><span className="ill">Illustrative</span> {c.placeholder}</p>;
   if (v.state === "revoked") {
     const r = c.revoked.rows;
