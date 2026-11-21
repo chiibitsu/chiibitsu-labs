@@ -3,7 +3,8 @@
 // Runs the TypeScript directly (Node strips the types; scripts/ts-alias.mjs maps "@/").
 import fs from "node:fs";
 import {
-  bytesToBase64url, canonicalJson, checkCertificate, decodePayload, displayText, fingerprintOf, isProof, leafHash, manilaTime, pathRoot,
+  bytesToBase64url, canonicalJson, checkCertificate, decodePayload, displayText, fingerprintOf, isProof, leafHash, liveLedger, manilaTime,
+  parseLedgerJson, pathRoot,
 } from "../lib/certCheck.ts";
 import { NotInLedger } from "../lib/ledgerCheck.ts";
 
@@ -113,8 +114,11 @@ const invalid = {
   "lone surrogate": b64(ok.canonical.replace("Test Holder", "Test \\ud800Holder")),
   "201 code points": recordPayload({ ...ok.record, course: "x".repeat(201) }),
   "duplicate key": b64(ok.canonical.replace('"v":1}', '"v":1,"v":1}')),
+  "a UTF-8 BOM before the record": bytesToBase64url(new Uint8Array([0xef, 0xbb, 0xbf, ...enc.encode(ok.canonical)])),
+  "number of odd length": recordPayload({ ...ok.record, number: "a".repeat(33) }),
 };
 for (const [name, frag] of Object.entries(invalid)) expect(`INVALID: ${name}`, await state(frag ? `#${frag}` : ""), "invalid");
+expect("a year before 100 is a real date", decodePayload(`#${recordPayload({ ...ok.record, completed: "0050-01-01" })}`) !== null, true);
 expect("200 code points of emoji is fine", decodePayload(`#${recordPayload({ ...ok.record, course: "🎓".repeat(200) })}`) !== null, true);
 
 // 5. The ledger side: pointers are not evidence.
@@ -150,6 +154,41 @@ expect("display leaves ordinary text alone", displayText("Tëst Hōlder \"Three\
 expect("Manila time from a +08:00 block", manilaTime("2026-02-03T10:00:00+08:00"), "2026-02-03 10:00 Manila time");
 expect("Manila time from UTC", manilaTime("2026-02-03T02:00:00Z"), "2026-02-03 10:00 Manila time");
 expect("no offset: shown as written", manilaTime("2026-02-03T10:00:00"), "2026-02-03T10:00:00");
+// 6. A broken ledger is never a verdict: blocks without a time or filed under another index, block 0, and files a
+// strict reader refuses (aikiri-network's reader: no key twice, integers only).
+const withBlock = (index, change) => vectorLedger({ blocks: R.blocks.map((b) => (b.index === index ? change(b) : b)) });
+const noTime = ({ timestamp, ...b }) => b;
+expect("sealing block without a time: ERROR, never VALID", await state(`#${ok.payload}`, withBlock(12, noTime)), "error");
+expect("sealing block filed under another index: ERROR", await state(`#${ok.payload}`, {
+  ...vectorLedger(), block: async (i) => ({ ...R.blocks.find((x) => x.index === i), ...(i === 12 ? { index: 77 } : {}) }),
+}), "error");
+expect("revocation block without a time: ERROR, never VALID", await state(`#${rev.payload}`, withBlock(13, noTime)), "error");
+expect("revocation block with an empty time: ERROR, never VALID", await state(`#${rev.payload}`, withBlock(13, (b) => ({ ...b, timestamp: "" }))), "error");
+expect("proof naming block 0: INVALID", await state(`#${ok.payload}`, vectorLedger({ proofs: { [fpOk]: { ...proofOk, block: 0 } } })), "invalid");
+expect("revocation naming block 0: ERROR, never VALID", await state(`#${rev.payload}`, vectorLedger({ revoked: { [rev.fingerprint]: { ...R.revoked_files[rev.fingerprint], block: 0 } } })), "error");
+const strictRefuses = (text) => { try { parseLedgerJson(text); return false; } catch { return true; } };
+const proofText = JSON.stringify(proofOk);
+expect("strict read: a canonical proof file reads as JSON.parse does", parseLedgerJson(proofText), JSON.parse(proofText));
+expect("strict read: a trailing newline is fine", parseLedgerJson(`${proofText}\n`), JSON.parse(proofText));
+expect("strict read: a key twice is refused", strictRefuses(proofText.replace('{"block":12', '{"block":null,"block":12')), true);
+expect("strict read: block 10.0 is refused", strictRefuses(proofText.replace('"block":12', '"block":12.0')), true);
+expect("strict read: v as 1e0 is refused", strictRefuses(proofText.replace('"v":1', '"v":1e0')), true);
+expect("strict read: trailing text is refused", strictRefuses(`${proofText}x`), true);
+expect("strict read: a string with an escaped quote and a key-like text inside", parseLedgerJson('{"a":"x\\"y","b":"\\"a\\":1"}'), { a: 'x"y', b: '"a":1' });
+// The live ledger reader, against stand-in responses: a file that holds only null is broken, not missing.
+const realFetch = globalThis.fetch;
+const answer = (status, body) => { globalThis.fetch = async () => new Response(body, { status }); };
+try {
+  answer(200, "null");
+  expect("live: a proof file holding null: ERROR, never NOT FOUND", await state(`#${ok.payload}`, liveLedger), "error");
+  answer(200, proofText.replace('{"block":12', '{"block":null,"block":12'));
+  expect("live: a proof file with a key twice: ERROR, never VALID", await state(`#${ok.payload}`, liveLedger), "error");
+  answer(404, "Not Found");
+  expect("live: no proof file (404): NOT FOUND", await state(`#${ok.payload}`, liveLedger), "not_found");
+} finally {
+  globalThis.fetch = realFetch;
+}
+
 const broken = { ...vectorLedger(), proof: async () => { throw new Error("503"); } };
 expect("ledger unreadable: ERROR", await state(`#${ok.payload}`, broken), "error");
 

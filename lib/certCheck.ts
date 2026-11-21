@@ -98,7 +98,8 @@ const textField = (v: unknown): v is string =>
 const realDate = (s: string) => {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
   if (!m) return false;
-  const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+  const d = new Date(0);
+  d.setUTCFullYear(+m[1], +m[2] - 1, +m[3]); // Date.UTC would map years 0-99 onto 1900-1999
   return d.getUTCFullYear() === +m[1] && d.getUTCMonth() === +m[2] - 1 && d.getUTCDate() === +m[3];
 };
 
@@ -108,7 +109,7 @@ export function isRecord(r: unknown): r is CertRecord {
   const required = ["v", "number", "holder", "course", "completed", "issuer", "instructor"];
   if (!sameKeys(r, "host" in r ? [...required, "host"] : required)) return false;
   if (r.v !== 1) return false;
-  if (typeof r.number !== "string" || !/^[0-9a-f]{32,64}$/.test(r.number)) return false;
+  if (typeof r.number !== "string" || !/^(?:[0-9a-f]{2}){16,32}$/.test(r.number)) return false;
   if (!["holder", "course", "instructor", "issuer"].every((k) => textField(r[k]))) return false;
   if ("host" in r && !textField(r.host)) return false;
   if (typeof r.completed !== "string" || !realDate(r.completed)) return false;
@@ -125,7 +126,8 @@ export function decodePayload(fragment: string): { bytes: Uint8Array<ArrayBuffer
   let text: string;
   let parsed: unknown;
   try {
-    text = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+    // ignoreBOM keeps a leading U+FEFF in the text, so a BOM-prefixed payload fails the canonical check below.
+    text = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(bytes);
     parsed = JSON.parse(text);
   } catch {
     return null;
@@ -160,18 +162,20 @@ export async function pathRoot(fingerprint: string, path: CertProof["path"]): Pr
 export function isProof(p: unknown): p is CertProof {
   if (!isObject(p) || !sameKeys(p, ["v", "leaf", "path", "root", "block"])) return false;
   if (p.v !== 1 || typeof p.leaf !== "string" || !HEX64.test(p.leaf) || typeof p.root !== "string" || !HEX64.test(p.root)) return false;
-  if (!(p.block === null || (Number.isSafeInteger(p.block) && (p.block as number) >= 0))) return false;
+  if (!(p.block === null || (Number.isSafeInteger(p.block) && (p.block as number) >= 1))) return false;
   return Array.isArray(p.path) && p.path.length <= MAX_PATH &&
     p.path.every((s) => isObject(s) && sameKeys(s, ["sha256", "side"]) && typeof s.sha256 === "string" && HEX64.test(s.sha256) && (s.side === "left" || s.side === "right"));
 }
 
 const isRevocation = (r: unknown, fingerprint: string): r is CertRevocation =>
-  isObject(r) && sameKeys(r, ["v", "fingerprint", "block"]) && r.v === 1 && r.fingerprint === fingerprint && Number.isSafeInteger(r.block) && (r.block as number) >= 0;
+  isObject(r) && sameKeys(r, ["v", "fingerprint", "block"]) && r.v === 1 && r.fingerprint === fingerprint && Number.isSafeInteger(r.block) && (r.block as number) >= 1;
 
 // A block's roots must be exactly this one root.
 const rootsAre = (b: Block, kind: string, sha256: string) =>
   Array.isArray(b.roots) && b.roots.length === 1 && isObject(b.roots[0]) && sameKeys(b.roots[0], ["kind", "sha256"]) &&
   b.roots[0].kind === kind && b.roots[0].sha256 === sha256;
+
+const isTimestamp = (t: unknown): t is string => typeof t === "string" && t.length > 0;
 
 // ---- The check ----
 
@@ -189,6 +193,8 @@ export async function checkCertificate(fragment: string, ledger: CertLedger): Pr
     if (proof.block === null) return { state: "not_found" };
     const block = await ledger.block(proof.block);
     if (!rootsAre(block, "cert-cohort", proof.root)) return { state: "not_found" };
+    // A sealing block with no time, or filed under another index, is a broken ledger: never a verdict.
+    if (block.index !== proof.block || !isTimestamp(block.timestamp)) return { state: "error" };
 
     const placeholder = await ledger.isPlaceholder(fingerprint);
     const revokedAt = await revokedTime(ledger, fingerprint);
@@ -210,7 +216,10 @@ async function revokedTime(ledger: CertLedger, fingerprint: string): Promise<str
   if (!isRevocation(r, fingerprint)) throw new Error("unreadable revocation file");
   try {
     const b = await ledger.block(r.block);
-    return rootsAre(b, "revocation", fingerprint) ? b.timestamp : null;
+    if (!rootsAre(b, "revocation", fingerprint)) return null;
+    // A real revocation with no readable time must never fall through to "valid".
+    if (b.index !== r.block || !isTimestamp(b.timestamp)) throw new Error("unreadable revocation block");
+    return b.timestamp;
   } catch (e) {
     if (e instanceof NotInLedger) return null;
     throw e;
@@ -251,7 +260,63 @@ async function getJsonOrNull(url: string): Promise<unknown> {
   const r = await fetch(url, { cache: "no-store", referrerPolicy: "no-referrer" });
   if (r.status === 404) return null;
   if (!r.ok) throw new Error(`${r.status}`);
-  return r.json(); // a cut-off or garbled body throws: "could not check", never "invalid"
+  // A cut-off, garbled or ambiguous body throws: "could not check", never "invalid" or "valid".
+  const value = parseLedgerJson(await r.text());
+  if (value === null) throw new Error("a ledger file that holds only null");
+  return value;
+}
+
+// Ledger files are read as aikiri-network's reader reads them: no key twice (another reader could take the other
+// copy) and every number an integer (10.0 is not 10). JSON.parse alone keeps the last duplicate and reads 10.0 as 10.
+export function parseLedgerJson(text: string): unknown {
+  let i = 0;
+  const ws = () => { while (i < text.length && " \t\n\r".includes(text[i])) i++; };
+  const fail = (why: string): never => { throw new Error(`ledger file: ${why}`); };
+  const str = () => {
+    const start = i++;
+    while (i < text.length && text[i] !== '"') i += text[i] === "\\" ? 2 : 1;
+    if (i++ >= text.length) fail("unterminated string");
+    return JSON.parse(text.slice(start, i)) as string;
+  };
+  const value = (depth: number): void => {
+    if (depth > 32) fail("too deep");
+    ws();
+    const c = text[i];
+    if (c === "{") {
+      i++; ws();
+      const seen = new Set<string>();
+      if (text[i] === "}") { i++; return; }
+      for (;;) {
+        ws(); if (text[i] !== '"') fail("expected a key");
+        const k = str();
+        if (seen.has(k)) fail(`duplicate key ${JSON.stringify(k)}`);
+        seen.add(k);
+        ws(); if (text[i++] !== ":") fail("expected :");
+        value(depth + 1); ws();
+        if (text[i] === ",") { i++; continue; }
+        if (text[i++] === "}") return;
+        fail("expected , or }");
+      }
+    }
+    if (c === "[") {
+      i++; ws();
+      if (text[i] === "]") { i++; return; }
+      for (;;) {
+        value(depth + 1); ws();
+        if (text[i] === ",") { i++; continue; }
+        if (text[i++] === "]") return;
+        fail("expected , or ]");
+      }
+    }
+    if (c === '"') { str(); return; }
+    const m = /^(?:-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?|true|false|null)/.exec(text.slice(i));
+    if (!m) fail("unexpected character");
+    if (/[.eE]/.test(m![0]) && !/^(true|false|null)$/.test(m![0])) fail("a number that is not an integer");
+    i += m![0].length;
+  };
+  value(0); ws();
+  if (i !== text.length) fail("trailing characters");
+  return JSON.parse(text);
 }
 
 export const liveLedger: CertLedger = {

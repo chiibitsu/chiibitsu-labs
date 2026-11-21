@@ -1,6 +1,6 @@
 # /network/cert#&lt;payload&gt;: check a certificate
 
-Status: built to the certificate format in aikiri-network's `docs/certificates.md` (PR #22, at `f2cb0cd`). That PR's `tests/vectors/cert_cohort.json` is copied into `lib/fixtures/` and every vector passes (`npm run check:cert-logic`). **The merge waits for aikiri-network #22 to merge**, so the format can't move under this page. If the two ever disagree, the doc wins.
+Status: built to the certificate format in aikiri-network's `docs/certificates.md` (PR #22 at `f2cb0cd`, merged to aikiri-network's `main` as `58fa9c5` on 2026-11-21 with the same vectors file). That `tests/vectors/cert_cohort.json` is copied into `lib/fixtures/` and every vector passes (`npm run check:cert-logic`). If the two ever disagree, the doc wins.
 
 ## The story
 
@@ -10,7 +10,7 @@ Status: built to the certificate format in aikiri-network's `docs/certificates.m
 
 **How they arrive.** From the link or QR code on the certificate. No form, no account.
 
-**What they leave with.** One of three plain answers, a record they can screenshot, and an honest line on what the certificate is and is not.
+**What they leave with.** One of four plain answers (or "Could not check just now"), a record they can screenshot, and an honest line on what the certificate is and is not.
 
 > As someone who was handed a Chiibitsu Labs certificate, I open its link and see at once whether Chiibitsu Labs issued it and has not revoked it, so I can trust it or set it aside, without anyone learning what I looked at or who it names.
 
@@ -34,11 +34,11 @@ There is no server route, no store and no rate limit. The fragment stays in the 
 
 | State | When | Headline | Shows |
 |---|---|---|---|
-| **Valid** | The proof holds, its block seals exactly that root as `cert-cohort`, and no revocation block names it | "This certificate is valid." Then: "Issued by Chiibitsu Labs, not a government body. This record has not changed since it was sealed on &lt;date&gt;." | Issued to, course, completed on, instructor, "Hosted by" only when the link carries a host, issued by, certificate number, block, sealed (Manila time), Base, Bitcoin, fingerprint |
-| **Revoked** | As valid, and a `revocation` block names this fingerprint | "This certificate was revoked." | Certificate number, course, and when it was revoked (the revocation block's time). Not the holder's name: that stays hidden until Chii rules. |
+| **Valid** | The proof holds, its block seals exactly that root as `cert-cohort`, and no `revoked/` file points at a revocation block that names it | "This certificate is valid." Then: "Issued by Chiibitsu Labs, not a government body. This record has not changed since it was sealed on &lt;date&gt;." | Issued to, course, completed on, instructor, "Hosted by" only when the link carries a host, issued by, certificate number, block, sealed (Manila time), Base, Bitcoin, fingerprint |
+| **Revoked** | As valid, and its `revoked/` file points at a revocation block that names exactly this fingerprint | "This certificate was revoked." | Certificate number, course, and when it was revoked (the revocation block's time). Not the holder's name: that stays hidden until Chii rules. |
 | **Not found** | A complete record that no sealed cohort holds: no proof file, or a proof whose block is `null`, missing, another cohort's, the root under another kind, or something else | "No sealed certificate matches this link." | Nothing from the link |
 | **Invalid** | Not a v1 record: malformed, not canonical, not NFC, another issuer, an unknown field. Or a proof that doesn't lead to its root (tampered path, swapped root), or sits under another certificate's name (the doc's verify table) | "This link is incomplete." | Nothing from the link |
-| **Could not check** | The ledger could not be read | "Could not check just now." | That this says nothing either way |
+| **Could not check** | The ledger could not be read, or a file on it is broken: a block with no time or filed under another index, a file that holds only `null`, a key written twice or a number that is not an integer, or a `revoked/` file that is not a revocation of this certificate | "Could not check just now." | That this says nothing either way |
 
 Every state also shows **What this page shows**: only what Chiibitsu Labs issued; not a government certification, licence or accredited qualification; what "valid" does and does not mean; the details stay on your device; one certificate at a time. `npm run check:content` fails if the first two lines go missing, or if the cert copy ever says "certified", "legally", "proven" or "venue".
 
