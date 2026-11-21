@@ -5,7 +5,7 @@ export const LEDGER_RAW = "https://raw.githubusercontent.com/chiibitsu/aikiri-ne
 export const MAX_FILE_BYTES = 250 * 1024 * 1024;
 export const EXAMPLE_HASH = "73715608c05be3f134036de0f5a1606b348098e2bebf34c8102680be08650ea8"; // block 0, the genesis block
 
-const pad = (n: number) => String(n).padStart(6, "0");
+export const pad = (n: number) => String(n).padStart(6, "0");
 
 export type Block = {
   index: number;
@@ -30,8 +30,12 @@ export async function sha256Hex(buf: ArrayBuffer): Promise<string> {
   return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+// A ledger file that does not exist (404), as opposed to a ledger that could not be read.
+export class NotInLedger extends Error {}
+
 async function getText(url: string): Promise<string> {
-  const r = await fetch(url, { cache: "no-store" });
+  const r = await fetch(url, { cache: "no-store", referrerPolicy: "no-referrer" });
+  if (r.status === 404) throw new NotInLedger("404");
   if (!r.ok) throw new Error(`${r.status}`);
   return r.text();
 }
@@ -40,10 +44,11 @@ export async function loadBlocks(): Promise<Block[]> {
   const head = (await getText(`${LEDGER_RAW}/HEAD`)).trim().split(/\s+/)[0];
   const last = parseInt(head, 10);
   if (!Number.isInteger(last) || last < 0 || last > 100000) throw new Error("the ledger index could not be read");
-  const blocks = await Promise.all(
-    Array.from({ length: last + 1 }, async (_, i) => JSON.parse(await getText(`${LEDGER_RAW}/blocks/${pad(i)}.json`)) as Block),
-  );
-  return blocks;
+  return Promise.all(Array.from({ length: last + 1 }, (_, i) => loadBlock(i)));
+}
+
+export async function loadBlock(index: number): Promise<Block> {
+  return JSON.parse(await getText(`${LEDGER_RAW}/blocks/${pad(index)}.json`)) as Block;
 }
 
 export function findMatch(blocks: Block[], hash: string): Match | null {
@@ -93,7 +98,7 @@ export async function loadWitness(index: number): Promise<Witness> {
   }
   let bitcoin: Witness["bitcoin"] = { state: "none", heights: [] };
   try {
-    const r = await fetch(`${LEDGER_RAW}/proofs/${pad(index)}.hash.ots`, { cache: "no-store" });
+    const r = await fetch(`${LEDGER_RAW}/proofs/${pad(index)}.hash.ots`, { cache: "no-store", referrerPolicy: "no-referrer" });
     if (r.ok) {
       const heights = bitcoinHeights(new Uint8Array(await r.arrayBuffer()));
       bitcoin = heights.length ? { state: "attested", heights } : { state: "pending", heights: [] };
@@ -109,4 +114,16 @@ export function when(timestamp: string): { local: string; utc: string } {
   const d = new Date(clean);
   const utc = Number.isNaN(d.getTime()) ? "" : `${d.toISOString().slice(0, 19).replace("T", " ")} UTC`;
   return { local: clean.replace("T", " "), utc };
+}
+
+export const explorer = (tx: string) => `https://basescan.org/tx/${tx}`;
+
+// The plain sentence for a block's Bitcoin stamp. Shared by /network/check and /network/cert.
+export function bitcoinLine(w: Witness): string {
+  const heights = [...new Set(w.bitcoin.heights)].sort((a, b) => a - b);
+  return w.bitcoin.state === "attested"
+    ? `The proof file names Bitcoin block${heights.length > 1 ? "s" : ""} ${heights.join(", ")}. This page reads the file; it does not check it against Bitcoin.`
+    : w.bitcoin.state === "pending"
+      ? "Stamped, awaiting Bitcoin confirmation."
+      : "No Bitcoin stamp yet.";
 }

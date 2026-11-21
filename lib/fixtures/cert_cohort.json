@@ -1,0 +1,790 @@
+{
+ "about": "Certificate cohort Merkle vectors. Leaves are sha256 of the ASCII strings test-cert-1 to test-cert-5: obviously fake fixtures. Changing any byte here is a protocol version change, not an edit.",
+ "cohorts": [
+  {
+   "leaves": [
+    "c39e4fe697b07d0fe9a736040be03c09d772e852a33f1658e40281851bc15043"
+   ],
+   "proofs": [
+    {
+     "block": null,
+     "leaf": "c39e4fe697b07d0fe9a736040be03c09d772e852a33f1658e40281851bc15043",
+     "path": [],
+     "root": "8e0280ff099081f742691677992d5aeb53313c76be89065a94e604ef0ed41ae5",
+     "v": 1
+    }
+   ],
+   "root": "8e0280ff099081f742691677992d5aeb53313c76be89065a94e604ef0ed41ae5",
+   "size": 1
+  },
+  {
+   "leaves": [
+    "c39e4fe697b07d0fe9a736040be03c09d772e852a33f1658e40281851bc15043",
+    "27d76de70d66bf4f87d5153fc6c658e505dcd89cbcd9f1d4db31ee750dd23f6b"
+   ],
+   "proofs": [
+    {
+     "block": null,
+     "leaf": "27d76de70d66bf4f87d5153fc6c658e505dcd89cbcd9f1d4db31ee750dd23f6b",
+     "path": [
+      {
+       "sha256": "8e0280ff099081f742691677992d5aeb53313c76be89065a94e604ef0ed41ae5",
+       "side": "right"
+      }
+     ],
+     "root": "5450e43296853e0f88af6613f007ecef120732df672ccaada8b28bfbdc7e7488",
+     "v": 1
+    },
+    {
+     "block": null,
+     "leaf": "c39e4fe697b07d0fe9a736040be03c09d772e852a33f1658e40281851bc15043",
+     "path": [
+      {
+       "sha256": "d9c8286e8c37be8e9abf37f2eb3c6b03ce4d86f0804d46e9960d8ef7e9ac174a",
+       "side": "left"
+      }
+     ],
+     "root": "5450e43296853e0f88af6613f007ecef120732df672ccaada8b28bfbdc7e7488",
+     "v": 1
+    }
+   ],
+   "root": "5450e43296853e0f88af6613f007ecef120732df672ccaada8b28bfbdc7e7488",
+   "size": 2
+  },
+  {
+   "leaves": [
+    "c39e4fe697b07d0fe9a736040be03c09d772e852a33f1658e40281851bc15043",
+    "27d76de70d66bf4f87d5153fc6c658e505dcd89cbcd9f1d4db31ee750dd23f6b",
+    "36343db6cee404e07fbd04f80707cffd30fe1ede15520bebab4bf204e4258d6f"
+   ],
+   "proofs": [
+    {
+     "block": null,
+     "leaf": "27d76de70d66bf4f87d5153fc6c658e505dcd89cbcd9f1d4db31ee750dd23f6b",
+     "path": [
+      {
+       "sha256": "1a18c94de65bb8fe4efe93ad7d75910336b6a1221e6c131961f5a3277349734a",
+       "side": "right"
+      },
+      {
+       "sha256": "8e0280ff099081f742691677992d5aeb53313c76be89065a94e604ef0ed41ae5",
+       "side": "right"
+      }
+     ],
+     "root": "10949e1184ea55ef18a67f463c7e6ed446a649bc460701476d1ce6dedb36b29e",
+     "v": 1
+    },
+    {
+     "block": null,
+     "leaf": "36343db6cee404e07fbd04f80707cffd30fe1ede15520bebab4bf204e4258d6f",
+     "path": [
+      {
+       "sha256": "d9c8286e8c37be8e9abf37f2eb3c6b03ce4d86f0804d46e9960d8ef7e9ac174a",
+       "side": "left"
+      },
+      {
+       "sha256": "8e0280ff099081f742691677992d5aeb53313c76be89065a94e604ef0ed41ae5",
+       "side": "right"
+      }
+     ],
+     "root": "10949e1184ea55ef18a67f463c7e6ed446a649bc460701476d1ce6dedb36b29e",
+     "v": 1
+    },
+    {
+     "block": null,
+     "leaf": "c39e4fe697b07d0fe9a736040be03c09d772e852a33f1658e40281851bc15043",
+     "path": [
+      {
+       "sha256": "aaebe2dfe7eae0d9937a8c563ed45dc5628a3b566a0d2aa9f0c08b740d5e07e9",
+       "side": "left"
+      }
+     ],
+     "root": "10949e1184ea55ef18a67f463c7e6ed446a649bc460701476d1ce6dedb36b29e",
+     "v": 1
+    }
+   ],
+   "root": "10949e1184ea55ef18a67f463c7e6ed446a649bc460701476d1ce6dedb36b29e",
+   "size": 3
+  },
+  {
+   "leaves": [
+    "c39e4fe697b07d0fe9a736040be03c09d772e852a33f1658e40281851bc15043",
+    "27d76de70d66bf4f87d5153fc6c658e505dcd89cbcd9f1d4db31ee750dd23f6b",
+    "36343db6cee404e07fbd04f80707cffd30fe1ede15520bebab4bf204e4258d6f",
+    "7434143e7d50cc6a6065b6187c08dba7858b8cc007cb6fc492c92531dbef6491"
+   ],
+   "proofs": [
+    {
+     "block": null,
+     "leaf": "27d76de70d66bf4f87d5153fc6c658e505dcd89cbcd9f1d4db31ee750dd23f6b",
+     "path": [
+      {
+       "sha256": "1a18c94de65bb8fe4efe93ad7d75910336b6a1221e6c131961f5a3277349734a",
+       "side": "right"
+      },
+      {
+       "sha256": "1f22586086290d3b3266a06159c3edc4922602f4f45c3a6284d7a61c29ffc952",
+       "side": "right"
+      }
+     ],
+     "root": "d7971134c9d8238cd72353ca85fb17c9fc30abe2719bb5b527f1dc2dddf542b2",
+     "v": 1
+    },
+    {
+     "block": null,
+     "leaf": "36343db6cee404e07fbd04f80707cffd30fe1ede15520bebab4bf204e4258d6f",
+     "path": [
+      {
+       "sha256": "d9c8286e8c37be8e9abf37f2eb3c6b03ce4d86f0804d46e9960d8ef7e9ac174a",
+       "side": "left"
+      },
+      {
+       "sha256": "1f22586086290d3b3266a06159c3edc4922602f4f45c3a6284d7a61c29ffc952",
+       "side": "right"
+      }
+     ],
+     "root": "d7971134c9d8238cd72353ca85fb17c9fc30abe2719bb5b527f1dc2dddf542b2",
+     "v": 1
+    },
+    {
+     "block": null,
+     "leaf": "7434143e7d50cc6a6065b6187c08dba7858b8cc007cb6fc492c92531dbef6491",
+     "path": [
+      {
+       "sha256": "8e0280ff099081f742691677992d5aeb53313c76be89065a94e604ef0ed41ae5",
+       "side": "right"
+      },
+      {
+       "sha256": "aaebe2dfe7eae0d9937a8c563ed45dc5628a3b566a0d2aa9f0c08b740d5e07e9",
+       "side": "left"
+      }
+     ],
+     "root": "d7971134c9d8238cd72353ca85fb17c9fc30abe2719bb5b527f1dc2dddf542b2",
+     "v": 1
+    },
+    {
+     "block": null,
+     "leaf": "c39e4fe697b07d0fe9a736040be03c09d772e852a33f1658e40281851bc15043",
+     "path": [
+      {
+       "sha256": "3c28aace9a7300e59ed15d37743532e9896644eb6267175972382dadd2f51c7a",
+       "side": "left"
+      },
+      {
+       "sha256": "aaebe2dfe7eae0d9937a8c563ed45dc5628a3b566a0d2aa9f0c08b740d5e07e9",
+       "side": "left"
+      }
+     ],
+     "root": "d7971134c9d8238cd72353ca85fb17c9fc30abe2719bb5b527f1dc2dddf542b2",
+     "v": 1
+    }
+   ],
+   "root": "d7971134c9d8238cd72353ca85fb17c9fc30abe2719bb5b527f1dc2dddf542b2",
+   "size": 4
+  },
+  {
+   "leaves": [
+    "c39e4fe697b07d0fe9a736040be03c09d772e852a33f1658e40281851bc15043",
+    "27d76de70d66bf4f87d5153fc6c658e505dcd89cbcd9f1d4db31ee750dd23f6b",
+    "36343db6cee404e07fbd04f80707cffd30fe1ede15520bebab4bf204e4258d6f",
+    "7434143e7d50cc6a6065b6187c08dba7858b8cc007cb6fc492c92531dbef6491",
+    "1cd3aff11052664a41bf894df7a34d7f864eb2cc929fb9239964ebbc0a459d72"
+   ],
+   "proofs": [
+    {
+     "block": null,
+     "leaf": "1cd3aff11052664a41bf894df7a34d7f864eb2cc929fb9239964ebbc0a459d72",
+     "path": [
+      {
+       "sha256": "d9c8286e8c37be8e9abf37f2eb3c6b03ce4d86f0804d46e9960d8ef7e9ac174a",
+       "side": "right"
+      },
+      {
+       "sha256": "be82452319fed6b2980491c5b75eafcc810af3ed16213b1fa4f3b089eab05399",
+       "side": "right"
+      },
+      {
+       "sha256": "8e0280ff099081f742691677992d5aeb53313c76be89065a94e604ef0ed41ae5",
+       "side": "right"
+      }
+     ],
+     "root": "845e6fb6fff5a48ff2aa3ca8760b92801160bd75b68ba5e1ea8b085dfa4e17cd",
+     "v": 1
+    },
+    {
+     "block": null,
+     "leaf": "27d76de70d66bf4f87d5153fc6c658e505dcd89cbcd9f1d4db31ee750dd23f6b",
+     "path": [
+      {
+       "sha256": "20a51122444dab6daa47ea13cc869bf36888409dbe888857eefa06407a0f0674",
+       "side": "left"
+      },
+      {
+       "sha256": "be82452319fed6b2980491c5b75eafcc810af3ed16213b1fa4f3b089eab05399",
+       "side": "right"
+      },
+      {
+       "sha256": "8e0280ff099081f742691677992d5aeb53313c76be89065a94e604ef0ed41ae5",
+       "side": "right"
+      }
+     ],
+     "root": "845e6fb6fff5a48ff2aa3ca8760b92801160bd75b68ba5e1ea8b085dfa4e17cd",
+     "v": 1
+    },
+    {
+     "block": null,
+     "leaf": "36343db6cee404e07fbd04f80707cffd30fe1ede15520bebab4bf204e4258d6f",
+     "path": [
+      {
+       "sha256": "3c28aace9a7300e59ed15d37743532e9896644eb6267175972382dadd2f51c7a",
+       "side": "right"
+      },
+      {
+       "sha256": "fa846373b366df5bb92e73ad58c4e0ca1e0ba8110c9db3857c61de8a97fef136",
+       "side": "left"
+      },
+      {
+       "sha256": "8e0280ff099081f742691677992d5aeb53313c76be89065a94e604ef0ed41ae5",
+       "side": "right"
+      }
+     ],
+     "root": "845e6fb6fff5a48ff2aa3ca8760b92801160bd75b68ba5e1ea8b085dfa4e17cd",
+     "v": 1
+    },
+    {
+     "block": null,
+     "leaf": "7434143e7d50cc6a6065b6187c08dba7858b8cc007cb6fc492c92531dbef6491",
+     "path": [
+      {
+       "sha256": "1a18c94de65bb8fe4efe93ad7d75910336b6a1221e6c131961f5a3277349734a",
+       "side": "left"
+      },
+      {
+       "sha256": "fa846373b366df5bb92e73ad58c4e0ca1e0ba8110c9db3857c61de8a97fef136",
+       "side": "left"
+      },
+      {
+       "sha256": "8e0280ff099081f742691677992d5aeb53313c76be89065a94e604ef0ed41ae5",
+       "side": "right"
+      }
+     ],
+     "root": "845e6fb6fff5a48ff2aa3ca8760b92801160bd75b68ba5e1ea8b085dfa4e17cd",
+     "v": 1
+    },
+    {
+     "block": null,
+     "leaf": "c39e4fe697b07d0fe9a736040be03c09d772e852a33f1658e40281851bc15043",
+     "path": [
+      {
+       "sha256": "c05900af9f0539a18e3eb3ac17a3bcefa1033f7c97425fdeb5fa67ab37a0497c",
+       "side": "left"
+      }
+     ],
+     "root": "845e6fb6fff5a48ff2aa3ca8760b92801160bd75b68ba5e1ea8b085dfa4e17cd",
+     "v": 1
+    }
+   ],
+   "root": "845e6fb6fff5a48ff2aa3ca8760b92801160bd75b68ba5e1ea8b085dfa4e17cd",
+   "size": 5
+  }
+ ],
+ "inputs": {
+  "test-cert-1": "c39e4fe697b07d0fe9a736040be03c09d772e852a33f1658e40281851bc15043",
+  "test-cert-2": "27d76de70d66bf4f87d5153fc6c658e505dcd89cbcd9f1d4db31ee750dd23f6b",
+  "test-cert-3": "36343db6cee404e07fbd04f80707cffd30fe1ede15520bebab4bf204e4258d6f",
+  "test-cert-4": "7434143e7d50cc6a6065b6187c08dba7858b8cc007cb6fc492c92531dbef6491",
+  "test-cert-5": "1cd3aff11052664a41bf894df7a34d7f864eb2cc929fb9239964ebbc0a459d72"
+ },
+ "leaf_domain": "aikiri-ledger/cert-leaf/v1\n",
+ "leaf_hashes": {
+  "1cd3aff11052664a41bf894df7a34d7f864eb2cc929fb9239964ebbc0a459d72": "20a51122444dab6daa47ea13cc869bf36888409dbe888857eefa06407a0f0674",
+  "27d76de70d66bf4f87d5153fc6c658e505dcd89cbcd9f1d4db31ee750dd23f6b": "d9c8286e8c37be8e9abf37f2eb3c6b03ce4d86f0804d46e9960d8ef7e9ac174a",
+  "36343db6cee404e07fbd04f80707cffd30fe1ede15520bebab4bf204e4258d6f": "1a18c94de65bb8fe4efe93ad7d75910336b6a1221e6c131961f5a3277349734a",
+  "7434143e7d50cc6a6065b6187c08dba7858b8cc007cb6fc492c92531dbef6491": "3c28aace9a7300e59ed15d37743532e9896644eb6267175972382dadd2f51c7a",
+  "c39e4fe697b07d0fe9a736040be03c09d772e852a33f1658e40281851bc15043": "8e0280ff099081f742691677992d5aeb53313c76be89065a94e604ef0ed41ae5"
+ },
+ "node_domain": "aikiri-ledger/cert-node/v1\n",
+ "records": {
+  "about": "Issuer record format vectors. Every value is fake except the issuer, which format v1 fixes. canonical is the exact UTF-8 bytes hashed (also given as hex); fingerprint = sha256(record_domain + canonical); payload = base64url(canonical), no padding. blocks gives only the fields a reader takes from ledger/blocks/<NNNNNN>.json; real blocks carry more. reader_cases: each proof, read from ledger/certs/<file>, against blocks, with the verdict a reader must give. revoked_file_cases: whether a revoked/ file counts, given blocks (it counts only if the block it names holds exactly that revocation).",
+  "blocks": [
+   {
+    "index": 10,
+    "roots": [
+     {
+      "kind": "cert-cohort",
+      "sha256": "405994c6468a757fc0fadfeeaa33bea8d84dbc827a33a409814b70fede00ede5"
+     }
+    ],
+    "timestamp": "2026-02-01T10:00:00+08:00"
+   },
+   {
+    "index": 11,
+    "roots": [
+     {
+      "kind": "cert-cohort",
+      "sha256": "207eb0c5bf71903a12fdc5b59c3dbcc146e5e11b9c6f067c7c73627c799c9724"
+     }
+    ],
+    "timestamp": "2026-02-02T10:00:00+08:00"
+   },
+   {
+    "index": 12,
+    "roots": [
+     {
+      "kind": "cert-cohort",
+      "sha256": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac"
+     }
+    ],
+    "timestamp": "2026-02-03T10:00:00+08:00"
+   },
+   {
+    "index": 13,
+    "roots": [
+     {
+      "kind": "revocation",
+      "sha256": "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e"
+     }
+    ],
+    "timestamp": "2026-03-01T10:00:00+08:00"
+   },
+   {
+    "index": 14,
+    "roots": [
+     {
+      "kind": "revocation",
+      "sha256": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac"
+     }
+    ],
+    "timestamp": "2026-03-02T10:00:00+08:00"
+   },
+   {
+    "index": 15,
+    "roots": [
+     {
+      "kind": "journal",
+      "sha256": "abababababababababababababababababababababababababababababababab"
+     }
+    ],
+    "timestamp": "2026-03-03T10:00:00+08:00"
+   }
+  ],
+  "cohorts": [
+   {
+    "block": 10,
+    "leaves": [
+     "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d"
+    ],
+    "proofs": [
+     {
+      "block": 10,
+      "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+      "path": [],
+      "root": "405994c6468a757fc0fadfeeaa33bea8d84dbc827a33a409814b70fede00ede5",
+      "v": 1
+     }
+    ],
+    "root": "405994c6468a757fc0fadfeeaa33bea8d84dbc827a33a409814b70fede00ede5",
+    "size": 1
+   },
+   {
+    "block": 11,
+    "leaves": [
+     "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e"
+    ],
+    "proofs": [
+     {
+      "block": 11,
+      "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+      "path": [
+       {
+        "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+        "side": "right"
+       }
+      ],
+      "root": "207eb0c5bf71903a12fdc5b59c3dbcc146e5e11b9c6f067c7c73627c799c9724",
+      "v": 1
+     },
+     {
+      "block": 11,
+      "leaf": "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e",
+      "path": [
+       {
+        "sha256": "405994c6468a757fc0fadfeeaa33bea8d84dbc827a33a409814b70fede00ede5",
+        "side": "left"
+       }
+      ],
+      "root": "207eb0c5bf71903a12fdc5b59c3dbcc146e5e11b9c6f067c7c73627c799c9724",
+      "v": 1
+     }
+    ],
+    "root": "207eb0c5bf71903a12fdc5b59c3dbcc146e5e11b9c6f067c7c73627c799c9724",
+    "size": 2
+   },
+   {
+    "block": 12,
+    "leaves": [
+     "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e",
+     "66727f0b41ca4abbf8b63f6fcf9c2bb43680725f6b2ea2e03ce2f6bc8d74582d"
+    ],
+    "proofs": [
+     {
+      "block": 12,
+      "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+      "path": [
+       {
+        "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+        "side": "right"
+       },
+       {
+        "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+        "side": "right"
+       }
+      ],
+      "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+      "v": 1
+     },
+     {
+      "block": 12,
+      "leaf": "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e",
+      "path": [
+       {
+        "sha256": "405994c6468a757fc0fadfeeaa33bea8d84dbc827a33a409814b70fede00ede5",
+        "side": "left"
+       },
+       {
+        "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+        "side": "right"
+       }
+      ],
+      "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+      "v": 1
+     },
+     {
+      "block": 12,
+      "leaf": "66727f0b41ca4abbf8b63f6fcf9c2bb43680725f6b2ea2e03ce2f6bc8d74582d",
+      "path": [
+       {
+        "sha256": "207eb0c5bf71903a12fdc5b59c3dbcc146e5e11b9c6f067c7c73627c799c9724",
+        "side": "left"
+       }
+      ],
+      "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+      "v": 1
+     }
+    ],
+    "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+    "size": 3
+   }
+  ],
+  "examples": [
+   {
+    "canonical": "{\"completed\":\"2026-01-31\",\"course\":\"Example Course\",\"holder\":\"Test Holder\",\"instructor\":\"Test Instructor\",\"issuer\":\"Chiibitsu Labs\",\"number\":\"00112233445566778899aabbccddeeff\",\"v\":1}",
+    "canonical_utf8_hex": "7b22636f6d706c65746564223a22323032362d30312d3331222c22636f75727365223a224578616d706c6520436f75727365222c22686f6c646572223a225465737420486f6c646572222c22696e7374727563746f72223a225465737420496e7374727563746f72222c22697373756572223a22436869696269747375204c616273222c226e756d626572223a223030313132323333343435353636373738383939616162626363646465656666222c2276223a317d",
+    "fingerprint": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+    "payload": "eyJjb21wbGV0ZWQiOiIyMDI2LTAxLTMxIiwiY291cnNlIjoiRXhhbXBsZSBDb3Vyc2UiLCJob2xkZXIiOiJUZXN0IEhvbGRlciIsImluc3RydWN0b3IiOiJUZXN0IEluc3RydWN0b3IiLCJpc3N1ZXIiOiJDaGlpYml0c3UgTGFicyIsIm51bWJlciI6IjAwMTEyMjMzNDQ1NTY2Nzc4ODk5YWFiYmNjZGRlZWZmIiwidiI6MX0",
+    "record": {
+     "completed": "2026-01-31",
+     "course": "Example Course",
+     "holder": "Test Holder",
+     "instructor": "Test Instructor",
+     "issuer": "Chiibitsu Labs",
+     "number": "00112233445566778899aabbccddeeff",
+     "v": 1
+    }
+   },
+   {
+    "canonical": "{\"completed\":\"2026-01-31\",\"course\":\"Example Course\",\"holder\":\"Test Holder Two\",\"host\":\"Example Host\",\"instructor\":\"Test Instructor\",\"issuer\":\"Chiibitsu Labs\",\"number\":\"ffeeddccbbaa99887766554433221100\",\"v\":1}",
+    "canonical_utf8_hex": "7b22636f6d706c65746564223a22323032362d30312d3331222c22636f75727365223a224578616d706c6520436f75727365222c22686f6c646572223a225465737420486f6c6465722054776f222c22686f7374223a224578616d706c6520486f7374222c22696e7374727563746f72223a225465737420496e7374727563746f72222c22697373756572223a22436869696269747375204c616273222c226e756d626572223a226666656564646363626261613939383837373636353534343333323231313030222c2276223a317d",
+    "fingerprint": "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e",
+    "payload": "eyJjb21wbGV0ZWQiOiIyMDI2LTAxLTMxIiwiY291cnNlIjoiRXhhbXBsZSBDb3Vyc2UiLCJob2xkZXIiOiJUZXN0IEhvbGRlciBUd28iLCJob3N0IjoiRXhhbXBsZSBIb3N0IiwiaW5zdHJ1Y3RvciI6IlRlc3QgSW5zdHJ1Y3RvciIsImlzc3VlciI6IkNoaWliaXRzdSBMYWJzIiwibnVtYmVyIjoiZmZlZWRkY2NiYmFhOTk4ODc3NjY1NTQ0MzMyMjExMDAiLCJ2IjoxfQ",
+    "record": {
+     "completed": "2026-01-31",
+     "course": "Example Course",
+     "holder": "Test Holder Two",
+     "host": "Example Host",
+     "instructor": "Test Instructor",
+     "issuer": "Chiibitsu Labs",
+     "number": "ffeeddccbbaa99887766554433221100",
+     "v": 1
+    }
+   },
+   {
+    "canonical": "{\"completed\":\"2024-02-29\",\"course\":\"Example Course — Part 1 🎓\",\"holder\":\"Tëst Hōlder \\\"Three\\\" \\\\ Example\",\"instructor\":\"Test Instructor\",\"issuer\":\"Chiibitsu Labs\",\"number\":\"0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f\",\"v\":1}",
+    "canonical_utf8_hex": "7b22636f6d706c65746564223a22323032342d30322d3239222c22636f75727365223a224578616d706c6520436f7572736520e280942050617274203120f09f8e93222c22686f6c646572223a2254c3ab73742048c58d6c646572205c2254687265655c22205c5c204578616d706c65222c22696e7374727563746f72223a225465737420496e7374727563746f72222c22697373756572223a22436869696269747375204c616273222c226e756d626572223a2230663066306630663066306630663066306630663066306630663066306630663066306630663066306630663066306630663066306630663066306630663066222c2276223a317d",
+    "fingerprint": "66727f0b41ca4abbf8b63f6fcf9c2bb43680725f6b2ea2e03ce2f6bc8d74582d",
+    "payload": "eyJjb21wbGV0ZWQiOiIyMDI0LTAyLTI5IiwiY291cnNlIjoiRXhhbXBsZSBDb3Vyc2Ug4oCUIFBhcnQgMSDwn46TIiwiaG9sZGVyIjoiVMOrc3QgSMWNbGRlciBcIlRocmVlXCIgXFwgRXhhbXBsZSIsImluc3RydWN0b3IiOiJUZXN0IEluc3RydWN0b3IiLCJpc3N1ZXIiOiJDaGlpYml0c3UgTGFicyIsIm51bWJlciI6IjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYwZjBmMGYiLCJ2IjoxfQ",
+    "record": {
+     "completed": "2024-02-29",
+     "course": "Example Course — Part 1 🎓",
+     "holder": "Tëst Hōlder \"Three\" \\ Example",
+     "instructor": "Test Instructor",
+     "issuer": "Chiibitsu Labs",
+     "number": "0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f",
+     "v": 1
+    }
+   }
+  ],
+  "expected_by_cohort": {
+   "1": {
+    "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d": "VALID"
+   },
+   "2": {
+    "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d": "VALID",
+    "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e": "REVOKED"
+   },
+   "3": {
+    "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d": "VALID",
+    "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e": "REVOKED",
+    "66727f0b41ca4abbf8b63f6fcf9c2bb43680725f6b2ea2e03ce2f6bc8d74582d": "VALID"
+   }
+  },
+  "issuer": "Chiibitsu Labs",
+  "reader_cases": [
+   {
+    "case": "valid",
+    "expected": "VALID",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
+    "proof": {
+     "block": 12,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "right"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "revoked",
+    "expected": "REVOKED",
+    "file": "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e.json",
+    "proof": {
+     "block": 12,
+     "leaf": "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e",
+     "path": [
+      {
+       "sha256": "405994c6468a757fc0fadfeeaa33bea8d84dbc827a33a409814b70fede00ede5",
+       "side": "left"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "block null",
+    "expected": "NOT FOUND",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
+    "proof": {
+     "block": null,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "right"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "block missing",
+    "expected": "NOT FOUND",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
+    "proof": {
+     "block": 99,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "right"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "block holds another cohort",
+    "expected": "NOT FOUND",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
+    "proof": {
+     "block": 11,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "right"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "block holds the root under another kind",
+    "expected": "NOT FOUND",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
+    "proof": {
+     "block": 14,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "right"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "block holds something else",
+    "expected": "NOT FOUND",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
+    "proof": {
+     "block": 15,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "right"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "path tampered",
+    "expected": "INVALID",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
+    "proof": {
+     "block": 12,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "left"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   },
+   {
+    "case": "wrong root",
+    "expected": "INVALID",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
+    "proof": {
+     "block": 12,
+     "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "path": [
+      {
+       "sha256": "43e38bd16b4cece1462c70494e5de5dec4eeb4c05d9128877a96ee22946ad656",
+       "side": "right"
+      },
+      {
+       "sha256": "45fc4fdd875f227a702e81c327a09c75a32745e5163578bfaefdb28b9dde5167",
+       "side": "right"
+      }
+     ],
+     "root": "207eb0c5bf71903a12fdc5b59c3dbcc146e5e11b9c6f067c7c73627c799c9724",
+     "v": 1
+    }
+   },
+   {
+    "case": "proof filed under another certificate's name",
+    "expected": "INVALID",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
+    "proof": {
+     "block": 12,
+     "leaf": "66727f0b41ca4abbf8b63f6fcf9c2bb43680725f6b2ea2e03ce2f6bc8d74582d",
+     "path": [
+      {
+       "sha256": "207eb0c5bf71903a12fdc5b59c3dbcc146e5e11b9c6f067c7c73627c799c9724",
+       "side": "left"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
+     "v": 1
+    }
+   }
+  ],
+  "record_domain": "aikiri-ledger/cert-record/v1\n",
+  "revoked_file_cases": [
+   {
+    "case": "names the revocation block",
+    "counts": true,
+    "file": {
+     "block": 13,
+     "fingerprint": "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e",
+     "v": 1
+    }
+   },
+   {
+    "case": "names a missing block",
+    "counts": false,
+    "file": {
+     "block": 99,
+     "fingerprint": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "v": 1
+    }
+   },
+   {
+    "case": "names a block that is not its revocation",
+    "counts": false,
+    "file": {
+     "block": 15,
+     "fingerprint": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
+     "v": 1
+    }
+   }
+  ],
+  "revoked_files": {
+   "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e": {
+    "block": 13,
+    "fingerprint": "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e",
+    "v": 1
+   }
+  }
+ }
+}

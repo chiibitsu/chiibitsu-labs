@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "title": "Check a certificate · Chiibitsu Labs",
+    "description": "Check a Chiibitsu Labs course certificate from its link. Shows whether it is valid, revoked or not found."
+  },
+  "eyebrow": "The Aikiri Network",
+  "placeholder": "Placeholder. This is sample data from the certificate format's tests, shown on previews only. It is not a real certificate.",
+  "checkingH1": "Checking…",
+  "checking": "Checking the Aikiri Network ledger…",
+  "valid": {
+    "h1": "This certificate is valid.",
+    "body": "Issued by Chiibitsu Labs, not a government body. This record has not changed since it was sealed on {date}.",
+    "rows": {
+      "holder": "Issued to",
+      "course": "Course",
+      "completed": "Completed on",
+      "instructor": "Instructor",
+      "host": "Hosted by",
+      "issuer": "Issued by",
+      "number": "Certificate",
+      "block": "Block",
+      "sealed": "Sealed",
+      "fingerprint": "Fingerprint"
+    }
+  },
+  "revoked": {
+    "h1": "This certificate was revoked.",
+    "body": "Chiibitsu Labs issued this certificate and revoked it on {date}. It no longer counts as proof that the course was completed.",
+    "rows": {
+      "number": "Certificate",
+      "course": "Course",
+      "revoked": "Revoked"
+    }
+  },
+  "notFound": {
+    "h1": "No sealed certificate matches this link.",
+    "body": "The link holds a complete certificate record, but Chiibitsu Labs has not sealed it on the Aikiri Network ledger. If the course ended recently, its cohort may not be sealed yet. Until it is sealed, this link is not proof that the course was completed."
+  },
+  "invalid": {
+    "h1": "This link is incomplete.",
+    "body": "This link is not a complete certificate record. Make sure you copied the whole link."
+  },
+  "unconfirmed": {
+    "h1": "This record could not be confirmed.",
+    "body": "The link is complete, but the record inside it does not match what the Aikiri Network ledger holds for this certificate. This page cannot confirm it. That does not mean the course was not completed. Ask the person who shared it for the link exactly as Chiibitsu Labs issued it, or contact Chiibitsu Labs to check."
+  },
+  "error": {
+    "h1": "Could not check just now.",
+    "body": "The Aikiri Network ledger could not be read just now."
+  },
+  "honest": {
+    "heading": "What this page shows",
+    "items": [
+      "Only what Chiibitsu Labs issued. A Chiibitsu Labs certificate says a person finished a Chiibitsu Labs course.",
+      "It is not a government certification, licence or accredited qualification.",
+      "Valid means this exact record is sealed on the Aikiri Network ledger and has not been revoked. It does not say what the person can do today.",
+      "The certificate's details travel inside its link and stay on your device. Your browser works out the record's fingerprint and looks only that up in the Aikiri Network ledger.",
+      "One certificate at a time: the one whose link you have. There is no list or search of certificates."
+    ]
+  },
+  "links": {
+    "check": {
+      "label": "Check a file instead →",
+      "href": "/network/check"
+    },
+    "back": {
+      "label": "← Back to the Aikiri Network",
+      "href": "/network"
+    }
+  },
+  "footer": {
+    "left": "Chiibitsu Labs",
+    "middle": "More human, by design"
+  }
+}

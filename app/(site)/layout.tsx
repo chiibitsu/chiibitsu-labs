@@ -5,16 +5,19 @@ import { Lovebirds } from "@/components/Lovebirds";
 import { ThemeClock } from "@/components/ThemeClock";
 import { bootScript } from "@/lib/boot";
 import { content } from "@/lib/content";
-import { caveat, plexMono, spectral } from "./fonts";
-import "./globals.css";
+import { caveat, plexMono, spectral } from "../fonts";
+import "../globals.css";
 
 // Microsoft Clarity: recordings, scroll maps, time on page and events. Apollo: which company a visit comes from.
 // Both are named on /privacy. Each runs once per page load from the head.
+// Neither runs on a mistyped certificate link (/Network/cert, /network/certs, /network/cert/x): those 404 here, in
+// this layout, and their fragment still holds someone's certificate record. /network/cert itself has its own layout.
+const notOnCertLinks = (script: string) => `if(location.pathname.toLowerCase().indexOf("/network/cert")<0){${script}}`;
 const CLARITY_ID = "yr62qfnz0b";
 const clarityScript = `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${CLARITY_ID}");`;
 const apolloScript = `function initApollo(){var n=Math.random().toString(36).substring(7),o=document.createElement("script");o.src="https://assets.apollo.io/micro/website-tracker/tracker.iife.js?nocache="+n,o.async=!0,o.defer=!0,o.onload=function(){window.trackingFunctions.onLoad({appId:"69eaa9571f03c5000da5a540"})},document.head.appendChild(o)}initApollo();`;
 
-// The share card (app/opengraph-image.png, 1200x630, source design/og-woah.html): a 6:15 lock screen with one notification from the ghost team.
+// The share card (app/(site)/opengraph-image.png, 1200x630, source design/og-woah.html): a 6:15 lock screen with one notification from the ghost team.
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.chiibitsu.com"),
   title: content.meta.title,
@@ -35,8 +38,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" data-theme="day" data-aud="companies" className={`${spectral.variable} ${plexMono.variable} ${caveat.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: bootScript }} />
-        <script dangerouslySetInnerHTML={{ __html: clarityScript }} />
-        <script dangerouslySetInnerHTML={{ __html: apolloScript }} />
+        <script dangerouslySetInnerHTML={{ __html: notOnCertLinks(clarityScript) }} />
+        <script dangerouslySetInnerHTML={{ __html: notOnCertLinks(apolloScript) }} />
       </head>
       <body>
         {children}

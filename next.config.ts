@@ -34,6 +34,15 @@ const config: NextConfig = {
       },
     ];
   },
+  // Near-misses of the certificate page go to it, so a mistyped link still lands on the tracker-free page. The
+  // browser keeps the #fragment (the record) across a redirect, and nothing here ever sees it.
+  async redirects() {
+    return [
+      { source: "/network/cert/:rest+", destination: "/network/cert", permanent: false },
+      { source: "/network/certs", destination: "/network/cert", permanent: false },
+      { source: "/network/certificate", destination: "/network/cert", permanent: false },
+    ];
+  },
   // investor.chiibitsu.com serves the investor page at its root. Inert until that domain is attached to this project.
   async rewrites() {
     return {
