@@ -5,7 +5,7 @@ import { seriesTag } from "@/lib/publication";
 import { AikiriText } from "@/components/AikiriText";
 
 // Each still section of the home page is its own component, so any one of them can become a film scene
-// (see components/film) by swapping it for a scene component in app/page.tsx. Status: docs in README.md.
+// (see components/film) by swapping it for a scene component in app/(site)/page.tsx. Status: docs in README.md.
 const a = c.audiences;
 const both = ["companies", "solo"] as const;
 const Ill = () => <span className="ill">Illustrative</span>;
