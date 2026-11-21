@@ -4,7 +4,7 @@
     "description": "Check a Chiibitsu Labs course certificate from its link. Shows whether it is valid, revoked or not found."
   },
   "eyebrow": "The Aikiri Network",
-  "placeholder": "Placeholder. This is sample data from the certificate format's test vectors, shown on previews only. It is not a real certificate.",
+  "placeholder": "Placeholder. This is sample data from the certificate format's tests, shown on previews only. It is not a real certificate.",
   "checkingH1": "Checking…",
   "checking": "Checking the Aikiri Network ledger…",
   "valid": {
@@ -34,11 +34,11 @@
   },
   "notFound": {
     "h1": "No sealed certificate matches this link.",
-    "body": "The link holds a complete certificate record, but Chiibitsu Labs has not sealed it on the Aikiri Network ledger. If the course ended recently, its cohort may not be sealed yet."
+    "body": "The link holds a complete certificate record, but Chiibitsu Labs has not sealed it on the Aikiri Network ledger. If the course ended recently, its cohort may not be sealed yet. Until it is sealed, this link is not proof that the course was completed."
   },
   "invalid": {
-    "h1": "This link does not check out.",
-    "body": "This link is not a complete certificate record. Check it was copied in full."
+    "h1": "This link is incomplete.",
+    "body": "This link is not a complete certificate record. Make sure you copied the whole link."
   },
   "error": {
     "h1": "Could not check just now.",
