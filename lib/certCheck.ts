@@ -46,7 +46,9 @@ export type CertView =
   | { state: "valid"; record: CertRecord; fingerprint: string; block: number; sealedAt: string; witness: Witness; placeholder: boolean }
   | { state: "revoked"; record: CertRecord; revokedAt: string; placeholder: boolean }
   | { state: "not_found" } // a well-formed record that no sealed cohort holds (yet)
-  | { state: "invalid" } // not a v1 record, or a proof that does not hold
+  // INVALID either way. "link": not a v1 record. "proof": a complete record whose ledger proof does not hold (another
+  // certificate's proof, a path that does not lead to its root, or not a proof at all). The page words them apart.
+  | { state: "invalid"; reason: "link" | "proof" }
   | { state: "error" }; // the ledger could not be read: says nothing either way
 
 export interface CertLedger {
@@ -181,14 +183,14 @@ const isTimestamp = (t: unknown): t is string => typeof t === "string" && t.leng
 
 export async function checkCertificate(fragment: string, ledger: CertLedger): Promise<CertView> {
   const decoded = decodePayload(fragment);
-  if (!decoded) return { state: "invalid" };
+  if (!decoded) return { state: "invalid", reason: "link" };
   try {
     const fingerprint = await fingerprintOf(decoded.bytes);
     const proof = await ledger.proof(fingerprint);
     if (proof === null) return { state: "not_found" };
     // A proof that is not a proof, sits under another certificate's name, or does not lead to its root.
-    if (!isProof(proof) || proof.leaf !== fingerprint) return { state: "invalid" };
-    if ((await pathRoot(fingerprint, proof.path)) !== proof.root) return { state: "invalid" };
+    if (!isProof(proof) || proof.leaf !== fingerprint) return { state: "invalid", reason: "proof" };
+    if ((await pathRoot(fingerprint, proof.path)) !== proof.root) return { state: "invalid", reason: "proof" };
     // A proof is only a pointer. No block, or a block that seals anything else: not found.
     if (proof.block === null) return { state: "not_found" };
     const block = await ledger.block(proof.block);

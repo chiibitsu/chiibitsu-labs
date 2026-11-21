@@ -40,6 +40,10 @@
     "h1": "This link is incomplete.",
     "body": "This link is not a complete certificate record. Make sure you copied the whole link."
   },
+  "unconfirmed": {
+    "h1": "This record could not be confirmed.",
+    "body": "The link is complete, but the record inside it does not match what the Aikiri Network ledger holds for this certificate. This page cannot confirm it. That does not mean the course was not completed. Ask the person who shared it for the link exactly as Chiibitsu Labs issued it, or contact Chiibitsu Labs to check."
+  },
   "error": {
     "h1": "Could not check just now.",
     "body": "The Aikiri Network ledger could not be read just now."

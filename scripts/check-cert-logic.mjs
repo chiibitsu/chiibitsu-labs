@@ -117,7 +117,10 @@ const invalid = {
   "a UTF-8 BOM before the record": bytesToBase64url(new Uint8Array([0xef, 0xbb, 0xbf, ...enc.encode(ok.canonical)])),
   "number of odd length": recordPayload({ ...ok.record, number: "a".repeat(33) }),
 };
-for (const [name, frag] of Object.entries(invalid)) expect(`INVALID: ${name}`, await state(frag ? `#${frag}` : ""), "invalid");
+for (const [name, frag] of Object.entries(invalid)) {
+  const v = await checkCertificate(frag ? `#${frag}` : "", vectorLedger());
+  expect(`INVALID: ${name}`, [v.state, v.reason], ["invalid", "link"]);
+}
 expect("a year before 100 is a real date", decodePayload(`#${recordPayload({ ...ok.record, completed: "0050-01-01" })}`) !== null, true);
 expect("200 code points of emoji is fine", decodePayload(`#${recordPayload({ ...ok.record, course: "🎓".repeat(200) })}`) !== null, true);
 
@@ -132,6 +135,11 @@ expect("proof naming a block that seals something else: NOT FOUND", await state(
 expect("block with an extra root: NOT FOUND", await state(`#${ok.payload}`, vectorLedger({
   blocks: R.blocks.map((b) => (b.index === 12 ? { ...b, roots: [...b.roots, { kind: "cert-cohort", sha256: "0".repeat(64) }] } : b)),
 })), "not_found");
+const reason = async (frag, ledger) => (await checkCertificate(frag, ledger)).reason;
+expect("proof under another certificate's name: worded as the proof, not the link", await reason(`#${ok.payload}`, vectorLedger({ proofs: { [fpOk]: three.proofs.find((p) => p.leaf === otherFp) } })), "proof");
+expect("tampered path: worded as the proof, not the link", await reason(`#${ok.payload}`, vectorLedger({
+  proofs: { [fpOk]: { ...proofOk, path: proofOk.path.map((s, i) => (i ? s : { ...s, side: s.side === "left" ? "right" : "left" })) } },
+})), "proof");
 expect("proof under another certificate's name: INVALID", await state(`#${ok.payload}`, vectorLedger({ proofs: { [fpOk]: three.proofs.find((p) => p.leaf === otherFp) } })), "invalid");
 expect("tampered path: INVALID", await state(`#${ok.payload}`, vectorLedger({
   proofs: { [fpOk]: { ...proofOk, path: proofOk.path.map((s, i) => (i ? s : { ...s, side: s.side === "left" ? "right" : "left" })) } },

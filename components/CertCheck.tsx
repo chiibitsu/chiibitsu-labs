@@ -47,7 +47,10 @@ function State({ v }: { v: CertView | "checking" }) {
   if (v === "checking") return <><h1>{c.checkingH1}</h1><p className="body">{c.checking}</p></>;
   if (v.state === "error") return <><h1>{c.error.h1}</h1><p className="body">{c.error.body}</p></>;
   if (v.state === "not_found") return <><h1>{c.notFound.h1}</h1><p className="body">{c.notFound.body}</p></>;
-  if (v.state === "invalid") return <><h1>{c.invalid.h1}</h1><p className="body">{c.invalid.body}</p></>;
+  if (v.state === "invalid") {
+    const t = v.reason === "proof" ? c.unconfirmed : c.invalid;
+    return <><h1>{t.h1}</h1><p className="body">{t.body}</p></>;
+  }
   const ill = v.placeholder && <p className="body"><span className="ill">Illustrative</span> {c.placeholder}</p>;
   if (v.state === "revoked") {
     const r = c.revoked.rows;
