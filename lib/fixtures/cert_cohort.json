@@ -305,7 +305,7 @@
  },
  "node_domain": "aikiri-ledger/cert-node/v1\n",
  "records": {
-  "about": "Issuer record format vectors. Every value is fake except the issuer, which format v1 fixes. canonical is the exact UTF-8 bytes hashed (also given as hex); fingerprint = sha256(record_domain + canonical); payload = base64url(canonical), no padding. blocks gives only the fields a reader takes from ledger/blocks/<NNNNNN>.json; real blocks carry more. reader_cases: each proof against blocks, with the verdict a reader must give. revoked_file_cases: whether a revoked/ file counts, given blocks (it counts only if the block it names holds exactly that revocation).",
+  "about": "Issuer record format vectors. Every value is fake except the issuer, which format v1 fixes. canonical is the exact UTF-8 bytes hashed (also given as hex); fingerprint = sha256(record_domain + canonical); payload = base64url(canonical), no padding. blocks gives only the fields a reader takes from ledger/blocks/<NNNNNN>.json; real blocks carry more. reader_cases: each proof, read from ledger/certs/<file>, against blocks, with the verdict a reader must give. revoked_file_cases: whether a revoked/ file counts, given blocks (it counts only if the block it names holds exactly that revocation).",
   "blocks": [
    {
     "index": 10,
@@ -545,6 +545,7 @@
    {
     "case": "valid",
     "expected": "VALID",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
     "proof": {
      "block": 12,
      "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
@@ -565,6 +566,7 @@
    {
     "case": "revoked",
     "expected": "REVOKED",
+    "file": "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e.json",
     "proof": {
      "block": 12,
      "leaf": "33c86a077e83776f76bdf13f7afc7bd6937a088e608fdc447133092fd680077e",
@@ -585,6 +587,7 @@
    {
     "case": "block null",
     "expected": "NOT FOUND",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
     "proof": {
      "block": null,
      "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
@@ -605,6 +608,7 @@
    {
     "case": "block missing",
     "expected": "NOT FOUND",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
     "proof": {
      "block": 99,
      "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
@@ -625,6 +629,7 @@
    {
     "case": "block holds another cohort",
     "expected": "NOT FOUND",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
     "proof": {
      "block": 11,
      "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
@@ -645,6 +650,7 @@
    {
     "case": "block holds the root under another kind",
     "expected": "NOT FOUND",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
     "proof": {
      "block": 14,
      "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
@@ -665,6 +671,7 @@
    {
     "case": "block holds something else",
     "expected": "NOT FOUND",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
     "proof": {
      "block": 15,
      "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
@@ -685,6 +692,7 @@
    {
     "case": "path tampered",
     "expected": "INVALID",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
     "proof": {
      "block": 12,
      "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
@@ -705,6 +713,7 @@
    {
     "case": "wrong root",
     "expected": "INVALID",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
     "proof": {
      "block": 12,
      "leaf": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d",
@@ -719,6 +728,23 @@
       }
      ],
      "root": "207eb0c5bf71903a12fdc5b59c3dbcc146e5e11b9c6f067c7c73627c799c9724",
+     "v": 1
+    }
+   },
+   {
+    "case": "proof filed under another certificate's name",
+    "expected": "INVALID",
+    "file": "209fad06c360f203a8c3abb18172127c71d742680bb23a3c4deab40025f08e7d.json",
+    "proof": {
+     "block": 12,
+     "leaf": "66727f0b41ca4abbf8b63f6fcf9c2bb43680725f6b2ea2e03ce2f6bc8d74582d",
+     "path": [
+      {
+       "sha256": "207eb0c5bf71903a12fdc5b59c3dbcc146e5e11b9c6f067c7c73627c799c9724",
+       "side": "left"
+      }
+     ],
+     "root": "c20ee3794b6e4b4b9bd77dd89cabc15704384f50606520270e33f7fb442d9eac",
      "v": 1
     }
    }

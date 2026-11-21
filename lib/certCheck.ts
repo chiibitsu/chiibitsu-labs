@@ -1,7 +1,7 @@
 // /network/cert#<payload>: checks one certificate in the visitor's browser. Nothing from the link leaves the device
 // except its fingerprint, which goes to the Aikiri Network ledger (raw.githubusercontent.com) to fetch the proof.
 //
-// The format is aikiri-network's docs/certificates.md (PR #22, at 5a65b0b), and lib/fixtures/cert_cohort.json is its
+// The format is aikiri-network's docs/certificates.md (PR #22, at f2cb0cd), and lib/fixtures/cert_cohort.json is its
 // golden vectors. npm run check:cert-logic runs every vector through this file. If the two ever disagree, the doc wins.
 //
 // Privacy:

@@ -1,5 +1,5 @@
 // Gate: the certificate check against aikiri-network's golden vectors (lib/fixtures/cert_cohort.json, copied from
-// PR #22 at 5a65b0b), plus reject cases built from those vectors' own records. Every value is fake.
+// PR #22 at f2cb0cd), plus reject cases built from those vectors' own records. Every value is fake.
 // Runs the TypeScript directly (Node strips the types; scripts/ts-alias.mjs maps "@/").
 import fs from "node:fs";
 import {
@@ -9,7 +9,7 @@ import { NotInLedger } from "../lib/ledgerCheck.ts";
 
 const raw = fs.readFileSync(new URL("../lib/fixtures/cert_cohort.json", import.meta.url));
 // The copy must stay byte for byte what aikiri-network #22 published (lib/fixtures/README.md).
-const PINNED = "84bd49247446e847f87a2eb25bf717929a901af65f2f92715833c3738e12a464";
+const PINNED = "d8ad1a70c8ae370b54c6756929887706e4034498450403fc9eba1713b32e6b08";
 const V = JSON.parse(raw.toString("utf8"));
 const R = V.records;
 const problems = [];
@@ -69,8 +69,10 @@ for (const [size, verdicts] of Object.entries(R.expected_by_cohort)) {
   }
 }
 // reader_cases: one proof altered in each way a reader must catch.
+// Each case names the file it is read from, ledger/certs/<file>: the record is the one whose fingerprint is that name.
 for (const rc of R.reader_cases) {
-  expect(`reader case "${rc.case}"`, (await checkCertificate(`#${payloadOf(rc.proof.leaf)}`, vectorLedger({ proofs: { [rc.proof.leaf]: rc.proof } }))).state, verdict(rc.expected));
+  const fp = rc.file.replace(/\.json$/, "");
+  expect(`reader case "${rc.case}"`, (await checkCertificate(`#${payloadOf(fp)}`, vectorLedger({ proofs: { [fp]: rc.proof } }))).state, verdict(rc.expected));
 }
 // revoked_file_cases: a revoked/ file counts only if it names the right revocation block.
 for (const rf of R.revoked_file_cases) {
@@ -155,4 +157,4 @@ if (problems.length) {
   console.error(`cert logic failed (${problems.length} of ${checks}):\n- ${problems.join("\n- ")}`);
   process.exit(1);
 }
-console.log(`cert logic ok: ${checks} checks. Every golden vector passes (aikiri-network #22 at 5a65b0b), and every reject case is INVALID or NOT FOUND as the doc says`);
+console.log(`cert logic ok: ${checks} checks. Every golden vector passes (aikiri-network #22 at f2cb0cd), and every reject case is INVALID or NOT FOUND as the doc says`);

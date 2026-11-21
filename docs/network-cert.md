@@ -1,6 +1,6 @@
 # /network/cert#&lt;payload&gt;: check a certificate
 
-Status: built to the certificate format in aikiri-network's `docs/certificates.md` (PR #22, at `5a65b0b`). That PR's `tests/vectors/cert_cohort.json` is copied into `lib/fixtures/` and every vector passes (`npm run check:cert-logic`). **The merge waits for aikiri-network #22 to merge**, so the format can't move under this page. If the two ever disagree, the doc wins.
+Status: built to the certificate format in aikiri-network's `docs/certificates.md` (PR #22, at `f2cb0cd`). That PR's `tests/vectors/cert_cohort.json` is copied into `lib/fixtures/` and every vector passes (`npm run check:cert-logic`). **The merge waits for aikiri-network #22 to merge**, so the format can't move under this page. If the two ever disagree, the doc wins.
 
 ## The story
 
