@@ -193,7 +193,7 @@
   },
   "proofOfWork": {
     "heading": "Proof of work",
-    "note": "Misses included · counted 30 Sep 2026",
+    "note": "Misses included · clients counted 30 Sep to 2 Oct 2026, our own on 7 Nov",
     "columns": [
       "Client",
       "Built",
@@ -294,12 +294,12 @@
       {
         "client": "Chiibitsu Labs",
         "built": "Our own company, run on AI",
-        "changed": "22 workflows running",
+        "changed": "32 workflows running",
         "miss": false,
         "date": "Now",
         "illustrative": false,
-        "measuredOn": "2026-09-30",
-        "source": "Chii, stated 2026-09-30"
+        "measuredOn": "2026-11-07",
+        "source": "The workflow register, 2026-11-07"
       }
     ],
     "linkLabel": "Receipt →"
