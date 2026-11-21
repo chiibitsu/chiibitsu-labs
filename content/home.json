@@ -193,7 +193,7 @@
   },
   "proofOfWork": {
     "heading": "Proof of work",
-    "note": "Misses included · clients counted 30 Sep 2026",
+    "note": "Misses included · clients counted 30 Sep to 2 Oct 2026, our own on 7 Nov",
     "columns": [
       "Client",
       "Built",
@@ -299,7 +299,7 @@
         "date": "Now",
         "illustrative": false,
         "measuredOn": "2026-11-07",
-        "source": "vibeOS canon/workflows.md 1.1.0, the workflow register, 2026-11-07"
+        "source": "The workflow register, 2026-11-07"
       }
     ],
     "linkLabel": "Receipt →"
